@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240">
+  <path d="M94 28c24-15 108-15 132 0 20 44 18 128-2 172-30 22-98 22-128 0-20-44-22-128-2-172Z" fill="none" stroke="#5F6368" stroke-width="8" stroke-linejoin="round"/>
+  <circle cx="160" cy="118" r="10" fill="none" stroke="#9AA0A6" stroke-width="5"/>
+  <line x1="160" y1="58" x2="160" y2="194" stroke="#DADCE0" stroke-width="4" stroke-linecap="round"/>
+  <g fill="#E66A1A">
+    <circle id="abdomen_right_upper" cx="205" cy="82" r="20"/>
+    <circle id="abdomen_right_lower" cx="203" cy="154" r="20"/>
+    <circle id="abdomen_left_upper" cx="115" cy="82" r="20"/>
+    <circle id="abdomen_left_lower" cx="117" cy="154" r="20"/>
+  </g>
+  <g fill="#FFFFFF" font-family="Arial, sans-serif" font-size="18" font-weight="700" text-anchor="middle" dominant-baseline="central">
+    <text x="205" y="82">1</text>
+    <text x="203" y="154">2</text>
+    <text x="115" y="82">3</text>
+    <text x="117" y="154">4</text>
+  </g>
+</svg>

@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../core/app_shell.dart';
+import 'data/medication_catalog_data_source.dart';
+import 'data/medication_repository.dart';
+import 'domain/application_rotation_service.dart';
+import 'domain/medication.dart';
 
 class TreatmentScreen extends StatefulWidget {
   const TreatmentScreen({super.key});
@@ -10,22 +16,31 @@ class TreatmentScreen extends StatefulWidget {
 }
 
 class _TreatmentScreenState extends State<TreatmentScreen> {
+  final _medicationRepository = const MedicationRepository(
+    MedicationCatalogDataSource(),
+  );
+  final _rotationService = const ApplicationRotationService();
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
-  final _medicationController = TextEditingController();
-  final _siteController = TextEditingController();
 
+  late final List<Medication> _medications;
+  Medication? _selectedMedication;
   DateTime? _startDate;
   TimeOfDay? _applicationTime;
+  String? _initialPointId;
   bool _enableReminders = false;
   bool _showValidationErrors = false;
   _TreatmentSetupData? _submittedSetup;
 
   @override
+  void initState() {
+    super.initState();
+    _medications = _medicationRepository.getAll();
+  }
+
+  @override
   void dispose() {
     _nameController.dispose();
-    _medicationController.dispose();
-    _siteController.dispose();
     super.dispose();
   }
 
@@ -69,18 +84,38 @@ class _TreatmentScreenState extends State<TreatmentScreen> {
                         validator: _requiredValidator('Informe seu nome.'),
                       ),
                       const SizedBox(height: 16),
-                      TextFormField(
+                      DropdownButtonFormField<Medication>(
                         key: const Key('treatment-medication-field'),
-                        controller: _medicationController,
-                        textInputAction: TextInputAction.next,
+                        initialValue: _selectedMedication,
+                        isExpanded: true,
                         decoration: const InputDecoration(
                           labelText: 'Medicamento',
                           prefixIcon: Icon(Icons.medication_outlined),
                         ),
-                        validator: _requiredValidator(
-                          'Informe o nome do medicamento.',
-                        ),
+                        items: _medications.map((medication) {
+                          return DropdownMenuItem(
+                            value: medication,
+                            child: _MedicationOption(medication: medication),
+                          );
+                        }).toList(),
+                        onChanged: (medication) {
+                          setState(() {
+                            _selectedMedication = medication;
+                            _initialPointId = null;
+                          });
+                        },
+                        validator: (value) {
+                          if (value == null) {
+                            return 'Selecione um medicamento.';
+                          }
+
+                          return null;
+                        },
                       ),
+                      if (_selectedMedication != null) ...[
+                        const SizedBox(height: 12),
+                        _MedicationDetails(medication: _selectedMedication!),
+                      ],
                       const SizedBox(height: 16),
                       _PickerField(
                         key: const Key('treatment-start-date-field'),
@@ -109,16 +144,44 @@ class _TreatmentScreenState extends State<TreatmentScreen> {
                         onTap: _selectApplicationTime,
                       ),
                       const SizedBox(height: 16),
-                      TextFormField(
-                        key: const Key('treatment-site-field'),
-                        controller: _siteController,
-                        textInputAction: TextInputAction.done,
-                        decoration: const InputDecoration(
-                          labelText: 'Local inicial de aplicação',
-                          prefixIcon: Icon(Icons.place_outlined),
+                      if (_selectedMedication?.requiresApplicationSite ??
+                          false) ...[
+                        DropdownButtonFormField<String>(
+                          key: const Key('treatment-site-field'),
+                          initialValue: _initialPointId,
+                          isExpanded: true,
+                          decoration: const InputDecoration(
+                            labelText: 'Ponto inicial de aplicação',
+                            prefixIcon: Icon(Icons.accessibility_new_outlined),
+                          ),
+                          items: _applicationPointOptions.map((point) {
+                            return DropdownMenuItem(
+                              value: point.id,
+                              child: Text(_formatPointOption(point)),
+                            );
+                          }).toList(),
+                          onChanged: (pointId) {
+                            setState(() {
+                              _initialPointId = pointId;
+                            });
+                          },
+                          hint: const Text('Selecionar'),
                         ),
-                      ),
-                      const SizedBox(height: 16),
+                        if (_selectedInitialPoint != null) ...[
+                          const SizedBox(height: 12),
+                          _ApplicationPointCard(
+                            medication: _selectedMedication!,
+                            point: _selectedInitialPoint!,
+                          ),
+                        ],
+                        if (_nextApplicationPoint != null) ...[
+                          const SizedBox(height: 12),
+                          _NextApplicationPointPreview(
+                            point: _nextApplicationPoint!,
+                          ),
+                        ],
+                        const SizedBox(height: 16),
+                      ],
                       SwitchListTile(
                         key: const Key('treatment-reminders-switch'),
                         contentPadding: const EdgeInsets.symmetric(
@@ -167,6 +230,53 @@ class _TreatmentScreenState extends State<TreatmentScreen> {
     };
   }
 
+  List<ApplicationPoint> get _applicationPointOptions {
+    final medication = _selectedMedication;
+    if (medication == null) {
+      return const [];
+    }
+
+    return _rotationService.getApplicationPoints(medication);
+  }
+
+  ApplicationPoint? get _selectedInitialPoint {
+    final medication = _selectedMedication;
+    if (medication == null) {
+      return null;
+    }
+
+    return _rotationService.getPointById(medication, _initialPointId);
+  }
+
+  ApplicationPoint? get _nextApplicationPoint {
+    final medication = _selectedMedication;
+    if (medication == null || _initialPointId == null) {
+      return null;
+    }
+
+    return _rotationService.getNextPoint(medication, _initialPointId);
+  }
+
+  String _formatPointOption(ApplicationPoint point) {
+    return '${point.label} - ${_formatPointDescription(point)}';
+  }
+
+  static String _formatPointDescription(ApplicationPoint point) {
+    final parent = point.parentSiteLabel.toLowerCase();
+    final side = point.side.toLowerCase();
+    final sideWithoutRepeatedDirection = switch (side) {
+      final value
+          when parent.contains('direito') || parent.contains('direita') =>
+        value.replaceFirst('direita ', '').replaceFirst('direito ', ''),
+      final value
+          when parent.contains('esquerdo') || parent.contains('esquerda') =>
+        value.replaceFirst('esquerda ', '').replaceFirst('esquerdo ', ''),
+      final value => value,
+    };
+
+    return '${point.parentSiteLabel} $sideWithoutRepeatedDirection';
+  }
+
   Future<void> _selectStartDate() async {
     final now = DateTime.now();
     final selected = await showDatePicker(
@@ -212,10 +322,11 @@ class _TreatmentScreenState extends State<TreatmentScreen> {
 
     final setup = _TreatmentSetupData(
       name: _nameController.text.trim(),
-      medication: _medicationController.text.trim(),
+      medication: _selectedMedication!,
       startDate: _startDate!,
       applicationTime: _applicationTime!,
-      initialSite: _siteController.text.trim(),
+      initialPoint: _selectedInitialPoint,
+      nextPoint: _nextApplicationPoint,
       enableReminders: _enableReminders,
     );
 
@@ -277,6 +388,279 @@ class _PickerField extends StatelessWidget {
   }
 }
 
+class _MedicationOption extends StatelessWidget {
+  const _MedicationOption({required this.medication});
+
+  final Medication medication;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      '${medication.name} - ${medication.administrationType.label}',
+      overflow: TextOverflow.ellipsis,
+    );
+  }
+}
+
+class _MedicationDetails extends StatelessWidget {
+  const _MedicationDetails({required this.medication});
+
+  final Medication medication;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: colorScheme.surfaceContainerLow,
+        border: Border.all(color: colorScheme.outlineVariant),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _SummaryLine(
+              label: 'Princípio ativo',
+              value: medication.activeIngredient,
+            ),
+            _SummaryLine(
+              label: 'Tipo de administração',
+              value: medication.administrationType.label,
+            ),
+            _SummaryLine(label: 'Frequência', value: medication.frequencyLabel),
+            _SummaryLine(label: 'Via', value: medication.route),
+            _SummaryLine(
+              label: 'Orientação',
+              value: medication.scheduleDescription,
+            ),
+            if (medication.helperText != null)
+              _SummaryLine(label: 'Observação', value: medication.helperText!),
+            const SizedBox(height: 8),
+            Text(
+              medication.safetyNote,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: colorScheme.onSurfaceVariant,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _ApplicationPointCard extends StatelessWidget {
+  const _ApplicationPointCard({required this.medication, required this.point});
+
+  final Medication medication;
+  final ApplicationPoint point;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: colorScheme.surfaceContainerHighest,
+        border: Border.all(color: colorScheme.outlineVariant),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Row(
+              children: [
+                Icon(
+                  Icons.accessibility_new_outlined,
+                  color: colorScheme.primary,
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Próximo local de aplicação',
+                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                          color: colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        point.label,
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            _ApplicationPointIllustration(point: point),
+            const SizedBox(height: 12),
+            Text(
+              medication.name,
+              style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                color: colorScheme.onSurfaceVariant,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              _TreatmentScreenState._formatPointDescription(point),
+              style: Theme.of(context).textTheme.titleSmall,
+            ),
+            const SizedBox(height: 4),
+            Text(point.helperText),
+            const SizedBox(height: 8),
+            Text(
+              medication.safetyNote,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: colorScheme.onSurfaceVariant,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _NextApplicationPointPreview extends StatelessWidget {
+  const _NextApplicationPointPreview({required this.point});
+
+  final ApplicationPoint point;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        border: Border.all(color: colorScheme.outlineVariant),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          children: [
+            Icon(Icons.next_plan_outlined, color: colorScheme.primary),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Prévia do próximo ponto',
+                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                      color: colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    '${point.label} - ${_TreatmentScreenState._formatPointDescription(point)}',
+                    style: Theme.of(context).textTheme.titleSmall,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _ApplicationPointIllustration extends StatelessWidget {
+  const _ApplicationPointIllustration({required this.point});
+
+  final ApplicationPoint point;
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: rootBundle.load(point.imageAssetPath),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return _MissingApplicationPointIllustration(point: point);
+        }
+
+        if (snapshot.connectionState != ConnectionState.done) {
+          return const SizedBox(
+            height: 180,
+            child: Center(child: CircularProgressIndicator()),
+          );
+        }
+
+        return Semantics(
+          label: 'Ilustração do ponto de aplicação: ${point.label}',
+          image: true,
+          child: SvgPicture.asset(
+            point.imageAssetPath,
+            height: 180,
+            fit: BoxFit.contain,
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _MissingApplicationPointIllustration extends StatelessWidget {
+  const _MissingApplicationPointIllustration({required this.point});
+
+  final ApplicationPoint point;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Container(
+      height: 180,
+      decoration: BoxDecoration(
+        color: colorScheme.surface,
+        border: Border.all(color: colorScheme.outlineVariant),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.accessibility_new_outlined,
+                color: colorScheme.primary,
+                size: 40,
+              ),
+              const SizedBox(height: 12),
+              Text(
+                point.label,
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.titleSmall,
+              ),
+              const SizedBox(height: 4),
+              Text(
+                'Ilustração indisponível',
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: colorScheme.onSurfaceVariant,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class _SubmittedSetupCard extends StatelessWidget {
   const _SubmittedSetupCard({required this.setup});
 
@@ -306,7 +690,20 @@ class _SubmittedSetupCard extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             _SummaryLine(label: 'Nome', value: setup.name),
-            _SummaryLine(label: 'Medicamento', value: setup.medication),
+            _SummaryLine(label: 'Medicamento', value: setup.medication.name),
+            _SummaryLine(
+              label: 'Tipo de administração',
+              value: setup.medication.administrationType.label,
+            ),
+            _SummaryLine(
+              label: 'Frequência',
+              value: setup.medication.frequencyLabel,
+            ),
+            _SummaryLine(label: 'Via', value: setup.medication.route),
+            _SummaryLine(
+              label: 'Orientação',
+              value: setup.medication.scheduleDescription,
+            ),
             _SummaryLine(
               label: 'Data da primeira aplicação',
               value: setup.formattedStartDate,
@@ -315,10 +712,17 @@ class _SubmittedSetupCard extends StatelessWidget {
               label: 'Horário da aplicação',
               value: setup.formattedApplicationTime,
             ),
-            if (setup.initialSite.isNotEmpty)
+            if (setup.initialPoint != null)
               _SummaryLine(
-                label: 'Local inicial de aplicação',
-                value: setup.initialSite,
+                label: 'Ponto inicial de aplicação',
+                value:
+                    '${setup.initialPoint!.label} - ${setup.initialPoint!.parentSiteLabel}',
+              ),
+            if (setup.nextPoint != null)
+              _SummaryLine(
+                label: 'Próximo ponto previsto',
+                value:
+                    '${setup.nextPoint!.label} - ${setup.nextPoint!.parentSiteLabel}',
               ),
             _SummaryLine(
               label: 'Ativar lembretes',
@@ -362,15 +766,17 @@ class _TreatmentSetupData {
     required this.medication,
     required this.startDate,
     required this.applicationTime,
-    required this.initialSite,
+    required this.initialPoint,
+    required this.nextPoint,
     required this.enableReminders,
   });
 
   final String name;
-  final String medication;
+  final Medication medication;
   final DateTime startDate;
   final TimeOfDay applicationTime;
-  final String initialSite;
+  final ApplicationPoint? initialPoint;
+  final ApplicationPoint? nextPoint;
   final bool enableReminders;
 
   String get formattedStartDate {
