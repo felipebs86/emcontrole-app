@@ -21,7 +21,7 @@ EMControle is a Flutter app for people with Multiple Sclerosis to manage medicat
 - Material 3
 - Riverpod
 - GoRouter
-- Local database: prefer Drift over Isar if Web support becomes an issue.
+- Local database: Drift.
 - Local notifications for reminders.
 
 ## UX/UI
@@ -41,3 +41,19 @@ EMControle is a Flutter app for people with Multiple Sclerosis to manage medicat
 - Keep architecture simple.
 - Prefer readable code over clever abstractions.
 - Run `flutter analyze` after every implementation.
+
+## Persistence
+
+- Use Drift as the local database solution.
+- The database must work offline.
+- Data belongs only to the local device.
+- No synchronization.
+- No cloud backup in V1.
+
+## Medication Catalog
+
+The medication catalog is bundled with the application.
+
+The catalog must be easy to extend through code.
+
+The UI must not depend on hardcoded medication names.
