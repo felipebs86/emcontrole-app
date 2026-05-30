@@ -6,7 +6,8 @@ class MedicationCatalogDataSource {
   List<Medication> loadMedications() => _medications;
 }
 
-const _safetyNote = 'Siga sempre a orientação da sua equipe de saúde.';
+const _safetyNote =
+    'Siga sempre a prescrição e orientação da sua equipe de saúde.';
 
 const _rightThigh = ApplicationSite(
   id: 'right_thigh',
@@ -372,15 +373,36 @@ const _avonexApplicationPoints = [
 
 const _medications = [
   Medication(
-    id: 'copaxone',
-    name: 'Copaxone',
+    id: 'copaxone_20mg',
+    name: 'Copaxone 20 mg',
     activeIngredient: 'Acetato de glatirâmer',
     administrationType: AdministrationType.injectable,
     injectionType: InjectionType.subcutaneous,
     route: 'Subcutânea',
-    frequencyLabel: '20 mg 1 vez ao dia ou 40 mg 3 vezes por semana',
+    frequencyLabel: '1 vez ao dia',
+    scheduleType: MedicationScheduleType.onceDaily,
+    dailyDoseCount: 1,
+    intervalDays: 1,
+    scheduleDescription: 'Aplicação subcutânea uma vez ao dia.',
+    requiresApplicationSite: true,
+    requiresApplicationRotation: true,
+    applicationSites: _copaxoneSites,
+    applicationPoints: _copaxoneApplicationPoints,
+    safetyNote: _safetyNote,
+  ),
+  Medication(
+    id: 'copaxone_40mg',
+    name: 'Copaxone 40 mg',
+    activeIngredient: 'Acetato de glatirâmer',
+    administrationType: AdministrationType.injectable,
+    injectionType: InjectionType.subcutaneous,
+    route: 'Subcutânea',
+    frequencyLabel: '3 vezes por semana',
+    scheduleType: MedicationScheduleType.threeTimesPerWeek,
+    weeklyDoseCount: 3,
+    minimumIntervalHours: 48,
     scheduleDescription:
-        'Conforme apresentação prescrita. A apresentação de 20 mg costuma ser diária; a de 40 mg costuma ser 3 vezes por semana, com intervalo mínimo entre aplicações.',
+        'Aplicação três vezes por semana, nos mesmos dias da semana, com intervalo mínimo de 48 horas.',
     requiresApplicationSite: true,
     requiresApplicationRotation: true,
     applicationSites: _copaxoneSites,
@@ -395,6 +417,8 @@ const _medications = [
     injectionType: InjectionType.intramuscular,
     route: 'Intramuscular',
     frequencyLabel: '1 vez por semana',
+    scheduleType: MedicationScheduleType.weekly,
+    intervalDays: 7,
     scheduleDescription:
         'Aplicação semanal, preferencialmente no mesmo dia e horário.',
     requiresApplicationSite: true,
@@ -413,6 +437,8 @@ const _medications = [
     injectionType: InjectionType.subcutaneous,
     route: 'Subcutânea',
     frequencyLabel: '3 vezes por semana',
+    scheduleType: MedicationScheduleType.threeTimesPerWeek,
+    weeklyDoseCount: 3,
     scheduleDescription:
         'Aplicação subcutânea três vezes por semana, conforme prescrição.',
     requiresApplicationSite: true,
@@ -429,6 +455,8 @@ const _medications = [
     injectionType: InjectionType.subcutaneous,
     route: 'Subcutânea',
     frequencyLabel: 'Em dias alternados',
+    scheduleType: MedicationScheduleType.everyOtherDay,
+    intervalDays: 2,
     scheduleDescription:
         'Aplicação subcutânea em dias alternados, conforme prescrição.',
     requiresApplicationSite: true,
@@ -454,6 +482,8 @@ const _medications = [
     injectionType: InjectionType.subcutaneous,
     route: 'Subcutânea',
     frequencyLabel: 'A cada 14 dias',
+    scheduleType: MedicationScheduleType.every14Days,
+    intervalDays: 14,
     scheduleDescription:
         'Aplicação subcutânea a cada duas semanas, conforme prescrição.',
     requiresApplicationSite: true,
@@ -470,6 +500,7 @@ const _medications = [
     injectionType: InjectionType.subcutaneous,
     route: 'Subcutânea',
     frequencyLabel: 'Semanas iniciais e depois mensal',
+    scheduleType: MedicationScheduleType.monthly,
     scheduleDescription:
         'Aplicações iniciais nas primeiras semanas conforme bula/prescrição; depois aplicação mensal.',
     requiresApplicationSite: true,
@@ -486,6 +517,9 @@ const _medications = [
     injectionType: InjectionType.none,
     route: 'Oral',
     frequencyLabel: '2 vezes ao dia',
+    scheduleType: MedicationScheduleType.twiceDaily,
+    dailyDoseCount: 2,
+    intervalHours: 12,
     scheduleDescription:
         'Cápsula por via oral duas vezes ao dia, conforme fase de tratamento e prescrição.',
     requiresApplicationSite: false,
@@ -502,6 +536,9 @@ const _medications = [
     injectionType: InjectionType.none,
     route: 'Oral',
     frequencyLabel: '1 vez ao dia',
+    scheduleType: MedicationScheduleType.onceDaily,
+    dailyDoseCount: 1,
+    intervalDays: 1,
     scheduleDescription: 'Comprimido por via oral uma vez ao dia.',
     requiresApplicationSite: false,
     requiresApplicationRotation: false,
@@ -517,6 +554,9 @@ const _medications = [
     injectionType: InjectionType.none,
     route: 'Oral',
     frequencyLabel: '1 vez ao dia',
+    scheduleType: MedicationScheduleType.onceDaily,
+    dailyDoseCount: 1,
+    intervalDays: 1,
     scheduleDescription: 'Cápsula por via oral uma vez ao dia.',
     requiresApplicationSite: false,
     requiresApplicationRotation: false,
@@ -532,6 +572,7 @@ const _medications = [
     injectionType: InjectionType.none,
     route: 'Infusão intravenosa',
     frequencyLabel: 'Infusão periódica',
+    scheduleType: MedicationScheduleType.monthly,
     scheduleDescription:
         'Infusão intravenosa realizada em serviço de saúde, conforme prescrição.',
     requiresApplicationSite: false,
@@ -548,6 +589,7 @@ const _medications = [
     injectionType: InjectionType.none,
     route: 'Oral',
     frequencyLabel: 'Ciclos curtos de tratamento',
+    scheduleType: MedicationScheduleType.cycleBased,
     scheduleDescription:
         'Tratamento oral em ciclos específicos definidos por peso corporal, ano de tratamento e prescrição médica.',
     requiresApplicationSite: false,

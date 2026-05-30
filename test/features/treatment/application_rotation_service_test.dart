@@ -34,7 +34,7 @@ void main() {
     });
 
     test('Copaxone advances from the first point to the second point', () {
-      final copaxone = medicationById('copaxone');
+      final copaxone = medicationById('copaxone_20mg');
 
       final nextPoint = service.getNextPoint(copaxone, 'copaxone_abdomen_01');
 
@@ -44,7 +44,7 @@ void main() {
     });
 
     test('Copaxone returns from the last point to the first point', () {
-      final copaxone = medicationById('copaxone');
+      final copaxone = medicationById('copaxone_40mg');
 
       final nextPoint = service.getNextPoint(copaxone, 'copaxone_hip_left_18');
 
@@ -70,7 +70,7 @@ void main() {
     });
 
     test('invalid current point returns the first available point', () {
-      final copaxone = medicationById('copaxone');
+      final copaxone = medicationById('copaxone_20mg');
 
       final nextPoint = service.getNextPoint(copaxone, 'unknown_point');
 

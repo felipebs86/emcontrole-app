@@ -1,5 +1,6 @@
 import 'application_record.dart';
 import 'medication.dart';
+import 'medication_schedule_service.dart';
 
 enum ApplicationEligibilityStatus {
   eligible,
@@ -23,7 +24,11 @@ class ApplicationEligibilityResult {
 }
 
 class ApplicationEligibilityService {
-  const ApplicationEligibilityService();
+  const ApplicationEligibilityService([
+    this._scheduleService = const MedicationScheduleService(),
+  ]);
+
+  final MedicationScheduleService _scheduleService;
 
   ApplicationEligibilityResult evaluate({
     required Medication medication,
@@ -31,18 +36,23 @@ class ApplicationEligibilityService {
     required List<ApplicationRecord> existingRecords,
     required DateTime now,
   }) {
-    if (_hasSameDayRegistration(medication, existingRecords, now)) {
+    if (_hasSameDayDuplicate(
+      medication: medication,
+      scheduledAt: scheduledAt,
+      existingRecords: existingRecords,
+      now: now,
+    )) {
       return const ApplicationEligibilityResult(
         status: ApplicationEligibilityStatus.duplicate,
         canRegister: false,
-        message: 'Esta aplicação já foi registrada para o período atual.',
+        message: 'Esta aplicação já foi registrada hoje.',
       );
     }
 
-    if (_hasDuplicateForScheduledPeriod(
-      medication,
-      scheduledAt,
-      existingRecords,
+    if (_scheduleService.hasRegistrationForSlot(
+      medication: medication,
+      scheduledAt: scheduledAt,
+      records: existingRecords,
     )) {
       return const ApplicationEligibilityResult(
         status: ApplicationEligibilityStatus.duplicate,
@@ -51,16 +61,16 @@ class ApplicationEligibilityService {
       );
     }
 
-    final frequency = _frequencyFor(medication);
-    if (frequency == _Frequency.none) {
+    if (!_scheduleService.supportsAutomaticSchedule(medication)) {
       return const ApplicationEligibilityResult(
         status: ApplicationEligibilityStatus.notApplicable,
         canRegister: true,
-        message: 'Siga sempre a orientação da sua equipe de saúde.',
+        message:
+            'Próxima data deve ser acompanhada conforme orientação médica.',
       );
     }
 
-    if (frequency == _Frequency.weekly) {
+    if (medication.scheduleType == MedicationScheduleType.weekly) {
       final dayDifference = _dateOnly(
         now,
       ).difference(_dateOnly(scheduledAt)).inDays;
@@ -74,8 +84,12 @@ class ApplicationEligibilityService {
       }
     }
 
-    final earlyBoundary = scheduledAt.subtract(_earlyToleranceFor(frequency));
-    final lateBoundary = scheduledAt.add(_lateToleranceFor(frequency));
+    final earlyBoundary = scheduledAt.subtract(
+      _scheduleService.earlyToleranceFor(medication),
+    );
+    final lateBoundary = scheduledAt.add(
+      _scheduleService.lateToleranceFor(medication),
+    );
 
     if (now.isBefore(earlyBoundary)) {
       return const ApplicationEligibilityResult(
@@ -96,29 +110,22 @@ class ApplicationEligibilityService {
     return const ApplicationEligibilityResult(
       status: ApplicationEligibilityStatus.eligible,
       canRegister: true,
-      message: 'Siga sempre a orientação da sua equipe de saúde.',
+      message: 'Siga sempre a prescrição e orientação da sua equipe de saúde.',
     );
   }
 
-  DateTime calculateNextScheduledAt({
+  DateTime? calculateNextScheduledAt({
     required Medication medication,
+    required DateTime treatmentStartAt,
+    required DateTime scheduledAt,
     required DateTime registeredAt,
   }) {
-    return switch (_frequencyFor(medication)) {
-      _Frequency.daily => registeredAt.add(const Duration(days: 1)),
-      _Frequency.weekly => registeredAt.add(const Duration(days: 7)),
-      _Frequency.everyOtherDay => registeredAt.add(const Duration(days: 2)),
-      _Frequency.threeTimesPerWeek => registeredAt.add(const Duration(days: 2)),
-      _Frequency.every14Days => registeredAt.add(const Duration(days: 14)),
-      _Frequency.monthly => DateTime(
-        registeredAt.year,
-        registeredAt.month + 1,
-        registeredAt.day,
-        registeredAt.hour,
-        registeredAt.minute,
-      ),
-      _Frequency.none => registeredAt,
-    };
+    return _scheduleService.getNextExpectedAfterRegistration(
+      medication: medication,
+      treatmentStartAt: treatmentStartAt,
+      scheduledAt: scheduledAt,
+      registeredAt: registeredAt,
+    );
   }
 
   ApplicationRegistrationStatus registrationStatusFor(
@@ -136,69 +143,30 @@ class ApplicationEligibilityService {
     };
   }
 
-  bool _hasDuplicateForScheduledPeriod(
-    Medication medication,
-    DateTime scheduledAt,
-    List<ApplicationRecord> records,
-  ) {
-    return records.any(
-      (record) =>
-          record.medicationId == medication.id &&
-          _sameLocalDate(record.scheduledAt, scheduledAt),
-    );
-  }
-
-  bool _hasSameDayRegistration(
-    Medication medication,
-    List<ApplicationRecord> records,
-    DateTime now,
-  ) {
-    return records.any(
+  bool _hasSameDayDuplicate({
+    required Medication medication,
+    required DateTime scheduledAt,
+    required List<ApplicationRecord> existingRecords,
+    required DateTime now,
+  }) {
+    final recordsToday = existingRecords.where(
       (record) =>
           record.medicationId == medication.id &&
           _sameLocalDate(record.registeredAt, now),
     );
-  }
 
-  Duration _earlyToleranceFor(_Frequency frequency) {
-    return switch (frequency) {
-      _Frequency.daily => const Duration(hours: 2),
-      _Frequency.weekly => const Duration(hours: 12),
-      _Frequency.everyOtherDay => const Duration(hours: 12),
-      _Frequency.threeTimesPerWeek => const Duration(hours: 12),
-      _Frequency.every14Days => const Duration(days: 1),
-      _Frequency.monthly => const Duration(days: 2),
-      _Frequency.none => Duration.zero,
-    };
-  }
+    if (medication.scheduleType != MedicationScheduleType.twiceDaily) {
+      return recordsToday.isNotEmpty;
+    }
 
-  Duration _lateToleranceFor(_Frequency frequency) {
-    return switch (frequency) {
-      _Frequency.daily => const Duration(hours: 6),
-      _Frequency.weekly => const Duration(hours: 12),
-      _Frequency.everyOtherDay => const Duration(hours: 12),
-      _Frequency.threeTimesPerWeek => const Duration(hours: 12),
-      _Frequency.every14Days => const Duration(days: 1),
-      _Frequency.monthly => const Duration(days: 2),
-      _Frequency.none => Duration.zero,
-    };
-  }
+    final doseLimit = medication.dailyDoseCount ?? 2;
+    if (recordsToday.length >= doseLimit) {
+      return true;
+    }
 
-  _Frequency _frequencyFor(Medication medication) {
-    return switch (medication.id) {
-      'copaxone' => _Frequency.daily,
-      'tecfidera' => _Frequency.daily,
-      'aubagio' => _Frequency.daily,
-      'gilenya' => _Frequency.daily,
-      'avonex' => _Frequency.weekly,
-      'betaferon' => _Frequency.everyOtherDay,
-      'rebif' => _Frequency.threeTimesPerWeek,
-      'plegridy' => _Frequency.every14Days,
-      'kesimpta' => _Frequency.monthly,
-      'mavenclad' => _Frequency.monthly,
-      'tysabri' => _Frequency.monthly,
-      _ => _Frequency.none,
-    };
+    return recordsToday.any(
+      (record) => _sameSlot(record.scheduledAt, scheduledAt),
+    );
   }
 
   bool _sameLocalDate(DateTime first, DateTime second) {
@@ -207,17 +175,15 @@ class ApplicationEligibilityService {
         first.day == second.day;
   }
 
+  bool _sameSlot(DateTime first, DateTime second) {
+    return first.year == second.year &&
+        first.month == second.month &&
+        first.day == second.day &&
+        first.hour == second.hour &&
+        first.minute == second.minute;
+  }
+
   DateTime _dateOnly(DateTime value) {
     return DateTime(value.year, value.month, value.day);
   }
-}
-
-enum _Frequency {
-  none,
-  daily,
-  weekly,
-  everyOtherDay,
-  threeTimesPerWeek,
-  every14Days,
-  monthly,
 }

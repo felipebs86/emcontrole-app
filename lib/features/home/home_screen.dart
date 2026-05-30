@@ -1,10 +1,14 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../core/app_shell.dart';
-import '../../core/placeholder_content.dart';
+import '../../core/app_routes.dart';
 import '../treatment/domain/application_eligibility_service.dart';
+import '../treatment/domain/application_record.dart';
 import '../treatment/domain/medication.dart';
 import '../treatment/domain/treatment_session_store.dart';
 
@@ -21,16 +25,60 @@ class HomeScreen extends StatelessWidget {
         builder: (context, _) {
           final medication = treatmentSessionStore.medication;
           if (medication == null) {
-            return const PlaceholderContent(
-              icon: Icons.local_florist_outlined,
-              title: 'Bem-vindo ao EMControle',
-              description:
-                  'Um espaço simples para organizar sua rotina de cuidado conforme as orientações da sua equipe de saúde.',
-            );
+            return const _NoTreatmentDashboard();
           }
 
           return _ActiveTreatmentPanel(medication: medication);
         },
+      ),
+    );
+  }
+}
+
+class _NoTreatmentDashboard extends StatelessWidget {
+  const _NoTreatmentDashboard();
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 560),
+        child: Card(
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Icon(
+                  Icons.local_florist_outlined,
+                  size: 48,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  'Configure seu tratamento',
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Cadastre seu medicamento principal para começar a acompanhar suas aplicações.',
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+                ),
+                const SizedBox(height: 24),
+                FilledButton.icon(
+                  onPressed: () => context.go(AppRoutes.treatment),
+                  icon: const Icon(Icons.medication_outlined),
+                  label: const Text('Configurar tratamento'),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -46,6 +94,8 @@ class _ActiveTreatmentPanel extends StatelessWidget {
     final currentPoint = treatmentSessionStore.currentApplicationPoint;
     final eligibility = treatmentSessionStore.evaluateEligibility();
     final isInjectable = medication.requiresApplicationSite;
+    final scheduledAt = treatmentSessionStore.currentScheduledAt;
+    final latestRecord = treatmentSessionStore.records.lastOrNull;
 
     return SingleChildScrollView(
       child: Center(
@@ -54,44 +104,32 @@ class _ActiveTreatmentPanel extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text(
-                medication.name,
-                style: Theme.of(context).textTheme.headlineSmall,
+              _TreatmentSummaryCard(
+                medication: medication,
+                userName: treatmentSessionStore.userName,
               ),
-              const SizedBox(height: 8),
-              Text(
-                medication.frequencyLabel,
-                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: Theme.of(context).colorScheme.onSurfaceVariant,
-                ),
-              ),
-              const SizedBox(height: 24),
-              if (isInjectable && currentPoint != null)
-                _CurrentApplicationPointCard(
-                  medication: medication,
-                  point: currentPoint,
-                )
-              else
-                _TreatmentTrackingCard(medication: medication),
               const SizedBox(height: 12),
-              _EligibilityMessage(result: eligibility),
-              const SizedBox(height: 16),
-              FilledButton.icon(
-                key: const Key('register-application-button'),
-                onPressed: eligibility.canRegister
+              _NextApplicationCard(
+                medication: medication,
+                scheduledAt: scheduledAt,
+                eligibility: eligibility,
+                onRegister: eligibility.canRegister
                     ? () => _confirmRegistration(context, medication)
                     : null,
-                icon: const Icon(Icons.check_circle_outline),
-                label: Text(_registerButtonLabel(medication)),
+                child: isInjectable && currentPoint != null
+                    ? _CurrentApplicationPointContent(
+                        medication: medication,
+                        point: currentPoint,
+                      )
+                    : _TreatmentTrackingContent(medication: medication),
               ),
               const SizedBox(height: 12),
-              Text(
-                'Registros nesta sessão: ${treatmentSessionStore.records.length}',
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Theme.of(context).colorScheme.onSurfaceVariant,
-                ),
+              _LastApplicationCard(
+                record: latestRecord,
+                medication: medication,
               ),
+              const SizedBox(height: 12),
+              const _SecondaryActions(),
             ],
           ),
         ),
@@ -123,7 +161,7 @@ class _ActiveTreatmentPanel extends StatelessWidget {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Confirmar aplicação'),
+          title: Text(_registrationDialogTitle(medication)),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -136,6 +174,10 @@ class _ActiveTreatmentPanel extends StatelessWidget {
                 Text('Local: ${currentPoint.label}'),
                 Text(_formatPointDescription(currentPoint)),
               ],
+              const SizedBox(height: 16),
+              const Text(
+                'Siga sempre a prescrição e orientação da sua equipe de saúde.',
+              ),
             ],
           ),
           actions: [
@@ -145,7 +187,7 @@ class _ActiveTreatmentPanel extends StatelessWidget {
             ),
             FilledButton(
               onPressed: () => Navigator.of(context).pop(true),
-              child: const Text('Confirmar aplicação'),
+              child: Text(_confirmationTitle(medication)),
             ),
           ],
         );
@@ -156,20 +198,58 @@ class _ActiveTreatmentPanel extends StatelessWidget {
       return;
     }
 
-    treatmentSessionStore.registerApplication();
-    ScaffoldMessenger.of(context)
-      ..hideCurrentSnackBar()
-      ..showSnackBar(
-        const SnackBar(content: Text('Aplicação registrada com sucesso')),
-      );
+    unawaited(
+      treatmentSessionStore.registerApplication().then<void>(
+        (_) {
+          if (!context.mounted) {
+            return;
+          }
+
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              SnackBar(content: Text(_successMessage(medication))),
+            );
+        },
+        onError: (Object error, StackTrace stackTrace) {
+          if (!context.mounted) {
+            return;
+          }
+
+          final message = error is StateError
+              ? error.message
+              : error.toString();
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(SnackBar(content: Text(message)));
+        },
+      ),
+    );
+  }
+
+  String _confirmationTitle(Medication medication) {
+    return switch (medication.administrationType) {
+      AdministrationType.oral => 'Confirmar uso',
+      AdministrationType.infusion => 'Confirmar tratamento',
+      AdministrationType.injectable => 'Confirmar aplicação',
+    };
+  }
+
+  String _registrationDialogTitle(Medication medication) {
+    return switch (medication.administrationType) {
+      AdministrationType.oral => 'Registrar uso',
+      AdministrationType.infusion => 'Registrar tratamento',
+      AdministrationType.injectable => 'Registrar aplicação',
+    };
   }
 
   String _confirmationQuestion(Medication medication) {
-    if (medication.requiresApplicationSite) {
-      return 'Você aplicou o medicamento no local sugerido?';
-    }
-
-    return 'Você deseja registrar este tratamento?';
+    return switch (medication.administrationType) {
+      AdministrationType.injectable =>
+        'Você aplicou o medicamento no local sugerido?',
+      AdministrationType.oral => 'Você tomou este medicamento?',
+      AdministrationType.infusion => 'Você realizou este tratamento?',
+    };
   }
 
   bool _requiresWarning(ApplicationEligibilityStatus status) {
@@ -188,7 +268,7 @@ class _ActiveTreatmentPanel extends StatelessWidget {
         return AlertDialog(
           title: const Text('Atenção'),
           content: Text(
-            '$message\n\nSiga sempre a orientação da sua equipe de saúde.',
+            '$message\n\nSiga sempre a prescrição e orientação da sua equipe de saúde.',
           ),
           actions: [
             TextButton(
@@ -207,16 +287,317 @@ class _ActiveTreatmentPanel extends StatelessWidget {
     return accepted ?? false;
   }
 
-  String _registerButtonLabel(Medication medication) {
-    if (medication.requiresApplicationSite) {
-      return 'Registrar aplicação';
-    }
-
+  String _successMessage(Medication medication) {
     return switch (medication.administrationType) {
-      AdministrationType.oral => 'Registrar uso do medicamento',
-      AdministrationType.infusion => 'Registrar tratamento',
-      AdministrationType.injectable => 'Registrar aplicação',
+      AdministrationType.oral => 'Uso registrado com sucesso',
+      AdministrationType.infusion => 'Tratamento registrado com sucesso',
+      AdministrationType.injectable => 'Aplicação registrada com sucesso',
     };
+  }
+}
+
+class _TreatmentSummaryCard extends StatelessWidget {
+  const _TreatmentSummaryCard({
+    required this.medication,
+    required this.userName,
+  });
+
+  final Medication medication;
+  final String? userName;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final greetingName = userName?.trim();
+
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              greetingName == null || greetingName.isEmpty
+                  ? 'Meu tratamento'
+                  : 'Olá, $greetingName',
+              style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                color: colorScheme.primary,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              medication.name,
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
+            const SizedBox(height: 12),
+            _InfoRow(
+              icon: Icons.science_outlined,
+              label: 'Princípio ativo',
+              value: medication.activeIngredient,
+            ),
+            const SizedBox(height: 8),
+            _InfoRow(
+              icon: Icons.repeat_outlined,
+              label: 'Frequência',
+              value: medication.frequencyLabel,
+            ),
+            const SizedBox(height: 8),
+            _InfoRow(
+              icon: Icons.route_outlined,
+              label: 'Via',
+              value:
+                  '${medication.administrationType.label} · ${medication.route}',
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _NextApplicationCard extends StatelessWidget {
+  const _NextApplicationCard({
+    required this.medication,
+    required this.scheduledAt,
+    required this.eligibility,
+    required this.onRegister,
+    required this.child,
+  });
+
+  final Medication medication;
+  final DateTime? scheduledAt;
+  final ApplicationEligibilityResult eligibility;
+  final VoidCallback? onRegister;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              _nextTitle(medication),
+              style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                color: colorScheme.onSurfaceVariant,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              scheduledAt == null
+                  ? 'Próxima data deve ser acompanhada conforme orientação médica.'
+                  : _formatExpectedDateTime(scheduledAt!),
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+            const SizedBox(height: 16),
+            child,
+            const SizedBox(height: 16),
+            _EligibilityMessage(result: eligibility),
+            const SizedBox(height: 16),
+            FilledButton.icon(
+              key: const Key('register-application-button'),
+              onPressed: onRegister,
+              icon: const Icon(Icons.check_circle_outline),
+              label: Text(_registerButtonLabel(medication)),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  String _nextTitle(Medication medication) {
+    return switch (medication.administrationType) {
+      AdministrationType.oral => 'Próximo uso',
+      AdministrationType.infusion => 'Próximo tratamento',
+      AdministrationType.injectable => 'Próxima aplicação',
+    };
+  }
+}
+
+class _CurrentApplicationPointContent extends StatelessWidget {
+  const _CurrentApplicationPointContent({
+    required this.medication,
+    required this.point,
+  });
+
+  final Medication medication;
+  final ApplicationPoint point;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text(
+          'Próximo local de aplicação',
+          style: Theme.of(
+            context,
+          ).textTheme.labelLarge?.copyWith(color: colorScheme.onSurfaceVariant),
+        ),
+        const SizedBox(height: 8),
+        Text(point.label, style: Theme.of(context).textTheme.titleLarge),
+        const SizedBox(height: 4),
+        Text(_formatPointDescription(point)),
+        const SizedBox(height: 16),
+        _ApplicationPointIllustration(point: point),
+        const SizedBox(height: 12),
+        Text(point.helperText),
+        const SizedBox(height: 8),
+        Text(
+          medication.safetyNote,
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            color: colorScheme.onSurfaceVariant,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _TreatmentTrackingContent extends StatelessWidget {
+  const _TreatmentTrackingContent({required this.medication});
+
+  final Medication medication;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _InfoRow(
+          icon: Icons.category_outlined,
+          label: 'Tipo',
+          value: medication.administrationType.label,
+        ),
+        const SizedBox(height: 8),
+        _InfoRow(
+          icon: Icons.medication_liquid_outlined,
+          label: 'Rotina',
+          value: medication.scheduleDescription,
+        ),
+        const SizedBox(height: 12),
+        const Text(
+          'Siga sempre a prescrição e orientação da sua equipe de saúde.',
+        ),
+      ],
+    );
+  }
+}
+
+class _LastApplicationCard extends StatelessWidget {
+  const _LastApplicationCard({required this.record, required this.medication});
+
+  final ApplicationRecord? record;
+  final Medication medication;
+
+  @override
+  Widget build(BuildContext context) {
+    final latestRecord = record;
+    final lastLabel = switch (medication.administrationType) {
+      AdministrationType.oral => 'Último uso',
+      AdministrationType.infusion => 'Último tratamento',
+      AdministrationType.injectable => 'Última aplicação',
+    };
+
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(lastLabel, style: Theme.of(context).textTheme.titleMedium),
+            const SizedBox(height: 12),
+            if (latestRecord == null)
+              Text(
+                'Nenhum registro ainda.',
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
+              )
+            else
+              Text(_formatLastApplication(latestRecord, medication)),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _SecondaryActions extends StatelessWidget {
+  const _SecondaryActions();
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      spacing: 8,
+      runSpacing: 8,
+      alignment: WrapAlignment.center,
+      children: [
+        OutlinedButton.icon(
+          onPressed: () => context.go(AppRoutes.treatment),
+          icon: const Icon(Icons.medication_outlined),
+          label: const Text('Tratamento'),
+        ),
+        OutlinedButton.icon(
+          onPressed: () => context.go(AppRoutes.history),
+          icon: const Icon(Icons.history_outlined),
+          label: const Text('Histórico'),
+        ),
+        OutlinedButton.icon(
+          onPressed: () => context.go(AppRoutes.diary),
+          icon: const Icon(Icons.edit_note_outlined),
+          label: const Text('Diário'),
+        ),
+      ],
+    );
+  }
+}
+
+class _InfoRow extends StatelessWidget {
+  const _InfoRow({
+    required this.icon,
+    required this.label,
+    required this.value,
+  });
+
+  final IconData icon;
+  final String label;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Icon(icon, size: 20, color: colorScheme.primary),
+        const SizedBox(width: 10),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                label,
+                style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                  color: colorScheme.onSurfaceVariant,
+                ),
+              ),
+              Text(value),
+            ],
+          ),
+        ),
+      ],
+    );
   }
 }
 
@@ -243,88 +624,12 @@ class _EligibilityMessage extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(12),
         child: Text(
-          result.message,
+          '${_eligibilityLabel(result.status)} · ${result.message}',
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             color: isDuplicate
                 ? colorScheme.onErrorContainer
                 : colorScheme.onSurfaceVariant,
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class _CurrentApplicationPointCard extends StatelessWidget {
-  const _CurrentApplicationPointCard({
-    required this.medication,
-    required this.point,
-  });
-
-  final Medication medication;
-  final ApplicationPoint point;
-
-  @override
-  Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Text(
-              'Próximo local de aplicação',
-              style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                color: colorScheme.onSurfaceVariant,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(point.label, style: Theme.of(context).textTheme.titleLarge),
-            const SizedBox(height: 4),
-            Text(_formatPointDescription(point)),
-            const SizedBox(height: 16),
-            _ApplicationPointIllustration(point: point),
-            const SizedBox(height: 12),
-            Text(point.helperText),
-            const SizedBox(height: 8),
-            Text(
-              medication.safetyNote,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: colorScheme.onSurfaceVariant,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _TreatmentTrackingCard extends StatelessWidget {
-  const _TreatmentTrackingCard({required this.medication});
-
-  final Medication medication;
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Acompanhamento do tratamento',
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            const SizedBox(height: 12),
-            Text('Tipo: ${medication.administrationType.label}'),
-            Text('Via: ${medication.route}'),
-            Text('Frequência: ${medication.frequencyLabel}'),
-          ],
         ),
       ),
     );
@@ -400,4 +705,95 @@ String _formatPointDescription(ApplicationPoint point) {
   };
 
   return '${point.parentSiteLabel} $sideWithoutRepeatedDirection';
+}
+
+String _registerButtonLabel(Medication medication) {
+  return switch (medication.administrationType) {
+    AdministrationType.oral => 'Registrar uso do medicamento',
+    AdministrationType.infusion => 'Registrar tratamento',
+    AdministrationType.injectable => 'Registrar aplicação',
+  };
+}
+
+String _eligibilityLabel(ApplicationEligibilityStatus status) {
+  return switch (status) {
+    ApplicationEligibilityStatus.eligible => 'Em dia',
+    ApplicationEligibilityStatus.early => 'Antes do horário previsto',
+    ApplicationEligibilityStatus.late => 'Fora da janela prevista',
+    ApplicationEligibilityStatus.duplicate => 'Já registrado',
+    ApplicationEligibilityStatus.scheduleAdjustment =>
+      'Fora da janela prevista',
+    ApplicationEligibilityStatus.notApplicable => 'Em dia',
+  };
+}
+
+String _formatLastApplication(ApplicationRecord record, Medication medication) {
+  final prefix = switch (medication.administrationType) {
+    AdministrationType.oral => 'Último uso',
+    AdministrationType.infusion => 'Último tratamento',
+    AdministrationType.injectable => 'Última aplicação',
+  };
+  final details = [
+    '$prefix: ${_formatRelativeDateTime(record.registeredAt)}',
+    record.medicationName,
+    if (record.applicationPointLabel != null) record.applicationPointLabel!,
+    _registrationStatusLabel(record.registrationStatus),
+  ];
+
+  return details.where((detail) => detail.trim().isNotEmpty).join(' · ');
+}
+
+String _registrationStatusLabel(ApplicationRegistrationStatus status) {
+  return switch (status) {
+    ApplicationRegistrationStatus.onTime => 'Em dia',
+    ApplicationRegistrationStatus.early => 'Antes do horário previsto',
+    ApplicationRegistrationStatus.late => 'Fora da janela prevista',
+    ApplicationRegistrationStatus.scheduleAdjustment =>
+      'Fora da janela prevista',
+  };
+}
+
+String _formatRelativeDateTime(DateTime value) {
+  final now = DateTime.now();
+  final date = _sameLocalDate(value, now)
+      ? 'hoje'
+      : _sameLocalDate(value, now.subtract(const Duration(days: 1)))
+      ? 'ontem'
+      : _formatDate(value);
+
+  return '$date às ${_formatTime(value)}';
+}
+
+String _formatDateTime(DateTime value) {
+  return '${_formatDate(value)} às ${_formatTime(value)}';
+}
+
+String _formatExpectedDateTime(DateTime value) {
+  final now = DateTime.now();
+  if (_sameLocalDate(value, now)) {
+    return 'hoje às ${_formatTime(value)}';
+  }
+  if (_sameLocalDate(value, now.add(const Duration(days: 1)))) {
+    return 'amanhã às ${_formatTime(value)}';
+  }
+
+  return _formatDateTime(value);
+}
+
+String _formatDate(DateTime value) {
+  final day = value.day.toString().padLeft(2, '0');
+  final month = value.month.toString().padLeft(2, '0');
+  return '$day/$month/${value.year}';
+}
+
+String _formatTime(DateTime value) {
+  final hour = value.hour.toString().padLeft(2, '0');
+  final minute = value.minute.toString().padLeft(2, '0');
+  return '$hour:$minute';
+}
+
+bool _sameLocalDate(DateTime first, DateTime second) {
+  return first.year == second.year &&
+      first.month == second.month &&
+      first.day == second.day;
 }

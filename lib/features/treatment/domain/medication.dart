@@ -26,6 +26,18 @@ enum InjectionType {
   }
 }
 
+enum MedicationScheduleType {
+  onceDaily,
+  twiceDaily,
+  threeTimesPerWeek,
+  everyOtherDay,
+  weekly,
+  every14Days,
+  monthly,
+  cycleBased,
+  manual,
+}
+
 class ApplicationSite {
   const ApplicationSite({
     required this.id,
@@ -75,12 +87,19 @@ class Medication {
     required this.injectionType,
     required this.route,
     required this.frequencyLabel,
-    required this.scheduleDescription,
     required this.requiresApplicationSite,
     required this.requiresApplicationRotation,
+    required this.scheduleType,
+    required this.scheduleDescription,
     required this.applicationSites,
     required this.applicationPoints,
     required this.safetyNote,
+    this.dailyDoseCount,
+    this.intervalHours,
+    this.intervalDays,
+    this.weeklyDoseCount,
+    this.minimumIntervalHours,
+    this.preferredWeekdays,
     this.helperText,
   });
 
@@ -91,7 +110,14 @@ class Medication {
   final InjectionType injectionType;
   final String route;
   final String frequencyLabel;
+  final MedicationScheduleType scheduleType;
   final String scheduleDescription;
+  final int? dailyDoseCount;
+  final int? intervalHours;
+  final int? intervalDays;
+  final int? weeklyDoseCount;
+  final int? minimumIntervalHours;
+  final List<int>? preferredWeekdays;
   final bool requiresApplicationSite;
   final bool requiresApplicationRotation;
   final List<ApplicationSite> applicationSites;

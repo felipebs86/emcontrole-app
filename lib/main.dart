@@ -1,7 +1,10 @@
 import 'package:flutter/widgets.dart';
 
 import 'app/app.dart';
+import 'features/treatment/domain/treatment_session_store.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await treatmentSessionStore.load();
   runApp(const EMControleApp());
 }

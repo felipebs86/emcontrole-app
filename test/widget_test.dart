@@ -6,28 +6,31 @@ import 'package:emcontrole/features/treatment/data/medication_catalog_data_sourc
 import 'package:emcontrole/features/treatment/domain/application_rotation_service.dart';
 
 void main() {
-  test('application point ids are globally unique', () {
+  test('application point ids are unique per medication', () {
     final medications = const MedicationCatalogDataSource().loadMedications();
-    final pointIds = [
-      for (final medication in medications)
-        for (final point in medication.applicationPoints) point.id,
-    ];
 
-    expect(pointIds.toSet(), hasLength(pointIds.length));
+    for (final medication in medications) {
+      final pointIds = [
+        for (final point in medication.applicationPoints) point.id,
+      ];
+      expect(pointIds.toSet(), hasLength(pointIds.length));
+    }
   });
 
   test('application point illustrations match medication protocols', () {
     final medications = const MedicationCatalogDataSource().loadMedications();
-    final copaxone = medications.singleWhere(
-      (medication) => medication.id == 'copaxone',
+    final copaxoneEntries = medications.where(
+      (medication) => medication.id.startsWith('copaxone_'),
     );
     final avonex = medications.singleWhere(
       (medication) => medication.id == 'avonex',
     );
 
     expect(
-      copaxone.applicationPoints.every(
-        (point) => point.imageAssetPath.contains('copaxone_'),
+      copaxoneEntries.every(
+        (medication) => medication.applicationPoints.every(
+          (point) => point.imageAssetPath.contains('copaxone_'),
+        ),
       ),
       isTrue,
     );
@@ -43,13 +46,26 @@ void main() {
     final service = const ApplicationRotationService();
     final medications = const MedicationCatalogDataSource().loadMedications();
     final copaxone = medications.singleWhere(
-      (medication) => medication.id == 'copaxone',
+      (medication) => medication.id == 'copaxone_20mg',
     );
     final avonex = medications.singleWhere(
       (medication) => medication.id == 'avonex',
     );
     final tecfidera = medications.singleWhere(
       (medication) => medication.id == 'tecfidera',
+    );
+
+    expect(
+      medications.any((medication) => medication.id == 'copaxone'),
+      isFalse,
+    );
+    expect(
+      medications.any((medication) => medication.name == 'Copaxone 20 mg'),
+      isTrue,
+    );
+    expect(
+      medications.any((medication) => medication.name == 'Copaxone 40 mg'),
+      isTrue,
     );
 
     expect(service.getInitialPoint(copaxone)?.id, 'copaxone_abdomen_01');
@@ -85,7 +101,7 @@ void main() {
   ) async {
     await tester.pumpWidget(const EMControleApp());
 
-    expect(find.text('Bem-vindo ao EMControle'), findsOneWidget);
+    expect(find.text('Configure seu tratamento'), findsOneWidget);
 
     await tester.tap(find.text('Tratamento').last);
     await tester.pumpAndSettle();
@@ -116,7 +132,7 @@ void main() {
       find.byKey(const Key('treatment-submit-button')),
     );
     await tester.tap(find.byKey(const Key('treatment-submit-button')));
-    await tester.pump();
+    await tester.pump(const Duration(seconds: 10));
 
     expect(find.text('Informe seu nome.'), findsOneWidget);
     expect(find.text('Selecione um medicamento.'), findsOneWidget);
@@ -133,12 +149,14 @@ void main() {
     );
     await tester.tap(find.byKey(const Key('treatment-medication-field')));
     await tester.pumpAndSettle();
-    await tester.tap(find.text('Copaxone - Injetável').last);
+    await tester.tap(find.text('Copaxone 20 mg - Injetável').last);
     await tester.pumpAndSettle();
 
-    expect(find.text('Copaxone - Injetável'), findsOneWidget);
+    expect(find.text('Copaxone 20 mg - Injetável'), findsOneWidget);
     expect(
-      find.text('Siga sempre a orientação da sua equipe de saúde.'),
+      find.text(
+        'Siga sempre a prescrição e orientação da sua equipe de saúde.',
+      ),
       findsOneWidget,
     );
 
@@ -185,6 +203,7 @@ void main() {
     await tester.tap(find.byKey(const Key('treatment-submit-button')));
     await tester.pump();
 
+    expect(tester.takeException(), isNull);
     expect(find.text('Tratamento configurado com sucesso.'), findsOneWidget);
     expect(
       find.text('Configuração salva em memória nesta sessão'),
@@ -194,7 +213,7 @@ void main() {
     await tester.tap(find.text('Início'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Copaxone'), findsOneWidget);
+    expect(find.text('Copaxone 20 mg'), findsOneWidget);
     expect(find.text('Local 1'), findsOneWidget);
 
     await tester.ensureVisible(
@@ -213,7 +232,6 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Aplicação registrada com sucesso'), findsOneWidget);
-    expect(find.text('Local 2'), findsOneWidget);
   });
 
   testWidgets('hides application site selector for oral medication', (

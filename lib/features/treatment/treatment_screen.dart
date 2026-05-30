@@ -1,10 +1,14 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../core/app_shell.dart';
+import '../../core/database/app_database.dart';
 import 'data/medication_catalog_data_source.dart';
 import 'data/medication_repository.dart';
+import 'data/treatment_repository.dart';
 import 'domain/application_rotation_service.dart';
 import 'domain/medication.dart';
 import 'domain/treatment_session_store.dart';
@@ -31,16 +35,23 @@ class _TreatmentScreenState extends State<TreatmentScreen> {
   String? _initialPointId;
   bool _enableReminders = false;
   bool _showValidationErrors = false;
+  bool _hasUserEdited = false;
+  bool _isApplyingHydration = false;
+  int _formSeed = 0;
   _TreatmentSetupData? _submittedSetup;
 
   @override
   void initState() {
     super.initState();
     _medications = _medicationRepository.getAll();
+    _nameController.addListener(_handleNameChanged);
+    _hydrateFromSessionStore();
+    unawaited(_hydrateFromPersistedTreatment());
   }
 
   @override
   void dispose() {
+    _nameController.removeListener(_handleNameChanged);
     _nameController.dispose();
     super.dispose();
   }
@@ -69,151 +80,159 @@ class _TreatmentScreenState extends State<TreatmentScreen> {
                   ),
                 ),
                 const SizedBox(height: 24),
-                Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      TextFormField(
-                        key: const Key('treatment-name-field'),
-                        controller: _nameController,
-                        textInputAction: TextInputAction.next,
-                        decoration: const InputDecoration(
-                          labelText: 'Nome',
-                          prefixIcon: Icon(Icons.person_outline),
+                KeyedSubtree(
+                  key: ValueKey(_formSeed),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        TextFormField(
+                          key: const Key('treatment-name-field'),
+                          controller: _nameController,
+                          textInputAction: TextInputAction.next,
+                          decoration: const InputDecoration(
+                            labelText: 'Nome',
+                            prefixIcon: Icon(Icons.person_outline),
+                          ),
+                          validator: _requiredValidator('Informe seu nome.'),
                         ),
-                        validator: _requiredValidator('Informe seu nome.'),
-                      ),
-                      const SizedBox(height: 16),
-                      DropdownButtonFormField<Medication>(
-                        key: const Key('treatment-medication-field'),
-                        initialValue: _selectedMedication,
-                        isExpanded: true,
-                        decoration: const InputDecoration(
-                          labelText: 'Medicamento',
-                          prefixIcon: Icon(Icons.medication_outlined),
-                        ),
-                        items: _medications.map((medication) {
-                          return DropdownMenuItem(
-                            value: medication,
-                            child: _MedicationOption(medication: medication),
-                          );
-                        }).toList(),
-                        onChanged: (medication) {
-                          setState(() {
-                            _selectedMedication = medication;
-                            _initialPointId = null;
-                          });
-                        },
-                        validator: (value) {
-                          if (value == null) {
-                            return 'Selecione um medicamento.';
-                          }
-
-                          return null;
-                        },
-                      ),
-                      if (_selectedMedication != null) ...[
-                        const SizedBox(height: 12),
-                        _MedicationDetails(medication: _selectedMedication!),
-                      ],
-                      const SizedBox(height: 16),
-                      _PickerField(
-                        key: const Key('treatment-start-date-field'),
-                        label: 'Data da primeira aplicação',
-                        value: _startDate == null
-                            ? null
-                            : _formatDate(_startDate!),
-                        icon: Icons.calendar_today_outlined,
-                        errorText: _showValidationErrors && _startDate == null
-                            ? 'Informe a data da primeira aplicação.'
-                            : null,
-                        onTap: _selectStartDate,
-                      ),
-                      const SizedBox(height: 16),
-                      _PickerField(
-                        key: const Key('treatment-application-time-field'),
-                        label: 'Horário da aplicação',
-                        value: _applicationTime == null
-                            ? null
-                            : _formatTime(_applicationTime!),
-                        icon: Icons.schedule_outlined,
-                        errorText:
-                            _showValidationErrors && _applicationTime == null
-                            ? 'Informe o horário da aplicação.'
-                            : null,
-                        onTap: _selectApplicationTime,
-                      ),
-                      const SizedBox(height: 16),
-                      if (_selectedMedication?.requiresApplicationSite ??
-                          false) ...[
-                        DropdownButtonFormField<String>(
-                          key: const Key('treatment-site-field'),
-                          initialValue: _initialPointId,
+                        const SizedBox(height: 16),
+                        DropdownButtonFormField<Medication>(
+                          key: const Key('treatment-medication-field'),
+                          initialValue: _selectedMedication,
                           isExpanded: true,
                           decoration: const InputDecoration(
-                            labelText: 'Ponto inicial de aplicação',
-                            prefixIcon: Icon(Icons.accessibility_new_outlined),
+                            labelText: 'Medicamento',
+                            prefixIcon: Icon(Icons.medication_outlined),
                           ),
-                          items: _applicationPointOptions.map((point) {
+                          items: _medications.map((medication) {
                             return DropdownMenuItem(
-                              value: point.id,
-                              child: Text(_formatPointOption(point)),
+                              value: medication,
+                              child: _MedicationOption(medication: medication),
                             );
                           }).toList(),
-                          onChanged: (pointId) {
+                          onChanged: (medication) {
                             setState(() {
-                              _initialPointId = pointId;
+                              _hasUserEdited = true;
+                              _selectedMedication = medication;
+                              _initialPointId = null;
                             });
                           },
-                          validator: (pointId) {
-                            if (pointId == null) {
-                              return 'Selecione o ponto inicial de aplicação.';
+                          validator: (value) {
+                            if (value == null) {
+                              return 'Selecione um medicamento.';
                             }
 
                             return null;
                           },
-                          hint: const Text('Selecionar'),
                         ),
-                        if (_selectedInitialPoint != null) ...[
+                        if (_selectedMedication != null) ...[
                           const SizedBox(height: 12),
-                          _ApplicationPointCard(
-                            medication: _selectedMedication!,
-                            point: _selectedInitialPoint!,
-                          ),
-                        ],
-                        if (_nextApplicationPoint != null) ...[
-                          const SizedBox(height: 12),
-                          _NextApplicationPointPreview(
-                            point: _nextApplicationPoint!,
-                          ),
+                          _MedicationDetails(medication: _selectedMedication!),
                         ],
                         const SizedBox(height: 16),
+                        _PickerField(
+                          key: const Key('treatment-start-date-field'),
+                          label: 'Data da primeira aplicação',
+                          value: _startDate == null
+                              ? null
+                              : _formatDate(_startDate!),
+                          icon: Icons.calendar_today_outlined,
+                          errorText: _showValidationErrors && _startDate == null
+                              ? 'Informe a data da primeira aplicação.'
+                              : null,
+                          onTap: _selectStartDate,
+                        ),
+                        const SizedBox(height: 16),
+                        _PickerField(
+                          key: const Key('treatment-application-time-field'),
+                          label: 'Horário da aplicação',
+                          value: _applicationTime == null
+                              ? null
+                              : _formatTime(_applicationTime!),
+                          icon: Icons.schedule_outlined,
+                          errorText:
+                              _showValidationErrors && _applicationTime == null
+                              ? 'Informe o horário da aplicação.'
+                              : null,
+                          onTap: _selectApplicationTime,
+                        ),
+                        const SizedBox(height: 16),
+                        if (_selectedMedication?.requiresApplicationSite ??
+                            false) ...[
+                          DropdownButtonFormField<String>(
+                            key: const Key('treatment-site-field'),
+                            initialValue: _initialPointId,
+                            isExpanded: true,
+                            decoration: const InputDecoration(
+                              labelText: 'Ponto inicial de aplicação',
+                              prefixIcon: Icon(
+                                Icons.accessibility_new_outlined,
+                              ),
+                            ),
+                            items: _applicationPointOptions.map((point) {
+                              return DropdownMenuItem(
+                                value: point.id,
+                                child: Text(_formatPointOption(point)),
+                              );
+                            }).toList(),
+                            onChanged: (pointId) {
+                              setState(() {
+                                _hasUserEdited = true;
+                                _initialPointId = pointId;
+                              });
+                            },
+                            validator: (pointId) {
+                              if (pointId == null) {
+                                return 'Selecione o ponto inicial de aplicação.';
+                              }
+
+                              return null;
+                            },
+                            hint: const Text('Selecionar'),
+                          ),
+                          if (_selectedInitialPoint != null) ...[
+                            const SizedBox(height: 12),
+                            _ApplicationPointCard(
+                              medication: _selectedMedication!,
+                              point: _selectedInitialPoint!,
+                            ),
+                          ],
+                          if (_nextApplicationPoint != null) ...[
+                            const SizedBox(height: 12),
+                            _NextApplicationPointPreview(
+                              point: _nextApplicationPoint!,
+                            ),
+                          ],
+                          const SizedBox(height: 16),
+                        ],
+                        SwitchListTile(
+                          key: const Key('treatment-reminders-switch'),
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 4,
+                          ),
+                          title: const Text('Ativar lembretes'),
+                          subtitle: const Text(
+                            'Nenhuma notificação será agendada nesta etapa.',
+                          ),
+                          value: _enableReminders,
+                          onChanged: (value) {
+                            setState(() {
+                              _hasUserEdited = true;
+                              _enableReminders = value;
+                            });
+                          },
+                        ),
+                        const SizedBox(height: 24),
+                        FilledButton.icon(
+                          key: const Key('treatment-submit-button'),
+                          onPressed: _submit,
+                          icon: const Icon(Icons.check),
+                          label: const Text('Salvar configuração'),
+                        ),
                       ],
-                      SwitchListTile(
-                        key: const Key('treatment-reminders-switch'),
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 4,
-                        ),
-                        title: const Text('Ativar lembretes'),
-                        subtitle: const Text(
-                          'Nenhuma notificação será agendada nesta etapa.',
-                        ),
-                        value: _enableReminders,
-                        onChanged: (value) {
-                          setState(() {
-                            _enableReminders = value;
-                          });
-                        },
-                      ),
-                      const SizedBox(height: 24),
-                      FilledButton.icon(
-                        key: const Key('treatment-submit-button'),
-                        onPressed: _submit,
-                        icon: const Icon(Icons.check),
-                        label: const Text('Salvar configuração'),
-                      ),
-                    ],
+                    ),
                   ),
                 ),
                 if (_submittedSetup != null) ...[
@@ -226,6 +245,88 @@ class _TreatmentScreenState extends State<TreatmentScreen> {
         ),
       ),
     );
+  }
+
+  void _handleNameChanged() {
+    if (!_isApplyingHydration) {
+      _hasUserEdited = true;
+    }
+  }
+
+  void _hydrateFromSessionStore() {
+    final storedMedication = treatmentSessionStore.medication;
+    final scheduledAt = treatmentSessionStore.configuredScheduledAt;
+    final userName = treatmentSessionStore.userName;
+    if (storedMedication == null || scheduledAt == null || userName == null) {
+      return;
+    }
+    final medication = _medications
+        .where((medication) => medication.id == storedMedication.id)
+        .firstOrNull;
+
+    _applyHydratedTreatment(
+      userName: userName,
+      medication: medication,
+      applicationPointId: treatmentSessionStore.currentApplicationPointId,
+      scheduledAt: scheduledAt,
+      remindersEnabled: treatmentSessionStore.remindersEnabled,
+    );
+  }
+
+  Future<void> _hydrateFromPersistedTreatment() async {
+    try {
+      final snapshot = await TreatmentRepository(
+        appDatabase,
+      ).loadActiveTreatment();
+      if (!mounted || snapshot == null || _hasUserEdited) {
+        return;
+      }
+
+      final medication = _medications
+          .where((medication) => medication.id == snapshot.medicationId)
+          .firstOrNull;
+      setState(() {
+        _applyHydratedTreatment(
+          userName: snapshot.userName,
+          medication: medication,
+          applicationPointId: snapshot.selectedApplicationPointId,
+          scheduledAt: snapshot.scheduledAt,
+          remindersEnabled: snapshot.remindersEnabled,
+          rebuildFormFields: true,
+        );
+      });
+    } catch (_) {
+      return;
+    }
+  }
+
+  void _applyHydratedTreatment({
+    required String userName,
+    required Medication? medication,
+    required String? applicationPointId,
+    required DateTime scheduledAt,
+    required bool remindersEnabled,
+    bool rebuildFormFields = false,
+  }) {
+    final restoredPointId = medication == null
+        ? null
+        : _rotationService.getPointById(medication, applicationPointId)?.id;
+
+    _isApplyingHydration = true;
+    _nameController.text = userName;
+    _isApplyingHydration = false;
+    _selectedMedication = medication;
+    _initialPointId = restoredPointId;
+    _startDate = DateTime(scheduledAt.year, scheduledAt.month, scheduledAt.day);
+    _applicationTime = TimeOfDay(
+      hour: scheduledAt.hour,
+      minute: scheduledAt.minute,
+    );
+    _enableReminders = remindersEnabled;
+
+    if (rebuildFormFields) {
+      _formSeed += 1;
+    }
   }
 
   String? Function(String?) _requiredValidator(String message) {
@@ -299,6 +400,7 @@ class _TreatmentScreenState extends State<TreatmentScreen> {
     }
 
     setState(() {
+      _hasUserEdited = true;
       _startDate = selected;
     });
   }
@@ -314,12 +416,14 @@ class _TreatmentScreenState extends State<TreatmentScreen> {
     }
 
     setState(() {
+      _hasUserEdited = true;
       _applicationTime = selected;
     });
   }
 
-  void _submit() {
+  Future<void> _submit() async {
     setState(() {
+      _hasUserEdited = true;
       _showValidationErrors = true;
     });
 
@@ -338,11 +442,19 @@ class _TreatmentScreenState extends State<TreatmentScreen> {
       enableReminders: _enableReminders,
     );
 
-    treatmentSessionStore.configureTreatment(
-      medication: setup.medication,
-      initialApplicationPointId: setup.initialPoint?.id,
-      scheduledAt: setup.scheduledAt,
+    unawaited(
+      treatmentSessionStore.configureTreatment(
+        userName: setup.name,
+        medication: setup.medication,
+        initialApplicationPointId: setup.initialPoint?.id,
+        scheduledAt: setup.scheduledAt,
+        remindersEnabled: setup.enableReminders,
+      ),
     );
+
+    if (!mounted) {
+      return;
+    }
 
     setState(() {
       _submittedSetup = setup;
