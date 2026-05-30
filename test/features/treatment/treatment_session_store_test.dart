@@ -144,7 +144,7 @@ void main() {
     );
 
     test(
-      'Copaxone 20 mg blocks same-day duplicate after schedule advances',
+      'Copaxone 20 mg blocks too-close registration after schedule advances',
       () async {
         final store = TreatmentSessionStore();
         final copaxone = medicationById('copaxone_20mg');
@@ -164,17 +164,17 @@ void main() {
           now: DateTime(2026, 1, 2, 12),
         );
 
-        expect(duplicateEligibility.status.name, 'duplicate');
+        expect(duplicateEligibility.status.name, 'tooSoon');
         expect(duplicateEligibility.canRegister, isFalse);
         expect(
           duplicateEligibility.message,
-          'Esta aplicação já foi registrada hoje.',
+          'Registro indisponível: intervalo mínimo entre doses ainda não foi atingido.',
         );
       },
     );
 
     test(
-      'Copaxone 40 mg duplicate attempt does not create record or advance state',
+      'Copaxone 40 mg too-soon attempt does not create record or advance state',
       () async {
         final store = TreatmentSessionStore();
         final copaxone = medicationById('copaxone_40mg');
@@ -196,11 +196,11 @@ void main() {
           now: DateTime(2026, 1, 5, 12),
         );
 
-        expect(duplicateEligibility.status.name, 'duplicate');
+        expect(duplicateEligibility.status.name, 'tooSoon');
         expect(duplicateEligibility.canRegister, isFalse);
         expect(
           duplicateEligibility.message,
-          'Esta aplicação já foi registrada hoje.',
+          'Registro indisponível: intervalo mínimo entre doses ainda não foi atingido.',
         );
         await expectLater(
           store.registerApplication(registeredAt: DateTime(2026, 1, 5, 12)),
@@ -212,7 +212,7 @@ void main() {
       },
     );
 
-    test('Avonex blocks same-day duplicate registration', () async {
+    test('Avonex blocks same-day too-soon registration', () async {
       final store = TreatmentSessionStore();
       final avonex = medicationById('avonex');
       final friday = DateTime(2026, 1, 2, 8);
@@ -231,7 +231,7 @@ void main() {
         now: DateTime(2026, 1, 2, 12),
       );
 
-      expect(duplicateEligibility.status.name, 'duplicate');
+      expect(duplicateEligibility.status.name, 'tooSoon');
       expect(duplicateEligibility.canRegister, isFalse);
     });
 

@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../core/app_shell.dart';
 import '../../core/database/app_database.dart';
+import '../../core/notifications/local_notification_service.dart';
 import 'data/medication_catalog_data_source.dart';
 import 'data/medication_repository.dart';
 import 'data/treatment_repository.dart';
@@ -214,14 +215,11 @@ class _TreatmentScreenState extends State<TreatmentScreen> {
                           ),
                           title: const Text('Ativar lembretes'),
                           subtitle: const Text(
-                            'Nenhuma notificação será agendada nesta etapa.',
+                            'Receba uma notificação local no horário previsto.',
                           ),
                           value: _enableReminders,
                           onChanged: (value) {
-                            setState(() {
-                              _hasUserEdited = true;
-                              _enableReminders = value;
-                            });
+                            unawaited(_setRemindersEnabled(value));
                           },
                         ),
                         const SizedBox(height: 24),
@@ -418,6 +416,44 @@ class _TreatmentScreenState extends State<TreatmentScreen> {
     setState(() {
       _hasUserEdited = true;
       _applicationTime = selected;
+    });
+  }
+
+  Future<void> _setRemindersEnabled(bool value) async {
+    if (!value) {
+      setState(() {
+        _hasUserEdited = true;
+        _enableReminders = false;
+      });
+      return;
+    }
+
+    final permission = await localNotificationService.requestPermission();
+    if (!mounted) {
+      return;
+    }
+
+    if (!permission.granted) {
+      setState(() {
+        _hasUserEdited = true;
+        _enableReminders = false;
+      });
+      ScaffoldMessenger.of(context)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(
+          SnackBar(
+            content: Text(
+              permission.message ??
+                  'Não foi possível ativar os lembretes locais.',
+            ),
+          ),
+        );
+      return;
+    }
+
+    setState(() {
+      _hasUserEdited = true;
+      _enableReminders = true;
     });
   }
 

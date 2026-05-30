@@ -8,17 +8,20 @@ class AppShell extends StatelessWidget {
     required this.title,
     required this.selectedIndex,
     required this.child,
+    this.floatingActionButton,
     super.key,
   });
 
   final String title;
   final int selectedIndex;
   final Widget child;
+  final Widget? floatingActionButton;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(title)),
+      floatingActionButton: floatingActionButton,
       body: SafeArea(
         child: Padding(padding: const EdgeInsets.all(24), child: child),
       ),

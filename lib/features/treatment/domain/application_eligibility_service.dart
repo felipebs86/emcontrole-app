@@ -7,6 +7,7 @@ enum ApplicationEligibilityStatus {
   early,
   late,
   duplicate,
+  tooSoon,
   scheduleAdjustment,
   notApplicable,
 }
@@ -36,6 +37,31 @@ class ApplicationEligibilityService {
     required List<ApplicationRecord> existingRecords,
     required DateTime now,
   }) {
+    if (_scheduleService.hasRegistrationForSlot(
+      medication: medication,
+      scheduledAt: scheduledAt,
+      records: existingRecords,
+    )) {
+      return const ApplicationEligibilityResult(
+        status: ApplicationEligibilityStatus.duplicate,
+        canRegister: false,
+        message: 'Esta aplicação já foi registrada para o período atual.',
+      );
+    }
+
+    if (_hasMinimumIntervalViolation(
+      medication: medication,
+      existingRecords: existingRecords,
+      now: now,
+    )) {
+      return const ApplicationEligibilityResult(
+        status: ApplicationEligibilityStatus.tooSoon,
+        canRegister: false,
+        message:
+            'Registro indisponível: intervalo mínimo entre doses ainda não foi atingido.',
+      );
+    }
+
     if (_hasSameDayDuplicate(
       medication: medication,
       scheduledAt: scheduledAt,
@@ -46,18 +72,6 @@ class ApplicationEligibilityService {
         status: ApplicationEligibilityStatus.duplicate,
         canRegister: false,
         message: 'Esta aplicação já foi registrada hoje.',
-      );
-    }
-
-    if (_scheduleService.hasRegistrationForSlot(
-      medication: medication,
-      scheduledAt: scheduledAt,
-      records: existingRecords,
-    )) {
-      return const ApplicationEligibilityResult(
-        status: ApplicationEligibilityStatus.duplicate,
-        canRegister: false,
-        message: 'Esta aplicação já foi registrada para o período atual.',
       );
     }
 
@@ -137,10 +151,40 @@ class ApplicationEligibilityService {
       ApplicationEligibilityStatus.scheduleAdjustment =>
         ApplicationRegistrationStatus.scheduleAdjustment,
       ApplicationEligibilityStatus.eligible ||
+      ApplicationEligibilityStatus.tooSoon ||
       ApplicationEligibilityStatus.notApplicable ||
       ApplicationEligibilityStatus.duplicate =>
         ApplicationRegistrationStatus.onTime,
     };
+  }
+
+  bool _hasMinimumIntervalViolation({
+    required Medication medication,
+    required List<ApplicationRecord> existingRecords,
+    required DateTime now,
+  }) {
+    final minimumIntervalHours = medication.minimumIntervalHours;
+    if (minimumIntervalHours == null) {
+      return false;
+    }
+
+    final latestRecord = existingRecords
+        .where((record) => record.medicationId == medication.id)
+        .fold<ApplicationRecord?>(null, (latest, record) {
+          if (latest == null) {
+            return record;
+          }
+
+          return record.registeredAt.isAfter(latest.registeredAt)
+              ? record
+              : latest;
+        });
+    if (latestRecord == null) {
+      return false;
+    }
+
+    final elapsed = now.difference(latestRecord.registeredAt);
+    return elapsed < Duration(hours: minimumIntervalHours);
   }
 
   bool _hasSameDayDuplicate({

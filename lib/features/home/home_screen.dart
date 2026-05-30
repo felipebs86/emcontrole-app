@@ -721,6 +721,7 @@ String _eligibilityLabel(ApplicationEligibilityStatus status) {
     ApplicationEligibilityStatus.early => 'Antes do horário previsto',
     ApplicationEligibilityStatus.late => 'Fora da janela prevista',
     ApplicationEligibilityStatus.duplicate => 'Já registrado',
+    ApplicationEligibilityStatus.tooSoon => 'Intervalo mínimo',
     ApplicationEligibilityStatus.scheduleAdjustment =>
       'Fora da janela prevista',
     ApplicationEligibilityStatus.notApplicable => 'Em dia',

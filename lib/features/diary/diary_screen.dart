@@ -1,22 +1,516 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../core/app_routes.dart';
 import '../../core/app_shell.dart';
-import '../../core/placeholder_content.dart';
+import '../../core/database/app_database.dart';
+import 'data/diary_repository.dart';
+import 'domain/diary_entry.dart';
 
-class DiaryScreen extends StatelessWidget {
+class DiaryScreen extends StatefulWidget {
   const DiaryScreen({super.key});
 
   @override
+  State<DiaryScreen> createState() => _DiaryScreenState();
+}
+
+class _DiaryScreenState extends State<DiaryScreen> {
+  final DiaryRepository _repository = DiaryRepository(appDatabase);
+  late Future<List<SymptomDiaryEntry>> _entriesFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _entriesFuture = _repository.loadEntries();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return const AppShell(
+    return AppShell(
       title: 'Diário',
       selectedIndex: 2,
-      child: PlaceholderContent(
-        icon: Icons.edit_note_outlined,
-        title: 'Diário',
-        description:
-            'Aqui ficarão anotações pessoais para acompanhar seu dia a dia de forma privada no dispositivo.',
+      floatingActionButton: FloatingActionButton.extended(
+        key: const Key('diary-add-entry-button'),
+        onPressed: () => context.go(AppRoutes.diaryNew),
+        icon: const Icon(Icons.add),
+        label: const Text('Nova anotação'),
+      ),
+      child: FutureBuilder<List<SymptomDiaryEntry>>(
+        future: _entriesFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState != ConnectionState.done) {
+            return const Center(child: Text('Carregando diário...'));
+          }
+
+          final entries = snapshot.data ?? const [];
+          if (entries.isEmpty) {
+            return const _DiaryEmptyState();
+          }
+
+          return ListView.separated(
+            itemCount: entries.length,
+            separatorBuilder: (context, index) => const SizedBox(height: 12),
+            itemBuilder: (context, index) {
+              return _DiaryEntryCard(entry: entries[index]);
+            },
+          );
+        },
       ),
     );
   }
+}
+
+class CreateDiaryEntryScreen extends StatefulWidget {
+  const CreateDiaryEntryScreen({super.key});
+
+  @override
+  State<CreateDiaryEntryScreen> createState() => _CreateDiaryEntryScreenState();
+}
+
+class _CreateDiaryEntryScreenState extends State<CreateDiaryEntryScreen> {
+  final DiaryRepository _repository = DiaryRepository(appDatabase);
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _notesController = TextEditingController();
+
+  int? _fatigueLevel;
+  int? _painLevel;
+  int? _moodLevel;
+  int? _sleepQualityLevel;
+  bool _isSaving = false;
+
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _notesController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AppShell(
+      title: 'Nova anotação',
+      selectedIndex: 2,
+      child: Form(
+        key: _formKey,
+        child: ListView(
+          children: [
+            TextFormField(
+              key: const Key('diary-title-field'),
+              controller: _titleController,
+              textInputAction: TextInputAction.next,
+              decoration: const InputDecoration(
+                labelText: 'Título',
+                prefixIcon: Icon(Icons.title),
+              ),
+              validator: (value) {
+                if (value == null || value.trim().isEmpty) {
+                  return 'Informe um título.';
+                }
+                return null;
+              },
+            ),
+            const SizedBox(height: 16),
+            TextFormField(
+              key: const Key('diary-notes-field'),
+              controller: _notesController,
+              minLines: 5,
+              maxLines: 8,
+              decoration: const InputDecoration(
+                labelText: 'Observações',
+                alignLabelWithHint: true,
+                prefixIcon: Icon(Icons.notes_outlined),
+              ),
+            ),
+            const SizedBox(height: 24),
+            _LevelField(
+              label: 'Fadiga',
+              icon: Icons.battery_2_bar_outlined,
+              value: _fatigueLevel,
+              onChanged: (value) => setState(() => _fatigueLevel = value),
+            ),
+            const SizedBox(height: 12),
+            _LevelField(
+              label: 'Dor',
+              icon: Icons.healing_outlined,
+              value: _painLevel,
+              onChanged: (value) => setState(() => _painLevel = value),
+            ),
+            const SizedBox(height: 12),
+            _LevelField(
+              label: 'Humor',
+              icon: Icons.mood_outlined,
+              value: _moodLevel,
+              onChanged: (value) => setState(() => _moodLevel = value),
+            ),
+            const SizedBox(height: 12),
+            _LevelField(
+              label: 'Sono',
+              icon: Icons.bedtime_outlined,
+              value: _sleepQualityLevel,
+              onChanged: (value) => setState(() => _sleepQualityLevel = value),
+            ),
+            const SizedBox(height: 28),
+            FilledButton.icon(
+              key: const Key('diary-save-entry-button'),
+              onPressed: _isSaving ? null : _save,
+              icon: _isSaving
+                  ? const SizedBox.square(
+                      dimension: 18,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    )
+                  : const Icon(Icons.check),
+              label: const Text('Salvar anotação'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _save() async {
+    final formIsValid = _formKey.currentState?.validate() ?? false;
+    if (!formIsValid) {
+      return;
+    }
+
+    setState(() => _isSaving = true);
+    final now = DateTime.now();
+    final entry = SymptomDiaryEntry(
+      id: 'diary_${now.microsecondsSinceEpoch}',
+      createdAt: now,
+      title: _titleController.text.trim(),
+      notes: _notesController.text.trim(),
+      fatigueLevel: _fatigueLevel,
+      painLevel: _painLevel,
+      moodLevel: _moodLevel,
+      sleepQualityLevel: _sleepQualityLevel,
+    );
+
+    await _repository.saveEntry(entry);
+    if (!mounted) {
+      return;
+    }
+
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(
+        const SnackBar(content: Text('Anotação salva com sucesso.')),
+      );
+    context.go(AppRoutes.diary);
+  }
+}
+
+class DiaryEntryDetailsScreen extends StatelessWidget {
+  const DiaryEntryDetailsScreen({required this.entryId, super.key});
+
+  final String entryId;
+
+  @override
+  Widget build(BuildContext context) {
+    return AppShell(
+      title: 'Anotação',
+      selectedIndex: 2,
+      child: FutureBuilder<SymptomDiaryEntry?>(
+        future: DiaryRepository(appDatabase).loadEntry(entryId),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState != ConnectionState.done) {
+            return const Center(child: Text('Carregando anotação...'));
+          }
+
+          final entry = snapshot.data;
+          if (entry == null) {
+            return const _DiaryEntryNotFound();
+          }
+
+          return _DiaryEntryDetails(entry: entry);
+        },
+      ),
+    );
+  }
+}
+
+class _DiaryEmptyState extends StatelessWidget {
+  const _DiaryEmptyState();
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 520),
+        child: Card(
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Icon(
+                  Icons.edit_note_outlined,
+                  size: 48,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  'Nenhuma anotação ainda',
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Registre sintomas, sensações ou observações para conversar com sua equipe de saúde.',
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                FilledButton.icon(
+                  onPressed: () => context.go(AppRoutes.diaryNew),
+                  icon: const Icon(Icons.add),
+                  label: const Text('Nova anotação'),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _DiaryEntryCard extends StatelessWidget {
+  const _DiaryEntryCard({required this.entry});
+
+  final SymptomDiaryEntry entry;
+
+  @override
+  Widget build(BuildContext context) {
+    final chips = [
+      if (entry.fatigueLevel != null)
+        _LevelChip(label: 'Fadiga', value: entry.fatigueLevel!),
+      if (entry.painLevel != null)
+        _LevelChip(label: 'Dor', value: entry.painLevel!),
+      if (entry.moodLevel != null)
+        _LevelChip(label: 'Humor', value: entry.moodLevel!),
+    ];
+
+    return Card(
+      child: InkWell(
+        borderRadius: BorderRadius.circular(8),
+        onTap: () => context.go('${AppRoutes.diary}/${entry.id}'),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      entry.title,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                  const Icon(Icons.chevron_right),
+                ],
+              ),
+              const SizedBox(height: 4),
+              Text(
+                _formatDateTime(entry.createdAt),
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
+              ),
+              if (chips.isNotEmpty) ...[
+                const SizedBox(height: 12),
+                Wrap(spacing: 8, runSpacing: 8, children: chips),
+              ],
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _DiaryEntryDetails extends StatelessWidget {
+  const _DiaryEntryDetails({required this.entry});
+
+  final SymptomDiaryEntry entry;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      children: [
+        Card(
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  entry.title,
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
+                const SizedBox(height: 12),
+                _DetailRow(
+                  label: 'Criada em',
+                  value: _formatDateTime(entry.createdAt),
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  'Observações',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                const SizedBox(height: 6),
+                Text(entry.notes.isEmpty ? 'Sem observações.' : entry.notes),
+                const SizedBox(height: 20),
+                _DetailRow(
+                  label: 'Fadiga',
+                  value: _formatLevel(entry.fatigueLevel),
+                ),
+                const SizedBox(height: 8),
+                _DetailRow(label: 'Dor', value: _formatLevel(entry.painLevel)),
+                const SizedBox(height: 8),
+                _DetailRow(
+                  label: 'Humor',
+                  value: _formatLevel(entry.moodLevel),
+                ),
+                const SizedBox(height: 8),
+                _DetailRow(
+                  label: 'Sono',
+                  value: _formatLevel(entry.sleepQualityLevel),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _DiaryEntryNotFound extends StatelessWidget {
+  const _DiaryEntryNotFound();
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 520),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              Icons.search_off_outlined,
+              size: 48,
+              color: Theme.of(context).colorScheme.primary,
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'Anotação não encontrada',
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
+            const SizedBox(height: 16),
+            FilledButton.icon(
+              onPressed: () => context.go(AppRoutes.diary),
+              icon: const Icon(Icons.arrow_back),
+              label: const Text('Voltar ao diário'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _LevelField extends StatelessWidget {
+  const _LevelField({
+    required this.label,
+    required this.icon,
+    required this.value,
+    required this.onChanged,
+  });
+
+  final String label;
+  final IconData icon;
+  final int? value;
+  final ValueChanged<int?> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButtonFormField<int?>(
+      initialValue: value,
+      decoration: InputDecoration(labelText: label, prefixIcon: Icon(icon)),
+      items: [
+        const DropdownMenuItem<int?>(value: null, child: Text('Não informado')),
+        for (var level = 0; level <= 10; level += 1)
+          DropdownMenuItem<int?>(value: level, child: Text(level.toString())),
+      ],
+      onChanged: onChanged,
+    );
+  }
+}
+
+class _LevelChip extends StatelessWidget {
+  const _LevelChip({required this.label, required this.value});
+
+  final String label;
+  final int value;
+
+  @override
+  Widget build(BuildContext context) {
+    return Chip(
+      visualDensity: VisualDensity.compact,
+      label: Text('$label $value/10'),
+    );
+  }
+}
+
+class _DetailRow extends StatelessWidget {
+  const _DetailRow({required this.label, required this.value});
+
+  final String label;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          width: 96,
+          child: Text(
+            label,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
+          ),
+        ),
+        const SizedBox(width: 12),
+        Expanded(child: Text(value)),
+      ],
+    );
+  }
+}
+
+String _formatLevel(int? value) {
+  if (value == null) {
+    return 'Não informado';
+  }
+
+  return '$value/10';
+}
+
+String _formatDateTime(DateTime value) {
+  final day = value.day.toString().padLeft(2, '0');
+  final month = value.month.toString().padLeft(2, '0');
+  final year = value.year.toString().padLeft(4, '0');
+  final hour = value.hour.toString().padLeft(2, '0');
+  final minute = value.minute.toString().padLeft(2, '0');
+  return '$day/$month/$year às $hour:$minute';
 }

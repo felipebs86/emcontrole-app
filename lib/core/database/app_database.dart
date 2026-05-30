@@ -37,7 +37,23 @@ class ApplicationRecordEntries extends Table {
   Set<Column> get primaryKey => {id};
 }
 
-@DriftDatabase(tables: [TreatmentEntries, ApplicationRecordEntries])
+class DiaryEntries extends Table {
+  TextColumn get id => text()();
+  DateTimeColumn get createdAt => dateTime()();
+  TextColumn get title => text()();
+  TextColumn get notes => text()();
+  IntColumn get fatigueLevel => integer().nullable()();
+  IntColumn get painLevel => integer().nullable()();
+  IntColumn get moodLevel => integer().nullable()();
+  IntColumn get sleepQualityLevel => integer().nullable()();
+
+  @override
+  Set<Column> get primaryKey => {id};
+}
+
+@DriftDatabase(
+  tables: [TreatmentEntries, ApplicationRecordEntries, DiaryEntries],
+)
 class AppDatabase extends _$AppDatabase {
   AppDatabase(super.executor);
 
@@ -53,7 +69,17 @@ class AppDatabase extends _$AppDatabase {
       );
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
+
+  @override
+  MigrationStrategy get migration => MigrationStrategy(
+    onCreate: (migrator) => migrator.createAll(),
+    onUpgrade: (migrator, from, to) async {
+      if (from < 2) {
+        await migrator.createTable(diaryEntries);
+      }
+    },
+  );
 }
 
 final appDatabase = AppDatabase.defaults();

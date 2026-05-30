@@ -383,6 +383,7 @@ const _medications = [
     scheduleType: MedicationScheduleType.onceDaily,
     dailyDoseCount: 1,
     intervalDays: 1,
+    minimumIntervalHours: 20,
     scheduleDescription: 'Aplicação subcutânea uma vez ao dia.',
     requiresApplicationSite: true,
     requiresApplicationRotation: true,
@@ -419,6 +420,7 @@ const _medications = [
     frequencyLabel: '1 vez por semana',
     scheduleType: MedicationScheduleType.weekly,
     intervalDays: 7,
+    minimumIntervalHours: 120,
     scheduleDescription:
         'Aplicação semanal, preferencialmente no mesmo dia e horário.',
     requiresApplicationSite: true,
@@ -457,6 +459,7 @@ const _medications = [
     frequencyLabel: 'Em dias alternados',
     scheduleType: MedicationScheduleType.everyOtherDay,
     intervalDays: 2,
+    minimumIntervalHours: 36,
     scheduleDescription:
         'Aplicação subcutânea em dias alternados, conforme prescrição.',
     requiresApplicationSite: true,
@@ -484,6 +487,7 @@ const _medications = [
     frequencyLabel: 'A cada 14 dias',
     scheduleType: MedicationScheduleType.every14Days,
     intervalDays: 14,
+    minimumIntervalHours: 240,
     scheduleDescription:
         'Aplicação subcutânea a cada duas semanas, conforme prescrição.',
     requiresApplicationSite: true,
@@ -520,6 +524,7 @@ const _medications = [
     scheduleType: MedicationScheduleType.twiceDaily,
     dailyDoseCount: 2,
     intervalHours: 12,
+    minimumIntervalHours: 4,
     scheduleDescription:
         'Cápsula por via oral duas vezes ao dia, conforme fase de tratamento e prescrição.',
     requiresApplicationSite: false,

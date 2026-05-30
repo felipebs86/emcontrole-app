@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 
 import '../../../core/database/app_database.dart';
+import '../../../core/notifications/local_notification_service.dart';
 import '../data/application_record_repository.dart';
 import '../data/medication_catalog_data_source.dart';
 import '../data/treatment_repository.dart';
@@ -20,6 +21,7 @@ class TreatmentSessionStore extends ChangeNotifier {
     this._rotationService = const ApplicationRotationService(),
     this._eligibilityService = const ApplicationEligibilityService(),
     this._scheduleService = const MedicationScheduleService(),
+    this._notificationService = localNotificationService,
     this._treatmentRepository,
     this._applicationRecordRepository,
   ]);
@@ -29,6 +31,7 @@ class TreatmentSessionStore extends ChangeNotifier {
         const ApplicationRotationService(),
         const ApplicationEligibilityService(),
         const MedicationScheduleService(),
+        localNotificationService,
         TreatmentRepository(appDatabase),
         ApplicationRecordRepository(appDatabase),
       );
@@ -36,6 +39,7 @@ class TreatmentSessionStore extends ChangeNotifier {
   final ApplicationRotationService _rotationService;
   final ApplicationEligibilityService _eligibilityService;
   final MedicationScheduleService _scheduleService;
+  final LocalNotificationService _notificationService;
   final TreatmentRepository? _treatmentRepository;
   final ApplicationRecordRepository? _applicationRecordRepository;
   final List<ApplicationRecord> _records = [];
@@ -120,6 +124,9 @@ class TreatmentSessionStore extends ChangeNotifier {
       now: DateTime.now(),
     );
     notifyListeners();
+    if (_remindersEnabled) {
+      unawaited(_syncMedicationReminder());
+    }
   }
 
   Future<void> configureTreatment({
@@ -128,7 +135,7 @@ class TreatmentSessionStore extends ChangeNotifier {
     required String? initialApplicationPointId,
     required DateTime scheduledAt,
     required bool remindersEnabled,
-  }) {
+  }) async {
     _medication = medication;
     _userName = userName;
     _remindersEnabled = remindersEnabled;
@@ -159,12 +166,13 @@ class TreatmentSessionStore extends ChangeNotifier {
       updatedAt: now,
     );
 
-    return Future.wait([
+    await Future.wait([
       if (_applicationRecordRepository != null)
         _applicationRecordRepository.clearRecords(snapshot.id),
       if (_treatmentRepository != null)
         _treatmentRepository.saveActiveTreatment(snapshot),
-    ]).then((_) {});
+    ]);
+    await _syncMedicationReminder();
   }
 
   ApplicationEligibilityResult evaluateEligibility({DateTime? now}) {
@@ -254,8 +262,24 @@ class TreatmentSessionStore extends ChangeNotifier {
           ),
       ]),
     );
+    unawaited(_syncMedicationReminder());
 
     return record;
+  }
+
+  Future<void> _syncMedicationReminder() async {
+    final medication = _medication;
+    final scheduledAt = _currentScheduledAt;
+    if (!_remindersEnabled || medication == null || scheduledAt == null) {
+      await _notificationService.cancelMedicationReminder();
+      return;
+    }
+
+    await _notificationService.scheduleMedicationReminder(
+      medication: medication,
+      applicationPoint: currentApplicationPoint,
+      scheduledAt: scheduledAt,
+    );
   }
 
   String _formatApplicationTime(DateTime value) {

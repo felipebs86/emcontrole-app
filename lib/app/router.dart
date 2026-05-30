@@ -16,8 +16,24 @@ final appRouter = GoRouter(
     ),
     GoRoute(path: '/diary', builder: (context, state) => const DiaryScreen()),
     GoRoute(
+      path: '/diary/new',
+      builder: (context, state) => const CreateDiaryEntryScreen(),
+    ),
+    GoRoute(
+      path: '/diary/:entryId',
+      builder: (context, state) => DiaryEntryDetailsScreen(
+        entryId: state.pathParameters['entryId'] ?? '',
+      ),
+    ),
+    GoRoute(
       path: '/history',
       builder: (context, state) => const HistoryScreen(),
+    ),
+    GoRoute(
+      path: '/history/:recordId',
+      builder: (context, state) => HistoryRecordDetailsScreen(
+        recordId: state.pathParameters['recordId'] ?? '',
+      ),
     ),
     GoRoute(
       path: '/settings',

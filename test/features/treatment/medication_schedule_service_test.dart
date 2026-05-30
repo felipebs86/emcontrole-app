@@ -129,6 +129,48 @@ void main() {
       expect(result.canRegister, isTrue);
     });
 
+    test('Tecfidera blocks registration less than 4 hours later', () {
+      final tecfidera = medicationById('tecfidera');
+      final morningSlot = DateTime(2026, 1, 2, 8);
+      final eveningSlot = DateTime(2026, 1, 2, 20);
+      final morning = record(
+        medication: tecfidera,
+        scheduledAt: morningSlot,
+        registeredAt: DateTime(2026, 1, 2, 8),
+      );
+
+      final result = eligibilityService.evaluate(
+        medication: tecfidera,
+        scheduledAt: eveningSlot,
+        existingRecords: [morning],
+        now: DateTime(2026, 1, 2, 10),
+      );
+
+      expect(result.status, ApplicationEligibilityStatus.tooSoon);
+      expect(result.canRegister, isFalse);
+    });
+
+    test('Tecfidera allows registration after 4 hour minimum interval', () {
+      final tecfidera = medicationById('tecfidera');
+      final morningSlot = DateTime(2026, 1, 2, 8);
+      final eveningSlot = DateTime(2026, 1, 2, 20);
+      final morning = record(
+        medication: tecfidera,
+        scheduledAt: morningSlot,
+        registeredAt: DateTime(2026, 1, 2, 8),
+      );
+
+      final result = eligibilityService.evaluate(
+        medication: tecfidera,
+        scheduledAt: eveningSlot,
+        existingRecords: [morning],
+        now: DateTime(2026, 1, 2, 12),
+      );
+
+      expect(result.status, isNot(ApplicationEligibilityStatus.tooSoon));
+      expect(result.canRegister, isTrue);
+    });
+
     test('Tecfidera duplicate detection blocks the same evening slot', () {
       final tecfidera = medicationById('tecfidera');
       final eveningSlot = DateTime(2026, 1, 2, 20);
@@ -235,6 +277,27 @@ void main() {
         expected!.difference(registeredAt).inMinutes,
         greaterThanOrEqualTo(48 * 60),
       );
+    });
+
+    test('Copaxone 40 mg blocks registration before 48 hours', () {
+      final copaxone40 = medicationById('copaxone_40mg');
+      final monday = DateTime(2026, 1, 5, 8);
+      final wednesday = DateTime(2026, 1, 7, 8);
+      final firstRecord = record(
+        medication: copaxone40,
+        scheduledAt: monday,
+        registeredAt: monday,
+      );
+
+      final result = eligibilityService.evaluate(
+        medication: copaxone40,
+        scheduledAt: wednesday,
+        existingRecords: [firstRecord],
+        now: DateTime(2026, 1, 7, 7, 59),
+      );
+
+      expect(result.status, ApplicationEligibilityStatus.tooSoon);
+      expect(result.canRegister, isFalse);
     });
 
     test('weekly after registration expects seven days later', () {

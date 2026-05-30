@@ -1461,6 +1461,530 @@ class ApplicationRecordEntriesCompanion
   }
 }
 
+class $DiaryEntriesTable extends DiaryEntries
+    with TableInfo<$DiaryEntriesTable, DiaryEntry> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $DiaryEntriesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _titleMeta = const VerificationMeta('title');
+  @override
+  late final GeneratedColumn<String> title = GeneratedColumn<String>(
+    'title',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _notesMeta = const VerificationMeta('notes');
+  @override
+  late final GeneratedColumn<String> notes = GeneratedColumn<String>(
+    'notes',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _fatigueLevelMeta = const VerificationMeta(
+    'fatigueLevel',
+  );
+  @override
+  late final GeneratedColumn<int> fatigueLevel = GeneratedColumn<int>(
+    'fatigue_level',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _painLevelMeta = const VerificationMeta(
+    'painLevel',
+  );
+  @override
+  late final GeneratedColumn<int> painLevel = GeneratedColumn<int>(
+    'pain_level',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _moodLevelMeta = const VerificationMeta(
+    'moodLevel',
+  );
+  @override
+  late final GeneratedColumn<int> moodLevel = GeneratedColumn<int>(
+    'mood_level',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _sleepQualityLevelMeta = const VerificationMeta(
+    'sleepQualityLevel',
+  );
+  @override
+  late final GeneratedColumn<int> sleepQualityLevel = GeneratedColumn<int>(
+    'sleep_quality_level',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    createdAt,
+    title,
+    notes,
+    fatigueLevel,
+    painLevel,
+    moodLevel,
+    sleepQualityLevel,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'diary_entries';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<DiaryEntry> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('title')) {
+      context.handle(
+        _titleMeta,
+        title.isAcceptableOrUnknown(data['title']!, _titleMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_titleMeta);
+    }
+    if (data.containsKey('notes')) {
+      context.handle(
+        _notesMeta,
+        notes.isAcceptableOrUnknown(data['notes']!, _notesMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_notesMeta);
+    }
+    if (data.containsKey('fatigue_level')) {
+      context.handle(
+        _fatigueLevelMeta,
+        fatigueLevel.isAcceptableOrUnknown(
+          data['fatigue_level']!,
+          _fatigueLevelMeta,
+        ),
+      );
+    }
+    if (data.containsKey('pain_level')) {
+      context.handle(
+        _painLevelMeta,
+        painLevel.isAcceptableOrUnknown(data['pain_level']!, _painLevelMeta),
+      );
+    }
+    if (data.containsKey('mood_level')) {
+      context.handle(
+        _moodLevelMeta,
+        moodLevel.isAcceptableOrUnknown(data['mood_level']!, _moodLevelMeta),
+      );
+    }
+    if (data.containsKey('sleep_quality_level')) {
+      context.handle(
+        _sleepQualityLevelMeta,
+        sleepQualityLevel.isAcceptableOrUnknown(
+          data['sleep_quality_level']!,
+          _sleepQualityLevelMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  DiaryEntry map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return DiaryEntry(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      title: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}title'],
+      )!,
+      notes: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}notes'],
+      )!,
+      fatigueLevel: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}fatigue_level'],
+      ),
+      painLevel: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}pain_level'],
+      ),
+      moodLevel: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}mood_level'],
+      ),
+      sleepQualityLevel: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}sleep_quality_level'],
+      ),
+    );
+  }
+
+  @override
+  $DiaryEntriesTable createAlias(String alias) {
+    return $DiaryEntriesTable(attachedDatabase, alias);
+  }
+}
+
+class DiaryEntry extends DataClass implements Insertable<DiaryEntry> {
+  final String id;
+  final DateTime createdAt;
+  final String title;
+  final String notes;
+  final int? fatigueLevel;
+  final int? painLevel;
+  final int? moodLevel;
+  final int? sleepQualityLevel;
+  const DiaryEntry({
+    required this.id,
+    required this.createdAt,
+    required this.title,
+    required this.notes,
+    this.fatigueLevel,
+    this.painLevel,
+    this.moodLevel,
+    this.sleepQualityLevel,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['title'] = Variable<String>(title);
+    map['notes'] = Variable<String>(notes);
+    if (!nullToAbsent || fatigueLevel != null) {
+      map['fatigue_level'] = Variable<int>(fatigueLevel);
+    }
+    if (!nullToAbsent || painLevel != null) {
+      map['pain_level'] = Variable<int>(painLevel);
+    }
+    if (!nullToAbsent || moodLevel != null) {
+      map['mood_level'] = Variable<int>(moodLevel);
+    }
+    if (!nullToAbsent || sleepQualityLevel != null) {
+      map['sleep_quality_level'] = Variable<int>(sleepQualityLevel);
+    }
+    return map;
+  }
+
+  DiaryEntriesCompanion toCompanion(bool nullToAbsent) {
+    return DiaryEntriesCompanion(
+      id: Value(id),
+      createdAt: Value(createdAt),
+      title: Value(title),
+      notes: Value(notes),
+      fatigueLevel: fatigueLevel == null && nullToAbsent
+          ? const Value.absent()
+          : Value(fatigueLevel),
+      painLevel: painLevel == null && nullToAbsent
+          ? const Value.absent()
+          : Value(painLevel),
+      moodLevel: moodLevel == null && nullToAbsent
+          ? const Value.absent()
+          : Value(moodLevel),
+      sleepQualityLevel: sleepQualityLevel == null && nullToAbsent
+          ? const Value.absent()
+          : Value(sleepQualityLevel),
+    );
+  }
+
+  factory DiaryEntry.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return DiaryEntry(
+      id: serializer.fromJson<String>(json['id']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      title: serializer.fromJson<String>(json['title']),
+      notes: serializer.fromJson<String>(json['notes']),
+      fatigueLevel: serializer.fromJson<int?>(json['fatigueLevel']),
+      painLevel: serializer.fromJson<int?>(json['painLevel']),
+      moodLevel: serializer.fromJson<int?>(json['moodLevel']),
+      sleepQualityLevel: serializer.fromJson<int?>(json['sleepQualityLevel']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'title': serializer.toJson<String>(title),
+      'notes': serializer.toJson<String>(notes),
+      'fatigueLevel': serializer.toJson<int?>(fatigueLevel),
+      'painLevel': serializer.toJson<int?>(painLevel),
+      'moodLevel': serializer.toJson<int?>(moodLevel),
+      'sleepQualityLevel': serializer.toJson<int?>(sleepQualityLevel),
+    };
+  }
+
+  DiaryEntry copyWith({
+    String? id,
+    DateTime? createdAt,
+    String? title,
+    String? notes,
+    Value<int?> fatigueLevel = const Value.absent(),
+    Value<int?> painLevel = const Value.absent(),
+    Value<int?> moodLevel = const Value.absent(),
+    Value<int?> sleepQualityLevel = const Value.absent(),
+  }) => DiaryEntry(
+    id: id ?? this.id,
+    createdAt: createdAt ?? this.createdAt,
+    title: title ?? this.title,
+    notes: notes ?? this.notes,
+    fatigueLevel: fatigueLevel.present ? fatigueLevel.value : this.fatigueLevel,
+    painLevel: painLevel.present ? painLevel.value : this.painLevel,
+    moodLevel: moodLevel.present ? moodLevel.value : this.moodLevel,
+    sleepQualityLevel: sleepQualityLevel.present
+        ? sleepQualityLevel.value
+        : this.sleepQualityLevel,
+  );
+  DiaryEntry copyWithCompanion(DiaryEntriesCompanion data) {
+    return DiaryEntry(
+      id: data.id.present ? data.id.value : this.id,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      title: data.title.present ? data.title.value : this.title,
+      notes: data.notes.present ? data.notes.value : this.notes,
+      fatigueLevel: data.fatigueLevel.present
+          ? data.fatigueLevel.value
+          : this.fatigueLevel,
+      painLevel: data.painLevel.present ? data.painLevel.value : this.painLevel,
+      moodLevel: data.moodLevel.present ? data.moodLevel.value : this.moodLevel,
+      sleepQualityLevel: data.sleepQualityLevel.present
+          ? data.sleepQualityLevel.value
+          : this.sleepQualityLevel,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DiaryEntry(')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('title: $title, ')
+          ..write('notes: $notes, ')
+          ..write('fatigueLevel: $fatigueLevel, ')
+          ..write('painLevel: $painLevel, ')
+          ..write('moodLevel: $moodLevel, ')
+          ..write('sleepQualityLevel: $sleepQualityLevel')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    createdAt,
+    title,
+    notes,
+    fatigueLevel,
+    painLevel,
+    moodLevel,
+    sleepQualityLevel,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is DiaryEntry &&
+          other.id == this.id &&
+          other.createdAt == this.createdAt &&
+          other.title == this.title &&
+          other.notes == this.notes &&
+          other.fatigueLevel == this.fatigueLevel &&
+          other.painLevel == this.painLevel &&
+          other.moodLevel == this.moodLevel &&
+          other.sleepQualityLevel == this.sleepQualityLevel);
+}
+
+class DiaryEntriesCompanion extends UpdateCompanion<DiaryEntry> {
+  final Value<String> id;
+  final Value<DateTime> createdAt;
+  final Value<String> title;
+  final Value<String> notes;
+  final Value<int?> fatigueLevel;
+  final Value<int?> painLevel;
+  final Value<int?> moodLevel;
+  final Value<int?> sleepQualityLevel;
+  final Value<int> rowid;
+  const DiaryEntriesCompanion({
+    this.id = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.title = const Value.absent(),
+    this.notes = const Value.absent(),
+    this.fatigueLevel = const Value.absent(),
+    this.painLevel = const Value.absent(),
+    this.moodLevel = const Value.absent(),
+    this.sleepQualityLevel = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  DiaryEntriesCompanion.insert({
+    required String id,
+    required DateTime createdAt,
+    required String title,
+    required String notes,
+    this.fatigueLevel = const Value.absent(),
+    this.painLevel = const Value.absent(),
+    this.moodLevel = const Value.absent(),
+    this.sleepQualityLevel = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       createdAt = Value(createdAt),
+       title = Value(title),
+       notes = Value(notes);
+  static Insertable<DiaryEntry> custom({
+    Expression<String>? id,
+    Expression<DateTime>? createdAt,
+    Expression<String>? title,
+    Expression<String>? notes,
+    Expression<int>? fatigueLevel,
+    Expression<int>? painLevel,
+    Expression<int>? moodLevel,
+    Expression<int>? sleepQualityLevel,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (createdAt != null) 'created_at': createdAt,
+      if (title != null) 'title': title,
+      if (notes != null) 'notes': notes,
+      if (fatigueLevel != null) 'fatigue_level': fatigueLevel,
+      if (painLevel != null) 'pain_level': painLevel,
+      if (moodLevel != null) 'mood_level': moodLevel,
+      if (sleepQualityLevel != null) 'sleep_quality_level': sleepQualityLevel,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  DiaryEntriesCompanion copyWith({
+    Value<String>? id,
+    Value<DateTime>? createdAt,
+    Value<String>? title,
+    Value<String>? notes,
+    Value<int?>? fatigueLevel,
+    Value<int?>? painLevel,
+    Value<int?>? moodLevel,
+    Value<int?>? sleepQualityLevel,
+    Value<int>? rowid,
+  }) {
+    return DiaryEntriesCompanion(
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      title: title ?? this.title,
+      notes: notes ?? this.notes,
+      fatigueLevel: fatigueLevel ?? this.fatigueLevel,
+      painLevel: painLevel ?? this.painLevel,
+      moodLevel: moodLevel ?? this.moodLevel,
+      sleepQualityLevel: sleepQualityLevel ?? this.sleepQualityLevel,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (title.present) {
+      map['title'] = Variable<String>(title.value);
+    }
+    if (notes.present) {
+      map['notes'] = Variable<String>(notes.value);
+    }
+    if (fatigueLevel.present) {
+      map['fatigue_level'] = Variable<int>(fatigueLevel.value);
+    }
+    if (painLevel.present) {
+      map['pain_level'] = Variable<int>(painLevel.value);
+    }
+    if (moodLevel.present) {
+      map['mood_level'] = Variable<int>(moodLevel.value);
+    }
+    if (sleepQualityLevel.present) {
+      map['sleep_quality_level'] = Variable<int>(sleepQualityLevel.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DiaryEntriesCompanion(')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('title: $title, ')
+          ..write('notes: $notes, ')
+          ..write('fatigueLevel: $fatigueLevel, ')
+          ..write('painLevel: $painLevel, ')
+          ..write('moodLevel: $moodLevel, ')
+          ..write('sleepQualityLevel: $sleepQualityLevel, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -1469,6 +1993,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   );
   late final $ApplicationRecordEntriesTable applicationRecordEntries =
       $ApplicationRecordEntriesTable(this);
+  late final $DiaryEntriesTable diaryEntries = $DiaryEntriesTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -1476,6 +2001,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   List<DatabaseSchemaEntity> get allSchemaEntities => [
     treatmentEntries,
     applicationRecordEntries,
+    diaryEntries,
   ];
 }
 
@@ -2170,6 +2696,267 @@ typedef $$ApplicationRecordEntriesTableProcessedTableManager =
       ApplicationRecordEntry,
       PrefetchHooks Function()
     >;
+typedef $$DiaryEntriesTableCreateCompanionBuilder =
+    DiaryEntriesCompanion Function({
+      required String id,
+      required DateTime createdAt,
+      required String title,
+      required String notes,
+      Value<int?> fatigueLevel,
+      Value<int?> painLevel,
+      Value<int?> moodLevel,
+      Value<int?> sleepQualityLevel,
+      Value<int> rowid,
+    });
+typedef $$DiaryEntriesTableUpdateCompanionBuilder =
+    DiaryEntriesCompanion Function({
+      Value<String> id,
+      Value<DateTime> createdAt,
+      Value<String> title,
+      Value<String> notes,
+      Value<int?> fatigueLevel,
+      Value<int?> painLevel,
+      Value<int?> moodLevel,
+      Value<int?> sleepQualityLevel,
+      Value<int> rowid,
+    });
+
+class $$DiaryEntriesTableFilterComposer
+    extends Composer<_$AppDatabase, $DiaryEntriesTable> {
+  $$DiaryEntriesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get title => $composableBuilder(
+    column: $table.title,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get notes => $composableBuilder(
+    column: $table.notes,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get fatigueLevel => $composableBuilder(
+    column: $table.fatigueLevel,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get painLevel => $composableBuilder(
+    column: $table.painLevel,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get moodLevel => $composableBuilder(
+    column: $table.moodLevel,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get sleepQualityLevel => $composableBuilder(
+    column: $table.sleepQualityLevel,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$DiaryEntriesTableOrderingComposer
+    extends Composer<_$AppDatabase, $DiaryEntriesTable> {
+  $$DiaryEntriesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get title => $composableBuilder(
+    column: $table.title,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get notes => $composableBuilder(
+    column: $table.notes,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get fatigueLevel => $composableBuilder(
+    column: $table.fatigueLevel,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get painLevel => $composableBuilder(
+    column: $table.painLevel,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get moodLevel => $composableBuilder(
+    column: $table.moodLevel,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get sleepQualityLevel => $composableBuilder(
+    column: $table.sleepQualityLevel,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$DiaryEntriesTableAnnotationComposer
+    extends Composer<_$AppDatabase, $DiaryEntriesTable> {
+  $$DiaryEntriesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<String> get title =>
+      $composableBuilder(column: $table.title, builder: (column) => column);
+
+  GeneratedColumn<String> get notes =>
+      $composableBuilder(column: $table.notes, builder: (column) => column);
+
+  GeneratedColumn<int> get fatigueLevel => $composableBuilder(
+    column: $table.fatigueLevel,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get painLevel =>
+      $composableBuilder(column: $table.painLevel, builder: (column) => column);
+
+  GeneratedColumn<int> get moodLevel =>
+      $composableBuilder(column: $table.moodLevel, builder: (column) => column);
+
+  GeneratedColumn<int> get sleepQualityLevel => $composableBuilder(
+    column: $table.sleepQualityLevel,
+    builder: (column) => column,
+  );
+}
+
+class $$DiaryEntriesTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $DiaryEntriesTable,
+          DiaryEntry,
+          $$DiaryEntriesTableFilterComposer,
+          $$DiaryEntriesTableOrderingComposer,
+          $$DiaryEntriesTableAnnotationComposer,
+          $$DiaryEntriesTableCreateCompanionBuilder,
+          $$DiaryEntriesTableUpdateCompanionBuilder,
+          (
+            DiaryEntry,
+            BaseReferences<_$AppDatabase, $DiaryEntriesTable, DiaryEntry>,
+          ),
+          DiaryEntry,
+          PrefetchHooks Function()
+        > {
+  $$DiaryEntriesTableTableManager(_$AppDatabase db, $DiaryEntriesTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$DiaryEntriesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$DiaryEntriesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$DiaryEntriesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<String> title = const Value.absent(),
+                Value<String> notes = const Value.absent(),
+                Value<int?> fatigueLevel = const Value.absent(),
+                Value<int?> painLevel = const Value.absent(),
+                Value<int?> moodLevel = const Value.absent(),
+                Value<int?> sleepQualityLevel = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => DiaryEntriesCompanion(
+                id: id,
+                createdAt: createdAt,
+                title: title,
+                notes: notes,
+                fatigueLevel: fatigueLevel,
+                painLevel: painLevel,
+                moodLevel: moodLevel,
+                sleepQualityLevel: sleepQualityLevel,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required DateTime createdAt,
+                required String title,
+                required String notes,
+                Value<int?> fatigueLevel = const Value.absent(),
+                Value<int?> painLevel = const Value.absent(),
+                Value<int?> moodLevel = const Value.absent(),
+                Value<int?> sleepQualityLevel = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => DiaryEntriesCompanion.insert(
+                id: id,
+                createdAt: createdAt,
+                title: title,
+                notes: notes,
+                fatigueLevel: fatigueLevel,
+                painLevel: painLevel,
+                moodLevel: moodLevel,
+                sleepQualityLevel: sleepQualityLevel,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$DiaryEntriesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $DiaryEntriesTable,
+      DiaryEntry,
+      $$DiaryEntriesTableFilterComposer,
+      $$DiaryEntriesTableOrderingComposer,
+      $$DiaryEntriesTableAnnotationComposer,
+      $$DiaryEntriesTableCreateCompanionBuilder,
+      $$DiaryEntriesTableUpdateCompanionBuilder,
+      (
+        DiaryEntry,
+        BaseReferences<_$AppDatabase, $DiaryEntriesTable, DiaryEntry>,
+      ),
+      DiaryEntry,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -2181,4 +2968,6 @@ class $AppDatabaseManager {
         _db,
         _db.applicationRecordEntries,
       );
+  $$DiaryEntriesTableTableManager get diaryEntries =>
+      $$DiaryEntriesTableTableManager(_db, _db.diaryEntries);
 }
