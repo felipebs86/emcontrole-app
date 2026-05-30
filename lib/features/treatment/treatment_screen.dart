@@ -7,6 +7,7 @@ import 'data/medication_catalog_data_source.dart';
 import 'data/medication_repository.dart';
 import 'domain/application_rotation_service.dart';
 import 'domain/medication.dart';
+import 'domain/treatment_session_store.dart';
 
 class TreatmentScreen extends StatefulWidget {
   const TreatmentScreen({super.key});
@@ -164,6 +165,13 @@ class _TreatmentScreenState extends State<TreatmentScreen> {
                             setState(() {
                               _initialPointId = pointId;
                             });
+                          },
+                          validator: (pointId) {
+                            if (pointId == null) {
+                              return 'Selecione o ponto inicial de aplicação.';
+                            }
+
+                            return null;
                           },
                           hint: const Text('Selecionar'),
                         ),
@@ -328,6 +336,12 @@ class _TreatmentScreenState extends State<TreatmentScreen> {
       initialPoint: _selectedInitialPoint,
       nextPoint: _nextApplicationPoint,
       enableReminders: _enableReminders,
+    );
+
+    treatmentSessionStore.configureTreatment(
+      medication: setup.medication,
+      initialApplicationPointId: setup.initialPoint?.id,
+      scheduledAt: setup.scheduledAt,
     );
 
     setState(() {
@@ -789,5 +803,15 @@ class _TreatmentSetupData {
     final hour = applicationTime.hour.toString().padLeft(2, '0');
     final minute = applicationTime.minute.toString().padLeft(2, '0');
     return '$hour:$minute';
+  }
+
+  DateTime get scheduledAt {
+    return DateTime(
+      startDate.year,
+      startDate.month,
+      startDate.day,
+      applicationTime.hour,
+      applicationTime.minute,
+    );
   }
 }

@@ -190,6 +190,30 @@ void main() {
       find.text('Configuração salva em memória nesta sessão'),
       findsOneWidget,
     );
+
+    await tester.tap(find.text('Início'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Copaxone'), findsOneWidget);
+    expect(find.text('Local 1'), findsOneWidget);
+
+    await tester.ensureVisible(
+      find.byKey(const Key('register-application-button')),
+    );
+    await tester.tap(find.byKey(const Key('register-application-button')));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Confirmar aplicação'), findsWidgets);
+    expect(
+      find.text('Você aplicou o medicamento no local sugerido?'),
+      findsOneWidget,
+    );
+
+    await tester.tap(find.text('Confirmar aplicação').last);
+    await tester.pumpAndSettle();
+
+    expect(find.text('Aplicação registrada com sucesso'), findsOneWidget);
+    expect(find.text('Local 2'), findsOneWidget);
   });
 
   testWidgets('hides application site selector for oral medication', (
