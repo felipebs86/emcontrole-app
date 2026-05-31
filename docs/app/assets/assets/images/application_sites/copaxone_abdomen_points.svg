@@ -5,8 +5,7 @@
   <circle cx="160" cy="130" r="12" fill="#FFF8F1" stroke="#BFA99A" stroke-width="5"/>
   <path d="M101 101c36-25 82-25 118 0 5 31 3 63-6 92-32 17-74 17-106 0-9-29-11-61-6-92Z" fill="#DF6725" opacity=".22"/>
   <g fill="#DF6725" stroke="#FFFDF9" stroke-width="5">
-    <circle cx="125" cy="104" r="10"/><circle cx="195" cy="104" r="10"/>
-    <circle cx="119" cy="149" r="10"/><circle cx="201" cy="149" r="10"/>
-    <circle cx="136" cy="188" r="10"/><circle cx="184" cy="188" r="10"/>
+    <g id="abdomen_left_upper"><circle cx="125" cy="104" r="10"/></g><g id="abdomen_right_upper"><circle cx="195" cy="104" r="10"/></g>
+    <g id="abdomen_left_lower"><circle cx="119" cy="149" r="10"/></g><g id="abdomen_right_lower"><circle cx="201" cy="149" r="10"/></g>
   </g>
 </svg>

@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 340" role="img" aria-label="Coxa direita">
   <rect width="260" height="340" rx="28" fill="#FFF8F1"/>
   <path d="M77 26c42-20 96-18 133 6-5 88-20 192-54 282-25 11-62 10-89-3 19-86 23-190 10-285Z" fill="#F4E8DE" stroke="#806E63" stroke-width="6" stroke-linejoin="round"/>
-  <path d="M104 137c28-22 67-22 92 0-5 31-12 60-22 87-23 10-52 10-73 0 3-27 4-56 3-87Z" fill="#DF6725" opacity=".88"/>
+  <path id="thigh_right_upper_lateral" d="M104 137c28-22 67-22 92 0-5 31-12 60-22 87-23 10-52 10-73 0 3-27 4-56 3-87Z" fill="#DF6725" opacity=".88"/>
   <circle cx="149" cy="178" r="11" fill="#FFFDF9" stroke="#9E441D" stroke-width="5"/>
 </svg>
