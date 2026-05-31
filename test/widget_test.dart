@@ -103,19 +103,26 @@ void main() {
   ) async {
     await tester.pumpWidget(const EMControleApp());
 
-    expect(find.text('Configure seu tratamento'), findsOneWidget);
+    expect(find.text('Comece seu acompanhamento'), findsOneWidget);
 
-    await tester.tap(find.text('Tratamento').last);
+    await tester.tap(find.text('Começar acompanhamento'));
     await tester.pumpAndSettle();
     expect(find.text('Configure seu tratamento'), findsOneWidget);
+
+    await tester.tap(find.text('Início'));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Histórico'));
+    await tester.pumpAndSettle();
+    expect(find.text('Histórico'), findsWidgets);
 
     await tester.tap(find.text('Diário'));
     await tester.pumpAndSettle();
     expect(find.text('Diário'), findsWidgets);
 
-    await tester.tap(find.text('Histórico'));
+    await tester.tap(find.text('Linha do tempo'));
     await tester.pumpAndSettle();
-    expect(find.text('Histórico'), findsWidgets);
+    expect(find.text('Linha do tempo'), findsWidgets);
 
     await tester.tap(find.text('Ajustes'));
     await tester.pumpAndSettle();
@@ -127,7 +134,9 @@ void main() {
   ) async {
     await tester.pumpWidget(const EMControleApp());
 
-    await tester.tap(find.text('Tratamento').last);
+    await tester.tap(find.text('Início'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Começar acompanhamento'));
     await tester.pumpAndSettle();
 
     await tester.ensureVisible(
@@ -241,7 +250,9 @@ void main() {
   ) async {
     await tester.pumpWidget(const EMControleApp());
 
-    await tester.tap(find.text('Tratamento').last);
+    await tester.tap(find.text('Início'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Editar tratamento'));
     await tester.pumpAndSettle();
 
     await tester.ensureVisible(

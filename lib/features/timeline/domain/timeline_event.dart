@@ -84,8 +84,12 @@ class TimelineService {
 
   TimelineEvent _diaryEvent(SymptomDiaryEntry entry) {
     final indicators = [
-      if (entry.fatigueLevel != null) 'Fadiga ${entry.fatigueLevel}/10',
-      if (entry.moodLevel != null) 'Humor ${entry.moodLevel}/10',
+      if (entry.fatigueLevel != null)
+        'Fadiga ${_fatigueEmoji(entry.fatigueLevel!)}',
+      if (entry.painLevel != null) 'Dor ${_painEmoji(entry.painLevel!)}',
+      if (entry.moodLevel != null) 'Humor ${_moodEmoji(entry.moodLevel!)}',
+      if (entry.sleepQualityLevel != null)
+        'Sono ${_sleepEmoji(entry.sleepQualityLevel!)}',
     ];
 
     return TimelineEvent(
@@ -118,5 +122,43 @@ class TimelineService {
     return first.year == second.year &&
         first.month == second.month &&
         first.day == second.day;
+  }
+
+  String _fatigueEmoji(int value) {
+    return switch (value) {
+      1 => '😄',
+      2 => '🙂',
+      3 => '😐',
+      4 => '😣',
+      _ => '😫',
+    };
+  }
+
+  String _painEmoji(int value) {
+    return switch (value) {
+      1 => '😄',
+      2 => '🙂',
+      3 => '😐',
+      4 => '😣',
+      _ => '😫',
+    };
+  }
+
+  String _moodEmoji(int value) {
+    return switch (value) {
+      1 => '😞',
+      2 => '😐',
+      3 => '🙂',
+      _ => '😄',
+    };
+  }
+
+  String _sleepEmoji(int value) {
+    return switch (value) {
+      1 => '😴',
+      2 => '😐',
+      3 => '🙂',
+      _ => '😄',
+    };
   }
 }

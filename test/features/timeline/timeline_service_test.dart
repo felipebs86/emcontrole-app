@@ -26,10 +26,10 @@ void main() {
         createdAt: DateTime(2026, 5, 28, 18, 30),
         title: 'Fadiga elevada',
         notes: 'Após trabalho',
-        fatigueLevel: 8,
-        painLevel: null,
+        fatigueLevel: 4,
+        painLevel: 2,
         moodLevel: 4,
-        sleepQualityLevel: null,
+        sleepQualityLevel: 3,
       );
       final newerDiaryEntry = SymptomDiaryEntry(
         id: 'diary_2',
@@ -71,7 +71,12 @@ void main() {
       expect(events[2].title, 'Aplicação registrada');
       expect(events[2].description, contains('Copaxone 40 mg'));
       expect(events[2].description, contains('Local 7'));
-      expect(events[3].indicatorLabels, ['Fadiga 8/10', 'Humor 4/10']);
+      expect(events[3].indicatorLabels, [
+        'Fadiga 😣',
+        'Dor 🙂',
+        'Humor 😄',
+        'Sono 🙂',
+      ]);
     });
 
     test('groups events by local date preserving newest ordering', () {

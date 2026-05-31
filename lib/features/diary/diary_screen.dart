@@ -3,63 +3,46 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/app_routes.dart';
-import '../../core/app_shell.dart';
 import '../../core/database/app_database.dart';
 import 'data/diary_repository.dart';
 import 'domain/diary_entry.dart';
 
-class DiaryScreen extends StatefulWidget {
+class DiaryScreen extends StatelessWidget {
   const DiaryScreen({super.key});
 
   @override
-  State<DiaryScreen> createState() => _DiaryScreenState();
-}
-
-class _DiaryScreenState extends State<DiaryScreen> {
-  final DiaryRepository _repository = DiaryRepository(appDatabase);
-  late Future<List<SymptomDiaryEntry>> _entriesFuture;
-
-  @override
-  void initState() {
-    super.initState();
-    _entriesFuture = _repository.loadEntries();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return AppShell(
-      title: 'Diário',
-      selectedIndex: 2,
-      floatingActionButton: FloatingActionButton.extended(
-        key: const Key('diary-add-entry-button'),
-        onPressed: () => context.go(AppRoutes.diaryNew),
-        icon: const Icon(Icons.add),
-        label: const Text('Nova anotação'),
-      ),
-      child: FutureBuilder<List<SymptomDiaryEntry>>(
-        future: _entriesFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState != ConnectionState.done) {
-            return const Center(child: Text('Carregando diário...'));
-          }
+    return StreamBuilder<List<SymptomDiaryEntry>>(
+      stream: DiaryRepository(appDatabase).watchEntries(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: Text('Carregando diário...'));
+        }
 
-          final entries = snapshot.data ?? const [];
-          if (entries.isEmpty) {
-            return const _DiaryEmptyState();
-          }
+        final entries = snapshot.data ?? const [];
+        if (entries.isEmpty) {
+          return const _DiaryEmptyState();
+        }
 
-          return ListView(
-            children: [
-              const _TimelineLinkButton(),
-              const SizedBox(height: 12),
-              for (final (index, entry) in entries.indexed) ...[
-                _DiaryEntryCard(entry: entry),
-                if (index < entries.length - 1) const SizedBox(height: 12),
-              ],
+        return ListView(
+          children: [
+            Align(
+              alignment: Alignment.centerRight,
+              child: FilledButton.icon(
+                key: const Key('diary-add-entry-button'),
+                onPressed: () => context.go(AppRoutes.diaryNew),
+                icon: const Icon(Icons.add),
+                label: const Text('Nova anotação'),
+              ),
+            ),
+            const SizedBox(height: 12),
+            for (final (index, entry) in entries.indexed) ...[
+              _DiaryEntryCard(entry: entry),
+              if (index < entries.length - 1) const SizedBox(height: 12),
             ],
-          );
-        },
-      ),
+          ],
+        );
+      },
     );
   }
 }
@@ -77,10 +60,10 @@ class _CreateDiaryEntryScreenState extends State<CreateDiaryEntryScreen> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _notesController = TextEditingController();
 
-  int _fatigueLevel = 0;
-  int _painLevel = 0;
-  int _moodLevel = 8;
-  int _sleepQualityLevel = 8;
+  int _fatigueLevel = 1;
+  int _painLevel = 1;
+  int _moodLevel = 3;
+  int _sleepQualityLevel = 3;
   bool _isSaving = false;
 
   @override
@@ -92,98 +75,82 @@ class _CreateDiaryEntryScreenState extends State<CreateDiaryEntryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return AppShell(
-      title: 'Nova anotação',
-      selectedIndex: 2,
-      child: Form(
-        key: _formKey,
-        child: ListView(
-          children: [
-            TextFormField(
-              key: const Key('diary-title-field'),
-              controller: _titleController,
-              textInputAction: TextInputAction.next,
-              decoration: const InputDecoration(
-                labelText: 'Título',
-                prefixIcon: Icon(Icons.title),
-              ),
-              validator: (value) {
-                if (value == null || value.trim().isEmpty) {
-                  return 'Informe um título.';
-                }
-                return null;
-              },
+    return Form(
+      key: _formKey,
+      child: ListView(
+        children: [
+          TextFormField(
+            key: const Key('diary-title-field'),
+            controller: _titleController,
+            textInputAction: TextInputAction.next,
+            decoration: const InputDecoration(
+              labelText: 'Título',
+              prefixIcon: Icon(Icons.title),
             ),
-            const SizedBox(height: 16),
-            TextFormField(
-              key: const Key('diary-notes-field'),
-              controller: _notesController,
-              minLines: 5,
-              maxLines: 8,
-              decoration: const InputDecoration(
-                labelText: 'Observações',
-                alignLabelWithHint: true,
-                prefixIcon: Icon(Icons.notes_outlined),
-              ),
+            validator: (value) {
+              if (value == null || value.trim().isEmpty) {
+                return 'Informe um título.';
+              }
+              return null;
+            },
+          ),
+          const SizedBox(height: 16),
+          TextFormField(
+            key: const Key('diary-notes-field'),
+            controller: _notesController,
+            minLines: 5,
+            maxLines: 8,
+            decoration: const InputDecoration(
+              labelText: 'Observações',
+              alignLabelWithHint: true,
+              prefixIcon: Icon(Icons.notes_outlined),
             ),
-            const SizedBox(height: 24),
-            _SliderLevelField(
-              label: 'Fadiga',
-              icon: Icons.battery_2_bar_outlined,
-              value: _fatigueLevel,
-              minLabel: 'Sem fadiga',
-              maxLabel: 'Fadiga extrema',
-              onChanged: (value) => setState(() => _fatigueLevel = value),
-            ),
-            const SizedBox(height: 12),
-            _SliderLevelField(
-              label: 'Dor',
-              icon: Icons.healing_outlined,
-              value: _painLevel,
-              minLabel: 'Sem dor',
-              maxLabel: 'Dor intensa',
-              onChanged: (value) => setState(() => _painLevel = value),
-            ),
-            const SizedBox(height: 12),
-            _SegmentedLevelField(
-              label: 'Humor',
-              icon: Icons.mood_outlined,
-              value: _moodLevel,
-              options: const [
-                _RatingOption(value: 2, label: 'Ruim', emoji: '😞'),
-                _RatingOption(value: 5, label: 'Médio', emoji: '😐'),
-                _RatingOption(value: 8, label: 'Bom', emoji: '🙂'),
-                _RatingOption(value: 10, label: 'Ótimo', emoji: '😄'),
-              ],
-              onChanged: (value) => setState(() => _moodLevel = value),
-            ),
-            const SizedBox(height: 12),
-            _SegmentedLevelField(
-              label: 'Sono',
-              icon: Icons.bedtime_outlined,
-              value: _sleepQualityLevel,
-              options: const [
-                _RatingOption(value: 2, label: 'Ruim', emoji: '😴'),
-                _RatingOption(value: 5, label: 'Regular', emoji: '😐'),
-                _RatingOption(value: 8, label: 'Bom', emoji: '🙂'),
-                _RatingOption(value: 10, label: 'Ótimo', emoji: '😄'),
-              ],
-              onChanged: (value) => setState(() => _sleepQualityLevel = value),
-            ),
-            const SizedBox(height: 28),
-            FilledButton.icon(
-              key: const Key('diary-save-entry-button'),
-              onPressed: _isSaving ? null : _save,
-              icon: _isSaving
-                  ? const SizedBox.square(
-                      dimension: 18,
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    )
-                  : const Icon(Icons.check),
-              label: const Text('Salvar anotação'),
-            ),
-          ],
-        ),
+          ),
+          const SizedBox(height: 24),
+          _EmojiRatingField(
+            label: 'Fadiga',
+            icon: Icons.battery_2_bar_outlined,
+            value: _fatigueLevel,
+            options: _fatigueOptions,
+            onChanged: (value) => setState(() => _fatigueLevel = value),
+          ),
+          const SizedBox(height: 12),
+          _EmojiRatingField(
+            label: 'Dor',
+            icon: Icons.healing_outlined,
+            value: _painLevel,
+            options: _painOptions,
+            onChanged: (value) => setState(() => _painLevel = value),
+          ),
+          const SizedBox(height: 12),
+          _EmojiRatingField(
+            label: 'Humor',
+            icon: Icons.mood_outlined,
+            value: _moodLevel,
+            options: _moodOptions,
+            onChanged: (value) => setState(() => _moodLevel = value),
+          ),
+          const SizedBox(height: 12),
+          _EmojiRatingField(
+            label: 'Sono',
+            icon: Icons.bedtime_outlined,
+            value: _sleepQualityLevel,
+            options: _sleepOptions,
+            onChanged: (value) => setState(() => _sleepQualityLevel = value),
+          ),
+          const SizedBox(height: 28),
+          FilledButton.icon(
+            key: const Key('diary-save-entry-button'),
+            onPressed: _isSaving ? null : _save,
+            icon: _isSaving
+                ? const SizedBox.square(
+                    dimension: 18,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  )
+                : const Icon(Icons.check),
+            label: const Text('Salvar anotação'),
+          ),
+        ],
       ),
     );
   }
@@ -228,24 +195,20 @@ class DiaryEntryDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppShell(
-      title: 'Anotação',
-      selectedIndex: 2,
-      child: FutureBuilder<SymptomDiaryEntry?>(
-        future: DiaryRepository(appDatabase).loadEntry(entryId),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState != ConnectionState.done) {
-            return const Center(child: Text('Carregando anotação...'));
-          }
+    return FutureBuilder<SymptomDiaryEntry?>(
+      future: DiaryRepository(appDatabase).loadEntry(entryId),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState != ConnectionState.done) {
+          return const Center(child: Text('Carregando anotação...'));
+        }
 
-          final entry = snapshot.data;
-          if (entry == null) {
-            return const _DiaryEntryNotFound();
-          }
+        final entry = snapshot.data;
+        if (entry == null) {
+          return const _DiaryEntryNotFound();
+        }
 
-          return _DiaryEntryDetails(entry: entry);
-        },
-      ),
+        return _DiaryEntryDetails(entry: entry);
+      },
     );
   }
 }
@@ -290,12 +253,6 @@ class _DiaryEmptyState extends StatelessWidget {
                   icon: const Icon(Icons.add),
                   label: const Text('Nova anotação'),
                 ),
-                const SizedBox(height: 8),
-                OutlinedButton.icon(
-                  onPressed: () => context.go(AppRoutes.timeline),
-                  icon: const Icon(Icons.view_timeline_outlined),
-                  label: const Text('Linha do tempo'),
-                ),
               ],
             ),
           ),
@@ -314,11 +271,25 @@ class _DiaryEntryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final chips = [
       if (entry.fatigueLevel != null)
-        _LevelChip(label: 'Fadiga', value: entry.fatigueLevel!),
+        _LevelChip(
+          label: 'Fadiga',
+          option: _optionFor(_fatigueOptions, entry.fatigueLevel!),
+        ),
       if (entry.painLevel != null)
-        _LevelChip(label: 'Dor', value: entry.painLevel!),
+        _LevelChip(
+          label: 'Dor',
+          option: _optionFor(_painOptions, entry.painLevel!),
+        ),
       if (entry.moodLevel != null)
-        _LevelChip(label: 'Humor', value: entry.moodLevel!),
+        _LevelChip(
+          label: 'Humor',
+          option: _optionFor(_moodOptions, entry.moodLevel!),
+        ),
+      if (entry.sleepQualityLevel != null)
+        _LevelChip(
+          label: 'Sono',
+          option: _optionFor(_sleepOptions, entry.sleepQualityLevel!),
+        ),
     ];
 
     return Card(
@@ -362,22 +333,6 @@ class _DiaryEntryCard extends StatelessWidget {
   }
 }
 
-class _TimelineLinkButton extends StatelessWidget {
-  const _TimelineLinkButton();
-
-  @override
-  Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: OutlinedButton.icon(
-        onPressed: () => context.go(AppRoutes.timeline),
-        icon: const Icon(Icons.view_timeline_outlined),
-        label: const Text('Linha do tempo'),
-      ),
-    );
-  }
-}
-
 class _DiaryEntryDetails extends StatelessWidget {
   const _DiaryEntryDetails({required this.entry});
 
@@ -412,19 +367,22 @@ class _DiaryEntryDetails extends StatelessWidget {
                 const SizedBox(height: 20),
                 _DetailRow(
                   label: 'Fadiga',
-                  value: _formatLevel(entry.fatigueLevel),
+                  value: _formatRating(_fatigueOptions, entry.fatigueLevel),
                 ),
                 const SizedBox(height: 8),
-                _DetailRow(label: 'Dor', value: _formatLevel(entry.painLevel)),
+                _DetailRow(
+                  label: 'Dor',
+                  value: _formatRating(_painOptions, entry.painLevel),
+                ),
                 const SizedBox(height: 8),
                 _DetailRow(
                   label: 'Humor',
-                  value: _formatLevel(entry.moodLevel),
+                  value: _formatRating(_moodOptions, entry.moodLevel),
                 ),
                 const SizedBox(height: 8),
                 _DetailRow(
                   label: 'Sono',
-                  value: _formatLevel(entry.sleepQualityLevel),
+                  value: _formatRating(_sleepOptions, entry.sleepQualityLevel),
                 ),
               ],
             ),
@@ -470,61 +428,8 @@ class _DiaryEntryNotFound extends StatelessWidget {
   }
 }
 
-class _SliderLevelField extends StatelessWidget {
-  const _SliderLevelField({
-    required this.label,
-    required this.icon,
-    required this.value,
-    required this.minLabel,
-    required this.maxLabel,
-    required this.onChanged,
-  });
-
-  final String label;
-  final IconData icon;
-  final int value;
-  final String minLabel;
-  final String maxLabel;
-  final ValueChanged<int> onChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        border: Border.all(color: colorScheme.outlineVariant),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 14, 16, 10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            _RatingHeader(icon: icon, label: label, value: '$value/10'),
-            Slider(
-              value: value.toDouble(),
-              min: 0,
-              max: 10,
-              divisions: 10,
-              label: '$value',
-              onChanged: (newValue) => onChanged(newValue.round()),
-            ),
-            Row(
-              children: [
-                Expanded(child: Text(minLabel)),
-                Expanded(child: Text(maxLabel, textAlign: TextAlign.end)),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _SegmentedLevelField extends StatelessWidget {
-  const _SegmentedLevelField({
+class _EmojiRatingField extends StatelessWidget {
+  const _EmojiRatingField({
     required this.label,
     required this.icon,
     required this.value,
@@ -541,7 +446,7 @@ class _SegmentedLevelField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    final selected = options.singleWhere((option) => option.value == value);
+    final selected = _optionFor(options, value);
 
     return DecoratedBox(
       decoration: BoxDecoration(
@@ -556,21 +461,42 @@ class _SegmentedLevelField extends StatelessWidget {
             _RatingHeader(
               icon: icon,
               label: label,
-              value: '${selected.label} · $value/10',
+              value: '${selected.emoji} ${selected.label}',
             ),
             const SizedBox(height: 12),
-            SegmentedButton<int>(
-              segments: [
-                for (final option in options)
-                  ButtonSegment(
-                    value: option.value,
-                    label: Text('${option.emoji}\n${option.label}'),
-                  ),
-              ],
-              selected: {value},
-              showSelectedIcon: false,
-              onSelectionChanged: (selectedValues) {
-                onChanged(selectedValues.single);
+            LayoutBuilder(
+              builder: (context, constraints) {
+                final compact = constraints.maxWidth < 460;
+                return Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: [
+                    for (final option in options)
+                      ChoiceChip(
+                        selected: option.value == value,
+                        showCheckmark: false,
+                        label: SizedBox(
+                          width: compact ? 88 : 104,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                option.emoji,
+                                style: Theme.of(context).textTheme.titleLarge,
+                              ),
+                              const SizedBox(height: 2),
+                              Text(
+                                option.label,
+                                textAlign: TextAlign.center,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
+                          ),
+                        ),
+                        onSelected: (_) => onChanged(option.value),
+                      ),
+                  ],
+                );
               },
             ),
           ],
@@ -578,6 +504,41 @@ class _SegmentedLevelField extends StatelessWidget {
       ),
     );
   }
+}
+
+const _fatigueOptions = [
+  _RatingOption(value: 1, label: 'Nenhuma', emoji: '😄'),
+  _RatingOption(value: 2, label: 'Leve', emoji: '🙂'),
+  _RatingOption(value: 3, label: 'Moderada', emoji: '😐'),
+  _RatingOption(value: 4, label: 'Alta', emoji: '😣'),
+  _RatingOption(value: 5, label: 'Extrema', emoji: '😫'),
+];
+
+const _painOptions = [
+  _RatingOption(value: 1, label: 'Nenhuma', emoji: '😄'),
+  _RatingOption(value: 2, label: 'Leve', emoji: '🙂'),
+  _RatingOption(value: 3, label: 'Moderada', emoji: '😐'),
+  _RatingOption(value: 4, label: 'Forte', emoji: '😣'),
+  _RatingOption(value: 5, label: 'Muito forte', emoji: '😫'),
+];
+
+const _moodOptions = [
+  _RatingOption(value: 1, label: 'Ruim', emoji: '😞'),
+  _RatingOption(value: 2, label: 'Regular', emoji: '😐'),
+  _RatingOption(value: 3, label: 'Bom', emoji: '🙂'),
+  _RatingOption(value: 4, label: 'Ótimo', emoji: '😄'),
+];
+
+const _sleepOptions = [
+  _RatingOption(value: 1, label: 'Ruim', emoji: '😴'),
+  _RatingOption(value: 2, label: 'Regular', emoji: '😐'),
+  _RatingOption(value: 3, label: 'Bom', emoji: '🙂'),
+  _RatingOption(value: 4, label: 'Ótimo', emoji: '😄'),
+];
+
+_RatingOption _optionFor(List<_RatingOption> options, int value) {
+  return options.where((option) => option.value == value).firstOrNull ??
+      options.first;
 }
 
 class _RatingOption {
@@ -619,16 +580,16 @@ class _RatingHeader extends StatelessWidget {
 }
 
 class _LevelChip extends StatelessWidget {
-  const _LevelChip({required this.label, required this.value});
+  const _LevelChip({required this.label, required this.option});
 
   final String label;
-  final int value;
+  final _RatingOption option;
 
   @override
   Widget build(BuildContext context) {
     return Chip(
       visualDensity: VisualDensity.compact,
-      label: Text('$label $value/10'),
+      label: Text('$label ${option.emoji}'),
     );
   }
 }
@@ -660,12 +621,13 @@ class _DetailRow extends StatelessWidget {
   }
 }
 
-String _formatLevel(int? value) {
+String _formatRating(List<_RatingOption> options, int? value) {
   if (value == null) {
     return 'Não informado';
   }
 
-  return '$value/10';
+  final option = _optionFor(options, value);
+  return '${option.emoji} ${option.label}';
 }
 
 String _formatDateTime(DateTime value) {

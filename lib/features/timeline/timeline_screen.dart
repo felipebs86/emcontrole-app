@@ -3,7 +3,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/app_routes.dart';
-import '../../core/app_shell.dart';
 import '../../core/database/app_database.dart';
 import 'data/timeline_repository.dart';
 import 'domain/timeline_event.dart';
@@ -13,31 +12,27 @@ class TimelineScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppShell(
-      title: 'Linha do tempo',
-      selectedIndex: 3,
-      child: FutureBuilder<List<TimelineEvent>>(
-        future: TimelineRepository(appDatabase).loadEvents(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState != ConnectionState.done) {
-            return const Center(child: Text('Carregando linha do tempo...'));
-          }
+    return StreamBuilder<List<TimelineEvent>>(
+      stream: TimelineRepository(appDatabase).watchEvents(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: Text('Carregando linha do tempo...'));
+        }
 
-          final events = snapshot.data ?? const [];
-          if (events.isEmpty) {
-            return const _TimelineEmptyState();
-          }
+        final events = snapshot.data ?? const [];
+        if (events.isEmpty) {
+          return const _TimelineEmptyState();
+        }
 
-          final groups = const TimelineService().groupByDate(events);
-          return ListView.separated(
-            itemCount: groups.length,
-            separatorBuilder: (context, index) => const SizedBox(height: 16),
-            itemBuilder: (context, index) {
-              return _TimelineDateGroup(group: groups[index]);
-            },
-          );
-        },
-      ),
+        final groups = const TimelineService().groupByDate(events);
+        return ListView.separated(
+          itemCount: groups.length,
+          separatorBuilder: (context, index) => const SizedBox(height: 16),
+          itemBuilder: (context, index) {
+            return _TimelineDateGroup(group: groups[index]);
+          },
+        );
+      },
     );
   }
 }
@@ -64,7 +59,7 @@ class _TimelineEmptyState extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  'Nenhum evento registrado',
+                  'Nada registrado ainda',
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),

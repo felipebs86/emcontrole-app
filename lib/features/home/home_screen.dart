@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../core/app_shell.dart';
 import '../../core/app_routes.dart';
 import '../treatment/domain/application_eligibility_service.dart';
 import '../treatment/domain/application_record.dart';
@@ -17,20 +16,16 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppShell(
-      title: 'EMControle',
-      selectedIndex: 0,
-      child: AnimatedBuilder(
-        animation: treatmentSessionStore,
-        builder: (context, _) {
-          final medication = treatmentSessionStore.medication;
-          if (medication == null) {
-            return const _NoTreatmentDashboard();
-          }
+    return AnimatedBuilder(
+      animation: treatmentSessionStore,
+      builder: (context, _) {
+        final medication = treatmentSessionStore.medication;
+        if (medication == null) {
+          return const _NoTreatmentDashboard();
+        }
 
-          return _ActiveTreatmentPanel(medication: medication);
-        },
-      ),
+        return _ActiveTreatmentPanel(medication: medication);
+      },
     );
   }
 }
@@ -57,13 +52,13 @@ class _NoTreatmentDashboard extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  'Configure seu tratamento',
+                  'Comece seu acompanhamento',
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Cadastre seu medicamento principal para começar a acompanhar suas aplicações.',
+                  'Cadastre seu medicamento principal para organizar sua rotina com mais tranquilidade.',
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                     color: Theme.of(context).colorScheme.onSurfaceVariant,
@@ -73,13 +68,7 @@ class _NoTreatmentDashboard extends StatelessWidget {
                 FilledButton.icon(
                   onPressed: () => context.go(AppRoutes.treatment),
                   icon: const Icon(Icons.medication_outlined),
-                  label: const Text('Configurar tratamento'),
-                ),
-                const SizedBox(height: 8),
-                OutlinedButton.icon(
-                  onPressed: () => context.go(AppRoutes.timeline),
-                  icon: const Icon(Icons.view_timeline_outlined),
-                  label: const Text('Linha do tempo'),
+                  label: const Text('Começar acompanhamento'),
                 ),
               ],
             ),
@@ -134,8 +123,6 @@ class _ActiveTreatmentPanel extends StatelessWidget {
                 record: latestRecord,
                 medication: medication,
               ),
-              const SizedBox(height: 12),
-              const _SecondaryActions(),
             ],
           ),
         ),
@@ -355,6 +342,12 @@ class _TreatmentSummaryCard extends StatelessWidget {
               value:
                   '${medication.administrationType.label} · ${medication.route}',
             ),
+            const SizedBox(height: 16),
+            OutlinedButton.icon(
+              onPressed: () => context.go(AppRoutes.treatment),
+              icon: const Icon(Icons.edit_outlined),
+              label: const Text('Editar tratamento'),
+            ),
           ],
         ),
       ),
@@ -534,41 +527,6 @@ class _LastApplicationCard extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-}
-
-class _SecondaryActions extends StatelessWidget {
-  const _SecondaryActions();
-
-  @override
-  Widget build(BuildContext context) {
-    return Wrap(
-      spacing: 8,
-      runSpacing: 8,
-      alignment: WrapAlignment.center,
-      children: [
-        OutlinedButton.icon(
-          onPressed: () => context.go(AppRoutes.treatment),
-          icon: const Icon(Icons.medication_outlined),
-          label: const Text('Tratamento'),
-        ),
-        OutlinedButton.icon(
-          onPressed: () => context.go(AppRoutes.history),
-          icon: const Icon(Icons.history_outlined),
-          label: const Text('Histórico'),
-        ),
-        OutlinedButton.icon(
-          onPressed: () => context.go(AppRoutes.timeline),
-          icon: const Icon(Icons.view_timeline_outlined),
-          label: const Text('Linha do tempo'),
-        ),
-        OutlinedButton.icon(
-          onPressed: () => context.go(AppRoutes.diary),
-          icon: const Icon(Icons.edit_note_outlined),
-          label: const Text('Diário'),
-        ),
-      ],
     );
   }
 }

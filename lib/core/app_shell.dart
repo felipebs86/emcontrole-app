@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
 import 'app_routes.dart';
@@ -6,28 +7,41 @@ import 'app_routes.dart';
 class AppShell extends StatelessWidget {
   const AppShell({
     required this.title,
-    required this.selectedIndex,
     required this.child,
     this.floatingActionButton,
+    this.selectedIndex = 0,
     super.key,
-  });
+  }) : navigationShell = null;
+
+  const AppShell.navigation({
+    required StatefulNavigationShell shell,
+    this.floatingActionButton,
+    super.key,
+  }) : title = 'EMControle',
+       selectedIndex = 0,
+       child = shell,
+       navigationShell = shell;
 
   final String title;
   final int selectedIndex;
   final Widget child;
   final Widget? floatingActionButton;
+  final StatefulNavigationShell? navigationShell;
 
   @override
   Widget build(BuildContext context) {
+    final shell = navigationShell;
+    final activeIndex = shell?.currentIndex ?? selectedIndex;
+
     return Scaffold(
-      appBar: AppBar(title: Text(title)),
+      appBar: AppBar(title: const _AppHeader()),
       floatingActionButton: floatingActionButton,
       body: SafeArea(
         child: Padding(padding: const EdgeInsets.all(24), child: child),
       ),
       bottomNavigationBar: NavigationBar(
-        selectedIndex: selectedIndex,
-        onDestinationSelected: (index) => _goToIndex(context, index),
+        selectedIndex: activeIndex,
+        onDestinationSelected: (index) => _goToIndex(context, index, shell),
         destinations: const [
           NavigationDestination(
             icon: Icon(Icons.home_outlined),
@@ -35,9 +49,9 @@ class AppShell extends StatelessWidget {
             label: 'Início',
           ),
           NavigationDestination(
-            icon: Icon(Icons.medication_outlined),
-            selectedIcon: Icon(Icons.medication),
-            label: 'Tratamento',
+            icon: Icon(Icons.history_outlined),
+            selectedIcon: Icon(Icons.history),
+            label: 'Histórico',
           ),
           NavigationDestination(
             icon: Icon(Icons.edit_note_outlined),
@@ -45,9 +59,9 @@ class AppShell extends StatelessWidget {
             label: 'Diário',
           ),
           NavigationDestination(
-            icon: Icon(Icons.history_outlined),
-            selectedIcon: Icon(Icons.history),
-            label: 'Histórico',
+            icon: Icon(Icons.view_timeline_outlined),
+            selectedIcon: Icon(Icons.view_timeline),
+            label: 'Linha do tempo',
           ),
           NavigationDestination(
             icon: Icon(Icons.settings_outlined),
@@ -59,16 +73,63 @@ class AppShell extends StatelessWidget {
     );
   }
 
-  void _goToIndex(BuildContext context, int index) {
+  void _goToIndex(
+    BuildContext context,
+    int index,
+    StatefulNavigationShell? shell,
+  ) {
+    if (shell != null) {
+      shell.goBranch(index, initialLocation: index == shell.currentIndex);
+      return;
+    }
+
     final route = switch (index) {
       0 => AppRoutes.home,
-      1 => AppRoutes.treatment,
+      1 => AppRoutes.history,
       2 => AppRoutes.diary,
-      3 => AppRoutes.history,
+      3 => AppRoutes.timeline,
       4 => AppRoutes.settings,
       _ => AppRoutes.home,
     };
 
     context.go(route);
+  }
+}
+
+class _AppHeader extends StatelessWidget {
+  const _AppHeader();
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        SvgPicture.asset(
+          'assets/images/brand/emcontrole_mark.svg',
+          width: 30,
+          height: 30,
+          semanticsLabel: 'Marca EMControle',
+        ),
+        const SizedBox(width: 10),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'EMControle',
+              style: Theme.of(
+                context,
+              ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800),
+            ),
+            Text(
+              'Seu cuidado, organizado',
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
   }
 }

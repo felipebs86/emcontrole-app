@@ -18,6 +18,14 @@ class ApplicationRecordRepository {
     return entries.map(_fromEntry).toList();
   }
 
+  Stream<List<ApplicationRecord>> watchRecords(String treatmentId) {
+    return (_database.select(_database.applicationRecordEntries)
+          ..where((table) => table.treatmentId.equals(treatmentId))
+          ..orderBy([(table) => OrderingTerm.asc(table.registeredAt)]))
+        .watch()
+        .map((entries) => entries.map(_fromEntry).toList());
+  }
+
   Future<void> saveRecord({
     required String treatmentId,
     required ApplicationRecord record,

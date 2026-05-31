@@ -4,7 +4,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/app_routes.dart';
-import '../../core/app_shell.dart';
 import '../../core/database/app_database.dart';
 import '../treatment/data/application_record_repository.dart';
 import '../treatment/data/medication_catalog_data_source.dart';
@@ -17,37 +16,30 @@ class HistoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppShell(
-      title: 'Histórico',
-      selectedIndex: 3,
-      child: FutureBuilder<List<ApplicationRecord>>(
-        future: ApplicationRecordRepository(
-          appDatabase,
-        ).loadRecords(TreatmentRepository.activeTreatmentId),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState != ConnectionState.done) {
-            return const Center(child: Text('Carregando histórico...'));
-          }
+    return StreamBuilder<List<ApplicationRecord>>(
+      stream: ApplicationRecordRepository(
+        appDatabase,
+      ).watchRecords(TreatmentRepository.activeTreatmentId),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: Text('Carregando histórico...'));
+        }
 
-          final records = snapshot.data ?? const [];
-          if (records.isEmpty) {
-            return const _HistoryEmptyState();
-          }
+        final records = snapshot.data ?? const [];
+        if (records.isEmpty) {
+          return const _HistoryEmptyState();
+        }
 
-          final groupedRecords = _groupRecordsByDate(records);
-          return ListView(
-            children: [
-              const _TimelineLinkButton(),
-              const SizedBox(height: 12),
-              for (final (index, group) in groupedRecords.indexed) ...[
-                _HistoryDateGroup(group: group),
-                if (index < groupedRecords.length - 1)
-                  const SizedBox(height: 16),
-              ],
+        final groupedRecords = _groupRecordsByDate(records);
+        return ListView(
+          children: [
+            for (final (index, group) in groupedRecords.indexed) ...[
+              _HistoryDateGroup(group: group),
+              if (index < groupedRecords.length - 1) const SizedBox(height: 16),
             ],
-          );
-        },
-      ),
+          ],
+        );
+      },
     );
   }
 }
@@ -59,28 +51,24 @@ class HistoryRecordDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppShell(
-      title: 'Detalhes',
-      selectedIndex: 3,
-      child: FutureBuilder<List<ApplicationRecord>>(
-        future: ApplicationRecordRepository(
-          appDatabase,
-        ).loadRecords(TreatmentRepository.activeTreatmentId),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState != ConnectionState.done) {
-            return const Center(child: Text('Carregando registro...'));
-          }
+    return FutureBuilder<List<ApplicationRecord>>(
+      future: ApplicationRecordRepository(
+        appDatabase,
+      ).loadRecords(TreatmentRepository.activeTreatmentId),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState != ConnectionState.done) {
+          return const Center(child: Text('Carregando registro...'));
+        }
 
-          final record = (snapshot.data ?? const [])
-              .where((record) => record.id == recordId)
-              .firstOrNull;
-          if (record == null) {
-            return const _HistoryRecordNotFound();
-          }
+        final record = (snapshot.data ?? const [])
+            .where((record) => record.id == recordId)
+            .firstOrNull;
+        if (record == null) {
+          return const _HistoryRecordNotFound();
+        }
 
-          return _HistoryRecordDetails(record: record);
-        },
-      ),
+        return _HistoryRecordDetails(record: record);
+      },
     );
   }
 }
@@ -118,12 +106,6 @@ class _HistoryEmptyState extends StatelessWidget {
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                     color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
-                ),
-                const SizedBox(height: 20),
-                OutlinedButton.icon(
-                  onPressed: () => context.go(AppRoutes.timeline),
-                  icon: const Icon(Icons.view_timeline_outlined),
-                  label: const Text('Linha do tempo'),
                 ),
               ],
             ),
@@ -230,22 +212,6 @@ class _HistoryRecordTile extends StatelessWidget {
       ),
       trailing: const Icon(Icons.chevron_right),
       onTap: () => context.go('${AppRoutes.history}/${record.id}'),
-    );
-  }
-}
-
-class _TimelineLinkButton extends StatelessWidget {
-  const _TimelineLinkButton();
-
-  @override
-  Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: OutlinedButton.icon(
-        onPressed: () => context.go(AppRoutes.timeline),
-        icon: const Icon(Icons.view_timeline_outlined),
-        label: const Text('Linha do tempo'),
-      ),
     );
   }
 }

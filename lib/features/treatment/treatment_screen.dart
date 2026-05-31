@@ -61,7 +61,7 @@ class _TreatmentScreenState extends State<TreatmentScreen> {
   Widget build(BuildContext context) {
     return AppShell(
       title: 'Tratamento',
-      selectedIndex: 1,
+      selectedIndex: 0,
       child: SingleChildScrollView(
         child: Center(
           child: ConstrainedBox(

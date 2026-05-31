@@ -3,7 +3,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/app_routes.dart';
-import '../../core/app_shell.dart';
 import '../treatment/domain/treatment_session_store.dart';
 import 'domain/theme_preference_controller.dart';
 
@@ -12,34 +11,30 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppShell(
-      title: 'Ajustes',
-      selectedIndex: 4,
-      child: ListView(
-        children: [
-          Center(
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 720),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: const [
-                  _AppearanceCard(),
-                  SizedBox(height: 16),
-                  _ReminderStatusCard(),
-                  SizedBox(height: 16),
-                  _AboutCard(),
-                  SizedBox(height: 16),
-                  _MedicalDisclaimerCard(),
-                  SizedBox(height: 16),
-                  _DataPrivacyCard(),
-                  SizedBox(height: 16),
-                  _VersionCard(),
-                ],
-              ),
+    return ListView(
+      children: [
+        Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 720),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: const [
+                _AppearanceCard(),
+                SizedBox(height: 16),
+                _ReminderStatusCard(),
+                SizedBox(height: 16),
+                _AboutCard(),
+                SizedBox(height: 16),
+                _MedicalDisclaimerCard(),
+                SizedBox(height: 16),
+                _DataPrivacyCard(),
+                SizedBox(height: 16),
+                _VersionCard(),
+              ],
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

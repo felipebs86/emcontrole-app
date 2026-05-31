@@ -23,6 +23,13 @@ class TreatmentChangeRepository implements TreatmentChangeDataSource {
     return entries.map(_fromEntry).toList();
   }
 
+  Stream<List<TreatmentChangeRecord>> watchRecords() {
+    return (_database.select(_database.treatmentChangeEntries)
+          ..orderBy([(table) => OrderingTerm.desc(table.changedAt)]))
+        .watch()
+        .map((entries) => entries.map(_fromEntry).toList());
+  }
+
   @override
   Future<void> saveRecord(TreatmentChangeRecord record) async {
     await _database

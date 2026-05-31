@@ -16,6 +16,13 @@ class DiaryRepository {
     return entries.map(_fromEntry).toList();
   }
 
+  Stream<List<SymptomDiaryEntry>> watchEntries() {
+    return (_database.select(_database.diaryEntries)
+          ..orderBy([(table) => OrderingTerm.desc(table.createdAt)]))
+        .watch()
+        .map((entries) => entries.map(_fromEntry).toList());
+  }
+
   Future<SymptomDiaryEntry?> loadEntry(String id) async {
     final entry = await (_database.select(
       _database.diaryEntries,
