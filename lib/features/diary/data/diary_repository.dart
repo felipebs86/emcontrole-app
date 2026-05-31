@@ -35,6 +35,18 @@ class DiaryRepository {
     return _fromEntry(entry);
   }
 
+  Stream<SymptomDiaryEntry?> watchEntry(String id) {
+    return (_database.select(
+      _database.diaryEntries,
+    )..where((table) => table.id.equals(id))).watchSingleOrNull().map((entry) {
+      if (entry == null) {
+        return null;
+      }
+
+      return _fromEntry(entry);
+    });
+  }
+
   Future<void> saveEntry(SymptomDiaryEntry entry) async {
     await _database
         .into(_database.diaryEntries)
@@ -50,6 +62,27 @@ class DiaryRepository {
             sleepQualityLevel: Value(entry.sleepQualityLevel),
           ),
         );
+  }
+
+  Future<void> updateEntry(SymptomDiaryEntry entry) async {
+    await (_database.update(
+      _database.diaryEntries,
+    )..where((table) => table.id.equals(entry.id))).write(
+      DiaryEntriesCompanion(
+        title: Value(entry.title),
+        notes: Value(entry.notes),
+        fatigueLevel: Value(entry.fatigueLevel),
+        painLevel: Value(entry.painLevel),
+        moodLevel: Value(entry.moodLevel),
+        sleepQualityLevel: Value(entry.sleepQualityLevel),
+      ),
+    );
+  }
+
+  Future<void> deleteEntry(String id) async {
+    await (_database.delete(
+      _database.diaryEntries,
+    )..where((table) => table.id.equals(id))).go();
   }
 
   SymptomDiaryEntry _fromEntry(DiaryEntry entry) {

@@ -48,6 +48,12 @@ final appRouter = GoRouter(
                   builder: (context, state) => const CreateDiaryEntryScreen(),
                 ),
                 GoRoute(
+                  path: ':entryId/edit',
+                  builder: (context, state) => EditDiaryEntryScreen(
+                    entryId: state.pathParameters['entryId'] ?? '',
+                  ),
+                ),
+                GoRoute(
                   path: ':entryId',
                   builder: (context, state) => DiaryEntryDetailsScreen(
                     entryId: state.pathParameters['entryId'] ?? '',

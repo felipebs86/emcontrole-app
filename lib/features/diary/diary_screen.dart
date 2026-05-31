@@ -51,10 +51,51 @@ class CreateDiaryEntryScreen extends StatefulWidget {
   const CreateDiaryEntryScreen({super.key});
 
   @override
-  State<CreateDiaryEntryScreen> createState() => _CreateDiaryEntryScreenState();
+  State<CreateDiaryEntryScreen> createState() => _DiaryEntryFormScreenState();
 }
 
-class _CreateDiaryEntryScreenState extends State<CreateDiaryEntryScreen> {
+class EditDiaryEntryScreen extends StatelessWidget {
+  const EditDiaryEntryScreen({required this.entryId, super.key});
+
+  final String entryId;
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<SymptomDiaryEntry?>(
+      future: DiaryRepository(appDatabase).loadEntry(entryId),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState != ConnectionState.done) {
+          return const Center(child: Text('Carregando anotação...'));
+        }
+
+        final entry = snapshot.data;
+        if (entry == null) {
+          return const _DiaryEntryNotFound();
+        }
+
+        return _DiaryEntryForm(initialEntry: entry);
+      },
+    );
+  }
+}
+
+class _DiaryEntryFormScreenState extends State<CreateDiaryEntryScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return const _DiaryEntryForm();
+  }
+}
+
+class _DiaryEntryForm extends StatefulWidget {
+  const _DiaryEntryForm({this.initialEntry});
+
+  final SymptomDiaryEntry? initialEntry;
+
+  @override
+  State<_DiaryEntryForm> createState() => _DiaryEntryFormState();
+}
+
+class _DiaryEntryFormState extends State<_DiaryEntryForm> {
   final DiaryRepository _repository = DiaryRepository(appDatabase);
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _titleController = TextEditingController();
@@ -65,6 +106,24 @@ class _CreateDiaryEntryScreenState extends State<CreateDiaryEntryScreen> {
   int _moodLevel = 3;
   int _sleepQualityLevel = 3;
   bool _isSaving = false;
+
+  bool get _isEditing => widget.initialEntry != null;
+
+  @override
+  void initState() {
+    super.initState();
+    final entry = widget.initialEntry;
+    if (entry == null) {
+      return;
+    }
+
+    _titleController.text = entry.title;
+    _notesController.text = entry.notes;
+    _fatigueLevel = entry.fatigueLevel ?? _fatigueLevel;
+    _painLevel = entry.painLevel ?? _painLevel;
+    _moodLevel = entry.moodLevel ?? _moodLevel;
+    _sleepQualityLevel = entry.sleepQualityLevel ?? _sleepQualityLevel;
+  }
 
   @override
   void dispose() {
@@ -148,7 +207,7 @@ class _CreateDiaryEntryScreenState extends State<CreateDiaryEntryScreen> {
                     child: CircularProgressIndicator(strokeWidth: 2),
                   )
                 : const Icon(Icons.check),
-            label: const Text('Salvar anotação'),
+            label: Text(_isEditing ? 'Atualizar anotação' : 'Salvar anotação'),
           ),
         ],
       ),
@@ -163,18 +222,34 @@ class _CreateDiaryEntryScreenState extends State<CreateDiaryEntryScreen> {
 
     setState(() => _isSaving = true);
     final now = DateTime.now();
-    final entry = SymptomDiaryEntry(
-      id: 'diary_${now.microsecondsSinceEpoch}',
-      createdAt: now,
-      title: _titleController.text.trim(),
-      notes: _notesController.text.trim(),
-      fatigueLevel: _fatigueLevel,
-      painLevel: _painLevel,
-      moodLevel: _moodLevel,
-      sleepQualityLevel: _sleepQualityLevel,
-    );
+    final initialEntry = widget.initialEntry;
+    final entry =
+        (initialEntry ??
+                SymptomDiaryEntry(
+                  id: 'diary_${now.microsecondsSinceEpoch}',
+                  createdAt: now,
+                  title: '',
+                  notes: '',
+                  fatigueLevel: _fatigueLevel,
+                  painLevel: _painLevel,
+                  moodLevel: _moodLevel,
+                  sleepQualityLevel: _sleepQualityLevel,
+                ))
+            .copyWith(
+              title: _titleController.text.trim(),
+              notes: _notesController.text.trim(),
+              fatigueLevel: _fatigueLevel,
+              painLevel: _painLevel,
+              moodLevel: _moodLevel,
+              sleepQualityLevel: _sleepQualityLevel,
+            );
 
-    await _repository.saveEntry(entry);
+    if (_isEditing) {
+      await _repository.updateEntry(entry);
+    } else {
+      await _repository.saveEntry(entry);
+    }
+
     if (!mounted) {
       return;
     }
@@ -182,9 +257,15 @@ class _CreateDiaryEntryScreenState extends State<CreateDiaryEntryScreen> {
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
       ..showSnackBar(
-        const SnackBar(content: Text('Anotação salva com sucesso.')),
+        SnackBar(
+          content: Text(
+            _isEditing
+                ? 'Anotação atualizada com sucesso.'
+                : 'Anotação salva com sucesso.',
+          ),
+        ),
       );
-    context.go(AppRoutes.diary);
+    context.go(_isEditing ? '${AppRoutes.diary}/${entry.id}' : AppRoutes.diary);
   }
 }
 
@@ -195,10 +276,10 @@ class DiaryEntryDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<SymptomDiaryEntry?>(
-      future: DiaryRepository(appDatabase).loadEntry(entryId),
+    return StreamBuilder<SymptomDiaryEntry?>(
+      stream: DiaryRepository(appDatabase).watchEntry(entryId),
       builder: (context, snapshot) {
-        if (snapshot.connectionState != ConnectionState.done) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: Text('Carregando anotação...'));
         }
 
@@ -353,8 +434,32 @@ class _DiaryEntryDetails extends StatelessWidget {
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),
                 const SizedBox(height: 12),
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: [
+                    TextButton.icon(
+                      onPressed: () =>
+                          context.go(AppRoutes.diaryEdit(entry.id)),
+                      icon: const Icon(Icons.edit_outlined),
+                      label: const Text('Editar'),
+                    ),
+                    const SizedBox(width: 8),
+                    TextButton.icon(
+                      onPressed: () => _confirmDelete(context),
+                      icon: const Icon(Icons.delete_outline),
+                      label: const Text('Excluir'),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  'Criada em',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                const SizedBox(height: 6),
                 _DetailRow(
-                  label: 'Criada em',
+                  label: 'Data',
                   value: _formatDateTime(entry.createdAt),
                 ),
                 const SizedBox(height: 16),
@@ -390,6 +495,42 @@ class _DiaryEntryDetails extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  Future<void> _confirmDelete(BuildContext context) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Excluir anotação'),
+        content: const Text('Deseja excluir esta anotação?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text('Cancelar'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: const Text('Excluir'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed != true || !context.mounted) {
+      return;
+    }
+
+    await DiaryRepository(appDatabase).deleteEntry(entry.id);
+    if (!context.mounted) {
+      return;
+    }
+
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(
+        const SnackBar(content: Text('Anotação excluída com sucesso.')),
+      );
+    context.go(AppRoutes.diary);
   }
 }
 
