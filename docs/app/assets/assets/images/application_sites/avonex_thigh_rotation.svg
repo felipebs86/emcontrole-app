@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 260" role="img" aria-label="Locais de aplicação Avonex nas coxas">
+  <rect width="360" height="260" rx="18" fill="#FFFFFF"/>
+  <path d="M132 26h96c4 24 1 45-10 64l-14 24h-48l-14-24c-11-19-14-40-10-64Z" fill="#EEF1F4" stroke="#69727D" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M150 113c-11 34-18 72-22 115 13 7 36 8 52 2 6-41 6-80 0-117h-30Z" fill="#F7F8FA" stroke="#69727D" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M210 113c11 34 18 72 22 115-13 7-36 8-52 2-6-41-6-80 0-117h30Z" fill="#F7F8FA" stroke="#69727D" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M180 116v108" fill="none" stroke="#C8CED6" stroke-width="4" stroke-linecap="round"/>
+  <circle id="avonex_right_thigh_1" cx="154" cy="146" r="28" fill="#E66A1A"/>
+  <circle id="avonex_left_thigh_2" cx="206" cy="146" r="28" fill="#E66A1A" opacity=".28"/>
+  <g font-family="Arial, sans-serif" font-size="20" font-weight="700" text-anchor="middle" dominant-baseline="central">
+    <text x="154" y="146" fill="#FFFFFF">1</text>
+    <text x="206" y="146" fill="#A94712">2</text>
+  </g>
+</svg>

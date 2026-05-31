@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 260" role="img" aria-label="Avonex Local 2 - Coxa esquerda">
+  <rect width="360" height="260" rx="18" fill="#FFFFFF"/>
+  <path d="M132 26h96c4 24 1 45-10 64l-14 24h-48l-14-24c-11-19-14-40-10-64Z" fill="#EEF1F4" stroke="#69727D" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M150 113c-11 34-18 72-22 115 13 7 36 8 52 2 6-41 6-80 0-117h-30Z" fill="#F7F8FA" stroke="#69727D" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M210 113c11 34 18 72 22 115-13 7-36 8-52 2-6-41-6-80 0-117h30Z" fill="#F7F8FA" stroke="#69727D" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M180 116v108" fill="none" stroke="#C8CED6" stroke-width="4" stroke-linecap="round"/>
+  <path d="M220 126c-14-11-30-11-43 0-1 31 0 62 5 92 13 4 29 4 42-1-1-32-2-62-4-91Z" fill="#E66A1A" opacity=".9"/>
+  <circle cx="206" cy="146" r="24" fill="#FFFFFF" opacity=".95"/>
+  <text x="206" y="153" fill="#E66A1A" font-family="Arial, sans-serif" font-size="22" font-weight="700" text-anchor="middle">2</text>
+  <text x="180" y="246" fill="#4F5863" font-family="Arial, sans-serif" font-size="16" font-weight="700" text-anchor="middle">Local 2 - Coxa esquerda</text>
+</svg>

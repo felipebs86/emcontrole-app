@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 96" role="img" aria-label="EMControle">
+  <rect width="360" height="96" rx="22" fill="#FFFFFF"/>
+  <g transform="translate(16 12)">
+    <rect width="72" height="72" rx="20" fill="#FFF4EC"/>
+    <path d="M39 12c12 7 15 19 9 30-3 6-7 11-12 16-4-5-9-10-12-16-6-11-3-23 9-30 2 6 2 12 0 18-1 6-1 12 3 17 3-5 4-11 3-17-2-6-2-12 0-18Z" fill="#E66A1A"/>
+    <path d="M26 24c-5 5-7 11-5 18 2 6 6 11 12 16" fill="none" stroke="#B94E12" stroke-width="5" stroke-linecap="round"/>
+    <path d="M46 24c5 5 7 11 5 18-2 6-6 11-12 16" fill="none" stroke="#F59A4A" stroke-width="5" stroke-linecap="round"/>
+  </g>
+  <text x="104" y="57" fill="#252A31" font-family="Arial, sans-serif" font-size="34" font-weight="700">EMControle</text>
+  <text x="106" y="76" fill="#6B7280" font-family="Arial, sans-serif" font-size="13">rotina de cuidado local</text>
+</svg>
