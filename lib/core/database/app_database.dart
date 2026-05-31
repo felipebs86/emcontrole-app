@@ -63,12 +63,22 @@ class TreatmentChangeEntries extends Table {
   Set<Column> get primaryKey => {id};
 }
 
+class AppPreferenceEntries extends Table {
+  TextColumn get key => text()();
+  TextColumn get value => text()();
+  DateTimeColumn get updatedAt => dateTime()();
+
+  @override
+  Set<Column> get primaryKey => {key};
+}
+
 @DriftDatabase(
   tables: [
     TreatmentEntries,
     ApplicationRecordEntries,
     DiaryEntries,
     TreatmentChangeEntries,
+    AppPreferenceEntries,
   ],
 )
 class AppDatabase extends _$AppDatabase {
@@ -86,7 +96,7 @@ class AppDatabase extends _$AppDatabase {
       );
 
   @override
-  int get schemaVersion => 3;
+  int get schemaVersion => 4;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -97,6 +107,9 @@ class AppDatabase extends _$AppDatabase {
       }
       if (from < 3) {
         await migrator.createTable(treatmentChangeEntries);
+      }
+      if (from < 4) {
+        await migrator.createTable(appPreferenceEntries);
       }
     },
   );
