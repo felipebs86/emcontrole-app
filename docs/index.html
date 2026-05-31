@@ -95,6 +95,17 @@
         color: var(--orange-dark);
       }
 
+      .nav-cta {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 44px;
+        padding: 0 14px;
+        border-radius: 8px;
+        background: var(--orange);
+        color: #ffffff !important;
+      }
+
       .hero {
         width: min(1120px, calc(100% - 32px));
         margin: 0 auto;
@@ -175,6 +186,13 @@
       .button.primary {
         background: var(--orange);
         color: #ffffff;
+      }
+
+      .button.hero-primary {
+        min-height: 56px;
+        padding: 0 24px;
+        font-size: 1.08rem;
+        box-shadow: 0 14px 30px rgba(169, 71, 18, 0.22);
       }
 
       .button.secondary {
@@ -408,6 +426,7 @@
             <a href="#manual">Como usar</a>
             <a href="#privacy">Privacidade</a>
             <a href="#history">História</a>
+            <a class="nav-cta" href="app/">Experimentar agora</a>
           </div>
         </nav>
       </header>
@@ -421,7 +440,8 @@
               Um app Flutter criado por Felipe Bahiense Santos para ajudar pessoas com Esclerose Múltipla a organizar tratamento, aplicações, lembretes locais, diário, histórico e linha do tempo.
             </p>
             <div class="hero-actions">
-              <a class="button primary" href="https://github.com/felipebahiensesantos/emcontrole" aria-label="Ver código-fonte no GitHub">Ver código-fonte no GitHub</a>
+              <a class="button primary hero-primary" href="app/">Experimentar agora</a>
+              <a class="button secondary" href="https://github.com/felipebs86/emcontrole-app" aria-label="Ver código-fonte no GitHub">Ver código-fonte no GitHub</a>
               <a class="button secondary" href="#manual">Ler manual</a>
             </div>
           </div>
@@ -578,7 +598,7 @@
             <h3>Felipe Bahiense Santos</h3>
             <p>Software Engineer e criador original do EMControle.</p>
             <p>O projeto reflete a continuidade de uma proposta acadêmica de 2017 para um app moderno, local e focado em organização pessoal.</p>
-            <a class="button primary" href="https://github.com/felipebahiensesantos/emcontrole">Ver código-fonte no GitHub</a>
+            <a class="button primary" href="https://github.com/felipebs86/emcontrole-app">Ver código-fonte no GitHub</a>
           </div>
         </section>
       </main>

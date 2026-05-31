@@ -87,7 +87,48 @@ flutter test
 
 ## GitHub Pages
 
-The static documentation site is in [`docs/index.html`](docs/index.html). It is designed to work with GitHub Pages without JavaScript frameworks, tracking, remote fonts, or analytics.
+GitHub Pages is served from [`docs/`](docs/):
+
+- [`docs/index.html`](docs/index.html) hosts the landing page.
+- `docs/app/` hosts the Flutter Web build.
+- [`docs/.nojekyll`](docs/.nojekyll) disables Jekyll processing for Flutter Web assets.
+
+The deployment is fully static. It does not add backend services, authentication, analytics, tracking, external APIs, or cloud sync.
+
+### Build Flutter Web for Pages
+
+Use this base href for GitHub Pages:
+
+```sh
+flutter build web --release --base-href /emcontrole-app/app/
+```
+
+Then replace the published web app files:
+
+```sh
+rm -rf docs/app
+mkdir -p docs/app
+cp -R build/web/. docs/app/
+```
+
+Recommended check before publishing:
+
+```sh
+flutter analyze
+```
+
+### Publish to GitHub Pages
+
+Configure GitHub Pages in the repository settings to deploy from the `main` branch and the `/docs` folder. Then publish the generated files:
+
+```sh
+git status
+git add docs README.md
+git commit -m "Prepare GitHub Pages deployment"
+git push origin main
+```
+
+After GitHub Pages finishes publishing, the landing page is served from `/emcontrole-app/` and the Flutter Web app from `/emcontrole-app/app/`.
 
 ## Project Status
 
