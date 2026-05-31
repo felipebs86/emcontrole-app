@@ -1,12 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 280">
-  <path d="M58 54c52-34 132-34 184 0 18 44 18 112-2 174-42 26-138 26-180 0-20-62-20-130-2-174Z" fill="#F5F6F7" stroke="#6B6F76" stroke-width="7" stroke-linejoin="round"/>
-  <path d="M150 58v164" stroke="#DADCE0" stroke-width="4" stroke-linecap="round"/>
-  <g fill="#E66A1A">
-    <circle id="hip_left_upper" cx="98" cy="106" r="24"/>
-    <circle id="hip_left_lower" cx="94" cy="178" r="24"/>
-  </g>
-  <g fill="#FFFFFF" font-family="Arial, sans-serif" font-size="20" font-weight="700" text-anchor="middle" dominant-baseline="central">
-    <text x="98" y="106">17</text>
-    <text x="94" y="178">18</text>
-  </g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 280" role="img" aria-label="Pontos de aplicação no quadril esquerdo">
+  <rect width="300" height="280" rx="28" fill="#FFF8F1"/>
+  <path d="M71 51c43-28 123-29 161-1 21 48 18 122-8 181-39 23-113 23-150 0-24-61-25-133-3-180Z" fill="#F4E8DE" stroke="#806E63" stroke-width="6" stroke-linejoin="round"/>
+  <path d="M81 93c-13 38-9 84 10 119 21 12 48 14 72 6-8-47-10-86-6-119-23-8-52-10-76-6Z" fill="#DF6725" opacity=".22"/>
+  <g fill="#DF6725" stroke="#FFFDF9" stroke-width="5"><circle cx="124" cy="113" r="10"/><circle cx="95" cy="139" r="10"/><circle cx="123" cy="169" r="10"/><circle cx="100" cy="199" r="10"/></g>
 </svg>

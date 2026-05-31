@@ -1,14 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 320">
-  <path d="M50 24c28-12 72-12 100 0-6 80-6 180 4 268-20 10-48 10-68 0C62 202 52 100 50 24Z" fill="none" stroke="#5F6368" stroke-width="8" stroke-linejoin="round"/>
-  <path d="M98 42c2 88 10 166 26 232" fill="none" stroke="#DADCE0" stroke-width="4" stroke-linecap="round"/>
-  <g fill="#E66A1A">
-    <circle id="thigh_left_upper" cx="98" cy="82" r="20"/>
-    <circle id="thigh_left_middle" cx="108" cy="156" r="20"/>
-    <circle id="thigh_left_lower" cx="121" cy="230" r="20"/>
-  </g>
-  <g fill="#FFFFFF" font-family="Arial, sans-serif" font-size="18" font-weight="700" text-anchor="middle" dominant-baseline="central">
-    <text x="98" y="82">8</text>
-    <text x="108" y="156">9</text>
-    <text x="121" y="230">10</text>
-  </g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 340" role="img" aria-label="Coxa esquerda detalhada">
+  <rect width="260" height="340" rx="28" fill="#FFF8F1"/>
+  <path d="M183 26c-42-20-96-18-133 6 5 88 20 192 54 282 25 11 62 10 89-3-19-86-23-190-10-285Z" fill="#F4E8DE" stroke="#806E63" stroke-width="6" stroke-linejoin="round"/>
+  <path d="M111 55c4 88 17 170 39 239M149 63c-11 72-8 151 10 225" fill="none" stroke="#DDCABC" stroke-width="4.5" stroke-linecap="round"/>
+  <path d="M161 132c-29-23-69-22-95 0 5 36 13 69 24 99 24 10 54 10 76-2-4-30-6-62-5-97Z" fill="#DF6725" opacity=".88"/>
 </svg>

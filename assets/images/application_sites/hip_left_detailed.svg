@@ -1,12 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260">
-  <path d="M56 54c40-26 102-26 144 0 14 34 16 90-2 142-34 20-116 20-148 0-12-54-10-108 6-142Z" fill="none" stroke="#5F6368" stroke-width="8" stroke-linejoin="round"/>
-  <path d="M128 54v154" stroke="#DADCE0" stroke-width="4" stroke-linecap="round"/>
-  <g fill="#E66A1A">
-    <circle id="hip_left_upper" cx="86" cy="101" r="21"/>
-    <circle id="hip_left_lower" cx="82" cy="165" r="21"/>
-  </g>
-  <g fill="#FFFFFF" font-family="Arial, sans-serif" font-size="18" font-weight="700" text-anchor="middle" dominant-baseline="central">
-    <text x="86" y="101">17</text>
-    <text x="82" y="165">18</text>
-  </g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 280" role="img" aria-label="Quadril esquerdo detalhado">
+  <rect width="300" height="280" rx="28" fill="#FFF8F1"/>
+  <path d="M71 51c43-28 123-29 161-1 21 48 18 122-8 181-39 23-113 23-150 0-24-61-25-133-3-180Z" fill="#F4E8DE" stroke="#806E63" stroke-width="6" stroke-linejoin="round"/>
+  <path d="M151 70v136M112 82c-12 39-12 84 0 123M190 82c12 39 12 84 0 123" stroke="#DDCABC" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+  <path d="M81 93c-13 38-9 84 10 119 21 12 48 14 72 6-8-47-10-86-6-119-23-8-52-10-76-6Z" fill="#DF6725" opacity=".86"/>
 </svg>

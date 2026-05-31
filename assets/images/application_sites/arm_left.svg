@@ -1,5 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 320">
-  <path d="M154 24c-34 8-68 38-84 78-16 42-12 116 12 184 20 16 58 8 72-16-16-54-18-112-10-158 6-36 22-62 48-84-8-10-22-14-38-4Z" fill="#F5F6F7" stroke="#6B6F76" stroke-width="7" stroke-linejoin="round"/>
-  <path d="M114 72c-20 58-18 126 2 196" fill="none" stroke="#DADCE0" stroke-width="4" stroke-linecap="round"/>
-  <ellipse cx="108" cy="156" rx="28" ry="78" fill="#E66A1A" opacity="0.84"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 330" role="img" aria-label="Braço esquerdo">
+  <rect width="250" height="330" rx="28" fill="#FFF8F1"/>
+  <path d="M157 24c-35 8-68 38-84 80-16 44-11 118 14 190 20 17 58 9 73-16-17-57-19-117-10-165 7-37 24-64 50-86-9-8-25-9-43-3Z" fill="#F4E8DE" stroke="#806E63" stroke-width="6" stroke-linejoin="round"/>
+  <path d="M118 76c-21 60-19 132 3 204" fill="none" stroke="#DDCABC" stroke-width="5" stroke-linecap="round"/>
+  <path d="M143 105c-29 19-46 53-48 95 7 23 15 43 24 60 16 5 33 1 44-11-12-45-15-92-9-131-3-6-7-10-11-13Z" fill="#DF6725" opacity=".86"/>
 </svg>

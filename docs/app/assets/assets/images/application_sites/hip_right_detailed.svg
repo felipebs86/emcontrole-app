@@ -1,12 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260">
-  <path d="M60 54c42-26 104-26 144 0 16 34 18 88 6 142-32 20-114 20-148 0-18-52-16-108-2-142Z" fill="none" stroke="#5F6368" stroke-width="8" stroke-linejoin="round"/>
-  <path d="M132 54v154" stroke="#DADCE0" stroke-width="4" stroke-linecap="round"/>
-  <g fill="#E66A1A">
-    <circle id="hip_right_upper" cx="174" cy="101" r="21"/>
-    <circle id="hip_right_lower" cx="178" cy="165" r="21"/>
-  </g>
-  <g fill="#FFFFFF" font-family="Arial, sans-serif" font-size="18" font-weight="700" text-anchor="middle" dominant-baseline="central">
-    <text x="174" y="101">15</text>
-    <text x="178" y="165">16</text>
-  </g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 280" role="img" aria-label="Quadril direito detalhado">
+  <rect width="300" height="280" rx="28" fill="#FFF8F1"/>
+  <path d="M71 51c43-28 123-29 161-1 21 48 18 122-8 181-39 23-113 23-150 0-24-61-25-133-3-180Z" fill="#F4E8DE" stroke="#806E63" stroke-width="6" stroke-linejoin="round"/>
+  <path d="M151 70v136M112 82c-12 39-12 84 0 123M190 82c12 39 12 84 0 123" stroke="#DDCABC" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+  <path d="M219 93c13 38 9 84-10 119-21 12-48 14-72 6 8-47 10-86 6-119 23-8 52-10 76-6Z" fill="#DF6725" opacity=".86"/>
 </svg>

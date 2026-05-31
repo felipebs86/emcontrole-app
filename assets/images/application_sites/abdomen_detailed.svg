@@ -1,17 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240">
-  <path d="M94 28c24-15 108-15 132 0 20 44 18 128-2 172-30 22-98 22-128 0-20-44-22-128-2-172Z" fill="none" stroke="#5F6368" stroke-width="8" stroke-linejoin="round"/>
-  <circle cx="160" cy="118" r="10" fill="none" stroke="#9AA0A6" stroke-width="5"/>
-  <line x1="160" y1="58" x2="160" y2="194" stroke="#DADCE0" stroke-width="4" stroke-linecap="round"/>
-  <g fill="#E66A1A">
-    <circle id="abdomen_right_upper" cx="205" cy="82" r="20"/>
-    <circle id="abdomen_right_lower" cx="203" cy="154" r="20"/>
-    <circle id="abdomen_left_upper" cx="115" cy="82" r="20"/>
-    <circle id="abdomen_left_lower" cx="117" cy="154" r="20"/>
-  </g>
-  <g fill="#FFFFFF" font-family="Arial, sans-serif" font-size="18" font-weight="700" text-anchor="middle" dominant-baseline="central">
-    <text x="205" y="82">1</text>
-    <text x="203" y="154">2</text>
-    <text x="115" y="82">3</text>
-    <text x="117" y="154">4</text>
-  </g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 260" role="img" aria-label="Abdômen detalhado">
+  <rect width="320" height="260" rx="28" fill="#FFF8F1"/>
+  <path d="M87 30c37-20 109-20 146 0 28 51 28 142 0 193-37 21-109 21-146 0-28-51-28-142 0-193Z" fill="#F4E8DE" stroke="#806E63" stroke-width="6" stroke-linejoin="round"/>
+  <path d="M160 56v140M113 68c-15 38-15 84 0 124M207 68c15 38 15 84 0 124" stroke="#DDCABC" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+  <circle cx="160" cy="130" r="12" fill="#FFF8F1" stroke="#BFA99A" stroke-width="5"/>
+  <path d="M101 101c36-25 82-25 118 0 5 31 3 63-6 92-32 17-74 17-106 0-9-29-11-61-6-92Z" fill="#DF6725" opacity=".86"/>
 </svg>

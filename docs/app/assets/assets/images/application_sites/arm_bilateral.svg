@@ -1,12 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240">
-  <g fill="none" stroke="#5F6368" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="120" cy="34" r="18"/>
-    <path d="M92 72h56l14 64c-12 18-72 18-84 0l14-64Z"/>
-    <path d="M158 82c20 18 28 40 26 70"/>
-    <path d="M82 82c-20 18-28 40-26 70"/>
-    <path d="M104 143 100 210"/>
-    <path d="M136 143 140 210"/>
-  </g>
-  <ellipse cx="72" cy="112" rx="13" ry="26" fill="#E66A1A" opacity="0.82" transform="rotate(18 72 112)"/>
-  <ellipse cx="168" cy="112" rx="13" ry="26" fill="#E66A1A" opacity="0.82" transform="rotate(-18 168 112)"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 330" role="img" aria-label="Braços direito e esquerdo">
+  <rect width="360" height="330" rx="28" fill="#FFF8F1"/>
+  <path d="M128 25c34 8 63 38 76 79 14 44 7 117-20 188-19 17-55 10-68-15 18-56 22-116 16-164-5-37-20-64-43-86 9-8 23-9 39-2Z" fill="#F4E8DE" stroke="#806E63" stroke-width="6" stroke-linejoin="round"/>
+  <path d="M232 25c-34 8-63 38-76 79-14 44-7 117 20 188 19 17 55 10 68-15-18-56-22-116-16-164 5-37 20-64 43-86-9-8-23-9-39-2Z" fill="#F4E8DE" stroke="#806E63" stroke-width="6" stroke-linejoin="round"/>
+  <path d="M138 106c25 20 38 55 37 96-7 22-15 41-25 58-14 5-30 1-40-10 13-45 18-91 14-130 3-6 8-11 14-14Z" fill="#DF6725" opacity=".86"/>
+  <path d="M222 106c-25 20-38 55-37 96 7 22 15 41 25 58 14 5 30 1 40-10-13-45-18-91-14-130-3-6-8-11-14-14Z" fill="#DF6725" opacity=".86"/>
 </svg>

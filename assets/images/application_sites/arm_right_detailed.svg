@@ -1,12 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 300">
-  <path d="M94 22c30 8 58 34 70 66 12 34 10 114-10 174-18 14-48 8-58-12 12-48 14-96 8-138-5-34-18-58-38-78 4-12 14-18 28-12Z" fill="none" stroke="#5F6368" stroke-width="8" stroke-linejoin="round"/>
-  <path d="M124 72c20 48 20 112 0 178" fill="none" stroke="#DADCE0" stroke-width="4" stroke-linecap="round"/>
-  <g fill="#E66A1A">
-    <circle id="arm_right_posterior_upper" cx="133" cy="112" r="20"/>
-    <circle id="arm_right_posterior_lower" cx="128" cy="184" r="20"/>
-  </g>
-  <g fill="#FFFFFF" font-family="Arial, sans-serif" font-size="18" font-weight="700" text-anchor="middle" dominant-baseline="central">
-    <text x="133" y="112">11</text>
-    <text x="128" y="184">12</text>
-  </g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 330" role="img" aria-label="Braço direito detalhado">
+  <rect width="250" height="330" rx="28" fill="#FFF8F1"/>
+  <path d="M93 24c35 8 68 38 84 80 16 44 11 118-14 190-20 17-58 9-73-16 17-57 19-117 10-165-7-37-24-64-50-86 9-8 25-9 43-3Z" fill="#F4E8DE" stroke="#806E63" stroke-width="6" stroke-linejoin="round"/>
+  <path d="M132 76c21 60 19 132-3 204M103 115c27 40 33 91 18 146" fill="none" stroke="#DDCABC" stroke-width="4.5" stroke-linecap="round"/>
+  <path d="M107 105c29 19 46 53 48 95-7 23-15 43-24 60-16 5-33 1-44-11 12-45 15-92 9-131 3-6 7-10 11-13Z" fill="#DF6725" opacity=".86"/>
 </svg>
