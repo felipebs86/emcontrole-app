@@ -805,6 +805,50 @@ class $ApplicationRecordEntriesTable extends ApplicationRecordEntries
         type: DriftSqlType.string,
         requiredDuringInsert: false,
       );
+  static const VerificationMeta _applicationRegionIdMeta =
+      const VerificationMeta('applicationRegionId');
+  @override
+  late final GeneratedColumn<String> applicationRegionId =
+      GeneratedColumn<String>(
+        'application_region_id',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _applicationRegionLabelMeta =
+      const VerificationMeta('applicationRegionLabel');
+  @override
+  late final GeneratedColumn<String> applicationRegionLabel =
+      GeneratedColumn<String>(
+        'application_region_label',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _applicationSubRegionIdMeta =
+      const VerificationMeta('applicationSubRegionId');
+  @override
+  late final GeneratedColumn<String> applicationSubRegionId =
+      GeneratedColumn<String>(
+        'application_sub_region_id',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _applicationSubRegionLabelMeta =
+      const VerificationMeta('applicationSubRegionLabel');
+  @override
+  late final GeneratedColumn<String> applicationSubRegionLabel =
+      GeneratedColumn<String>(
+        'application_sub_region_label',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
   static const VerificationMeta _scheduledAtMeta = const VerificationMeta(
     'scheduledAt',
   );
@@ -869,6 +913,10 @@ class $ApplicationRecordEntriesTable extends ApplicationRecordEntries
     medicationName,
     applicationPointId,
     applicationPointLabel,
+    applicationRegionId,
+    applicationRegionLabel,
+    applicationSubRegionId,
+    applicationSubRegionLabel,
     scheduledAt,
     registeredAt,
     registrationStatus,
@@ -940,6 +988,42 @@ class $ApplicationRecordEntriesTable extends ApplicationRecordEntries
         applicationPointLabel.isAcceptableOrUnknown(
           data['application_point_label']!,
           _applicationPointLabelMeta,
+        ),
+      );
+    }
+    if (data.containsKey('application_region_id')) {
+      context.handle(
+        _applicationRegionIdMeta,
+        applicationRegionId.isAcceptableOrUnknown(
+          data['application_region_id']!,
+          _applicationRegionIdMeta,
+        ),
+      );
+    }
+    if (data.containsKey('application_region_label')) {
+      context.handle(
+        _applicationRegionLabelMeta,
+        applicationRegionLabel.isAcceptableOrUnknown(
+          data['application_region_label']!,
+          _applicationRegionLabelMeta,
+        ),
+      );
+    }
+    if (data.containsKey('application_sub_region_id')) {
+      context.handle(
+        _applicationSubRegionIdMeta,
+        applicationSubRegionId.isAcceptableOrUnknown(
+          data['application_sub_region_id']!,
+          _applicationSubRegionIdMeta,
+        ),
+      );
+    }
+    if (data.containsKey('application_sub_region_label')) {
+      context.handle(
+        _applicationSubRegionLabelMeta,
+        applicationSubRegionLabel.isAcceptableOrUnknown(
+          data['application_sub_region_label']!,
+          _applicationSubRegionLabelMeta,
         ),
       );
     }
@@ -1026,6 +1110,22 @@ class $ApplicationRecordEntriesTable extends ApplicationRecordEntries
         DriftSqlType.string,
         data['${effectivePrefix}application_point_label'],
       ),
+      applicationRegionId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}application_region_id'],
+      ),
+      applicationRegionLabel: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}application_region_label'],
+      ),
+      applicationSubRegionId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}application_sub_region_id'],
+      ),
+      applicationSubRegionLabel: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}application_sub_region_label'],
+      ),
       scheduledAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}scheduled_at'],
@@ -1063,6 +1163,10 @@ class ApplicationRecordEntry extends DataClass
   final String medicationName;
   final String? applicationPointId;
   final String? applicationPointLabel;
+  final String? applicationRegionId;
+  final String? applicationRegionLabel;
+  final String? applicationSubRegionId;
+  final String? applicationSubRegionLabel;
   final DateTime scheduledAt;
   final DateTime registeredAt;
   final String registrationStatus;
@@ -1075,6 +1179,10 @@ class ApplicationRecordEntry extends DataClass
     required this.medicationName,
     this.applicationPointId,
     this.applicationPointLabel,
+    this.applicationRegionId,
+    this.applicationRegionLabel,
+    this.applicationSubRegionId,
+    this.applicationSubRegionLabel,
     required this.scheduledAt,
     required this.registeredAt,
     required this.registrationStatus,
@@ -1093,6 +1201,24 @@ class ApplicationRecordEntry extends DataClass
     }
     if (!nullToAbsent || applicationPointLabel != null) {
       map['application_point_label'] = Variable<String>(applicationPointLabel);
+    }
+    if (!nullToAbsent || applicationRegionId != null) {
+      map['application_region_id'] = Variable<String>(applicationRegionId);
+    }
+    if (!nullToAbsent || applicationRegionLabel != null) {
+      map['application_region_label'] = Variable<String>(
+        applicationRegionLabel,
+      );
+    }
+    if (!nullToAbsent || applicationSubRegionId != null) {
+      map['application_sub_region_id'] = Variable<String>(
+        applicationSubRegionId,
+      );
+    }
+    if (!nullToAbsent || applicationSubRegionLabel != null) {
+      map['application_sub_region_label'] = Variable<String>(
+        applicationSubRegionLabel,
+      );
     }
     map['scheduled_at'] = Variable<DateTime>(scheduledAt);
     map['registered_at'] = Variable<DateTime>(registeredAt);
@@ -1116,6 +1242,19 @@ class ApplicationRecordEntry extends DataClass
       applicationPointLabel: applicationPointLabel == null && nullToAbsent
           ? const Value.absent()
           : Value(applicationPointLabel),
+      applicationRegionId: applicationRegionId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(applicationRegionId),
+      applicationRegionLabel: applicationRegionLabel == null && nullToAbsent
+          ? const Value.absent()
+          : Value(applicationRegionLabel),
+      applicationSubRegionId: applicationSubRegionId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(applicationSubRegionId),
+      applicationSubRegionLabel:
+          applicationSubRegionLabel == null && nullToAbsent
+          ? const Value.absent()
+          : Value(applicationSubRegionLabel),
       scheduledAt: Value(scheduledAt),
       registeredAt: Value(registeredAt),
       registrationStatus: Value(registrationStatus),
@@ -1142,6 +1281,18 @@ class ApplicationRecordEntry extends DataClass
       applicationPointLabel: serializer.fromJson<String?>(
         json['applicationPointLabel'],
       ),
+      applicationRegionId: serializer.fromJson<String?>(
+        json['applicationRegionId'],
+      ),
+      applicationRegionLabel: serializer.fromJson<String?>(
+        json['applicationRegionLabel'],
+      ),
+      applicationSubRegionId: serializer.fromJson<String?>(
+        json['applicationSubRegionId'],
+      ),
+      applicationSubRegionLabel: serializer.fromJson<String?>(
+        json['applicationSubRegionLabel'],
+      ),
       scheduledAt: serializer.fromJson<DateTime>(json['scheduledAt']),
       registeredAt: serializer.fromJson<DateTime>(json['registeredAt']),
       registrationStatus: serializer.fromJson<String>(
@@ -1163,6 +1314,16 @@ class ApplicationRecordEntry extends DataClass
       'applicationPointLabel': serializer.toJson<String?>(
         applicationPointLabel,
       ),
+      'applicationRegionId': serializer.toJson<String?>(applicationRegionId),
+      'applicationRegionLabel': serializer.toJson<String?>(
+        applicationRegionLabel,
+      ),
+      'applicationSubRegionId': serializer.toJson<String?>(
+        applicationSubRegionId,
+      ),
+      'applicationSubRegionLabel': serializer.toJson<String?>(
+        applicationSubRegionLabel,
+      ),
       'scheduledAt': serializer.toJson<DateTime>(scheduledAt),
       'registeredAt': serializer.toJson<DateTime>(registeredAt),
       'registrationStatus': serializer.toJson<String>(registrationStatus),
@@ -1178,6 +1339,10 @@ class ApplicationRecordEntry extends DataClass
     String? medicationName,
     Value<String?> applicationPointId = const Value.absent(),
     Value<String?> applicationPointLabel = const Value.absent(),
+    Value<String?> applicationRegionId = const Value.absent(),
+    Value<String?> applicationRegionLabel = const Value.absent(),
+    Value<String?> applicationSubRegionId = const Value.absent(),
+    Value<String?> applicationSubRegionLabel = const Value.absent(),
     DateTime? scheduledAt,
     DateTime? registeredAt,
     String? registrationStatus,
@@ -1194,6 +1359,18 @@ class ApplicationRecordEntry extends DataClass
     applicationPointLabel: applicationPointLabel.present
         ? applicationPointLabel.value
         : this.applicationPointLabel,
+    applicationRegionId: applicationRegionId.present
+        ? applicationRegionId.value
+        : this.applicationRegionId,
+    applicationRegionLabel: applicationRegionLabel.present
+        ? applicationRegionLabel.value
+        : this.applicationRegionLabel,
+    applicationSubRegionId: applicationSubRegionId.present
+        ? applicationSubRegionId.value
+        : this.applicationSubRegionId,
+    applicationSubRegionLabel: applicationSubRegionLabel.present
+        ? applicationSubRegionLabel.value
+        : this.applicationSubRegionLabel,
     scheduledAt: scheduledAt ?? this.scheduledAt,
     registeredAt: registeredAt ?? this.registeredAt,
     registrationStatus: registrationStatus ?? this.registrationStatus,
@@ -1220,6 +1397,18 @@ class ApplicationRecordEntry extends DataClass
       applicationPointLabel: data.applicationPointLabel.present
           ? data.applicationPointLabel.value
           : this.applicationPointLabel,
+      applicationRegionId: data.applicationRegionId.present
+          ? data.applicationRegionId.value
+          : this.applicationRegionId,
+      applicationRegionLabel: data.applicationRegionLabel.present
+          ? data.applicationRegionLabel.value
+          : this.applicationRegionLabel,
+      applicationSubRegionId: data.applicationSubRegionId.present
+          ? data.applicationSubRegionId.value
+          : this.applicationSubRegionId,
+      applicationSubRegionLabel: data.applicationSubRegionLabel.present
+          ? data.applicationSubRegionLabel.value
+          : this.applicationSubRegionLabel,
       scheduledAt: data.scheduledAt.present
           ? data.scheduledAt.value
           : this.scheduledAt,
@@ -1245,6 +1434,10 @@ class ApplicationRecordEntry extends DataClass
           ..write('medicationName: $medicationName, ')
           ..write('applicationPointId: $applicationPointId, ')
           ..write('applicationPointLabel: $applicationPointLabel, ')
+          ..write('applicationRegionId: $applicationRegionId, ')
+          ..write('applicationRegionLabel: $applicationRegionLabel, ')
+          ..write('applicationSubRegionId: $applicationSubRegionId, ')
+          ..write('applicationSubRegionLabel: $applicationSubRegionLabel, ')
           ..write('scheduledAt: $scheduledAt, ')
           ..write('registeredAt: $registeredAt, ')
           ..write('registrationStatus: $registrationStatus, ')
@@ -1262,6 +1455,10 @@ class ApplicationRecordEntry extends DataClass
     medicationName,
     applicationPointId,
     applicationPointLabel,
+    applicationRegionId,
+    applicationRegionLabel,
+    applicationSubRegionId,
+    applicationSubRegionLabel,
     scheduledAt,
     registeredAt,
     registrationStatus,
@@ -1278,6 +1475,10 @@ class ApplicationRecordEntry extends DataClass
           other.medicationName == this.medicationName &&
           other.applicationPointId == this.applicationPointId &&
           other.applicationPointLabel == this.applicationPointLabel &&
+          other.applicationRegionId == this.applicationRegionId &&
+          other.applicationRegionLabel == this.applicationRegionLabel &&
+          other.applicationSubRegionId == this.applicationSubRegionId &&
+          other.applicationSubRegionLabel == this.applicationSubRegionLabel &&
           other.scheduledAt == this.scheduledAt &&
           other.registeredAt == this.registeredAt &&
           other.registrationStatus == this.registrationStatus &&
@@ -1293,6 +1494,10 @@ class ApplicationRecordEntriesCompanion
   final Value<String> medicationName;
   final Value<String?> applicationPointId;
   final Value<String?> applicationPointLabel;
+  final Value<String?> applicationRegionId;
+  final Value<String?> applicationRegionLabel;
+  final Value<String?> applicationSubRegionId;
+  final Value<String?> applicationSubRegionLabel;
   final Value<DateTime> scheduledAt;
   final Value<DateTime> registeredAt;
   final Value<String> registrationStatus;
@@ -1306,6 +1511,10 @@ class ApplicationRecordEntriesCompanion
     this.medicationName = const Value.absent(),
     this.applicationPointId = const Value.absent(),
     this.applicationPointLabel = const Value.absent(),
+    this.applicationRegionId = const Value.absent(),
+    this.applicationRegionLabel = const Value.absent(),
+    this.applicationSubRegionId = const Value.absent(),
+    this.applicationSubRegionLabel = const Value.absent(),
     this.scheduledAt = const Value.absent(),
     this.registeredAt = const Value.absent(),
     this.registrationStatus = const Value.absent(),
@@ -1320,6 +1529,10 @@ class ApplicationRecordEntriesCompanion
     required String medicationName,
     this.applicationPointId = const Value.absent(),
     this.applicationPointLabel = const Value.absent(),
+    this.applicationRegionId = const Value.absent(),
+    this.applicationRegionLabel = const Value.absent(),
+    this.applicationSubRegionId = const Value.absent(),
+    this.applicationSubRegionLabel = const Value.absent(),
     required DateTime scheduledAt,
     required DateTime registeredAt,
     required String registrationStatus,
@@ -1341,6 +1554,10 @@ class ApplicationRecordEntriesCompanion
     Expression<String>? medicationName,
     Expression<String>? applicationPointId,
     Expression<String>? applicationPointLabel,
+    Expression<String>? applicationRegionId,
+    Expression<String>? applicationRegionLabel,
+    Expression<String>? applicationSubRegionId,
+    Expression<String>? applicationSubRegionLabel,
     Expression<DateTime>? scheduledAt,
     Expression<DateTime>? registeredAt,
     Expression<String>? registrationStatus,
@@ -1357,6 +1574,14 @@ class ApplicationRecordEntriesCompanion
         'application_point_id': applicationPointId,
       if (applicationPointLabel != null)
         'application_point_label': applicationPointLabel,
+      if (applicationRegionId != null)
+        'application_region_id': applicationRegionId,
+      if (applicationRegionLabel != null)
+        'application_region_label': applicationRegionLabel,
+      if (applicationSubRegionId != null)
+        'application_sub_region_id': applicationSubRegionId,
+      if (applicationSubRegionLabel != null)
+        'application_sub_region_label': applicationSubRegionLabel,
       if (scheduledAt != null) 'scheduled_at': scheduledAt,
       if (registeredAt != null) 'registered_at': registeredAt,
       if (registrationStatus != null) 'registration_status': registrationStatus,
@@ -1373,6 +1598,10 @@ class ApplicationRecordEntriesCompanion
     Value<String>? medicationName,
     Value<String?>? applicationPointId,
     Value<String?>? applicationPointLabel,
+    Value<String?>? applicationRegionId,
+    Value<String?>? applicationRegionLabel,
+    Value<String?>? applicationSubRegionId,
+    Value<String?>? applicationSubRegionLabel,
     Value<DateTime>? scheduledAt,
     Value<DateTime>? registeredAt,
     Value<String>? registrationStatus,
@@ -1388,6 +1617,13 @@ class ApplicationRecordEntriesCompanion
       applicationPointId: applicationPointId ?? this.applicationPointId,
       applicationPointLabel:
           applicationPointLabel ?? this.applicationPointLabel,
+      applicationRegionId: applicationRegionId ?? this.applicationRegionId,
+      applicationRegionLabel:
+          applicationRegionLabel ?? this.applicationRegionLabel,
+      applicationSubRegionId:
+          applicationSubRegionId ?? this.applicationSubRegionId,
+      applicationSubRegionLabel:
+          applicationSubRegionLabel ?? this.applicationSubRegionLabel,
       scheduledAt: scheduledAt ?? this.scheduledAt,
       registeredAt: registeredAt ?? this.registeredAt,
       registrationStatus: registrationStatus ?? this.registrationStatus,
@@ -1420,6 +1656,26 @@ class ApplicationRecordEntriesCompanion
         applicationPointLabel.value,
       );
     }
+    if (applicationRegionId.present) {
+      map['application_region_id'] = Variable<String>(
+        applicationRegionId.value,
+      );
+    }
+    if (applicationRegionLabel.present) {
+      map['application_region_label'] = Variable<String>(
+        applicationRegionLabel.value,
+      );
+    }
+    if (applicationSubRegionId.present) {
+      map['application_sub_region_id'] = Variable<String>(
+        applicationSubRegionId.value,
+      );
+    }
+    if (applicationSubRegionLabel.present) {
+      map['application_sub_region_label'] = Variable<String>(
+        applicationSubRegionLabel.value,
+      );
+    }
     if (scheduledAt.present) {
       map['scheduled_at'] = Variable<DateTime>(scheduledAt.value);
     }
@@ -1450,6 +1706,10 @@ class ApplicationRecordEntriesCompanion
           ..write('medicationName: $medicationName, ')
           ..write('applicationPointId: $applicationPointId, ')
           ..write('applicationPointLabel: $applicationPointLabel, ')
+          ..write('applicationRegionId: $applicationRegionId, ')
+          ..write('applicationRegionLabel: $applicationRegionLabel, ')
+          ..write('applicationSubRegionId: $applicationSubRegionId, ')
+          ..write('applicationSubRegionLabel: $applicationSubRegionLabel, ')
           ..write('scheduledAt: $scheduledAt, ')
           ..write('registeredAt: $registeredAt, ')
           ..write('registrationStatus: $registrationStatus, ')
@@ -3079,6 +3339,10 @@ typedef $$ApplicationRecordEntriesTableCreateCompanionBuilder =
       required String medicationName,
       Value<String?> applicationPointId,
       Value<String?> applicationPointLabel,
+      Value<String?> applicationRegionId,
+      Value<String?> applicationRegionLabel,
+      Value<String?> applicationSubRegionId,
+      Value<String?> applicationSubRegionLabel,
       required DateTime scheduledAt,
       required DateTime registeredAt,
       required String registrationStatus,
@@ -3094,6 +3358,10 @@ typedef $$ApplicationRecordEntriesTableUpdateCompanionBuilder =
       Value<String> medicationName,
       Value<String?> applicationPointId,
       Value<String?> applicationPointLabel,
+      Value<String?> applicationRegionId,
+      Value<String?> applicationRegionLabel,
+      Value<String?> applicationSubRegionId,
+      Value<String?> applicationSubRegionLabel,
       Value<DateTime> scheduledAt,
       Value<DateTime> registeredAt,
       Value<String> registrationStatus,
@@ -3138,6 +3406,26 @@ class $$ApplicationRecordEntriesTableFilterComposer
 
   ColumnFilters<String> get applicationPointLabel => $composableBuilder(
     column: $table.applicationPointLabel,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get applicationRegionId => $composableBuilder(
+    column: $table.applicationRegionId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get applicationRegionLabel => $composableBuilder(
+    column: $table.applicationRegionLabel,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get applicationSubRegionId => $composableBuilder(
+    column: $table.applicationSubRegionId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get applicationSubRegionLabel => $composableBuilder(
+    column: $table.applicationSubRegionLabel,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -3206,6 +3494,26 @@ class $$ApplicationRecordEntriesTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get applicationRegionId => $composableBuilder(
+    column: $table.applicationRegionId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get applicationRegionLabel => $composableBuilder(
+    column: $table.applicationRegionLabel,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get applicationSubRegionId => $composableBuilder(
+    column: $table.applicationSubRegionId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get applicationSubRegionLabel => $composableBuilder(
+    column: $table.applicationSubRegionLabel,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<DateTime> get scheduledAt => $composableBuilder(
     column: $table.scheduledAt,
     builder: (column) => ColumnOrderings(column),
@@ -3266,6 +3574,26 @@ class $$ApplicationRecordEntriesTableAnnotationComposer
 
   GeneratedColumn<String> get applicationPointLabel => $composableBuilder(
     column: $table.applicationPointLabel,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get applicationRegionId => $composableBuilder(
+    column: $table.applicationRegionId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get applicationRegionLabel => $composableBuilder(
+    column: $table.applicationRegionLabel,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get applicationSubRegionId => $composableBuilder(
+    column: $table.applicationSubRegionId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get applicationSubRegionLabel => $composableBuilder(
+    column: $table.applicationSubRegionLabel,
     builder: (column) => column,
   );
 
@@ -3345,6 +3673,10 @@ class $$ApplicationRecordEntriesTableTableManager
                 Value<String> medicationName = const Value.absent(),
                 Value<String?> applicationPointId = const Value.absent(),
                 Value<String?> applicationPointLabel = const Value.absent(),
+                Value<String?> applicationRegionId = const Value.absent(),
+                Value<String?> applicationRegionLabel = const Value.absent(),
+                Value<String?> applicationSubRegionId = const Value.absent(),
+                Value<String?> applicationSubRegionLabel = const Value.absent(),
                 Value<DateTime> scheduledAt = const Value.absent(),
                 Value<DateTime> registeredAt = const Value.absent(),
                 Value<String> registrationStatus = const Value.absent(),
@@ -3358,6 +3690,10 @@ class $$ApplicationRecordEntriesTableTableManager
                 medicationName: medicationName,
                 applicationPointId: applicationPointId,
                 applicationPointLabel: applicationPointLabel,
+                applicationRegionId: applicationRegionId,
+                applicationRegionLabel: applicationRegionLabel,
+                applicationSubRegionId: applicationSubRegionId,
+                applicationSubRegionLabel: applicationSubRegionLabel,
                 scheduledAt: scheduledAt,
                 registeredAt: registeredAt,
                 registrationStatus: registrationStatus,
@@ -3373,6 +3709,10 @@ class $$ApplicationRecordEntriesTableTableManager
                 required String medicationName,
                 Value<String?> applicationPointId = const Value.absent(),
                 Value<String?> applicationPointLabel = const Value.absent(),
+                Value<String?> applicationRegionId = const Value.absent(),
+                Value<String?> applicationRegionLabel = const Value.absent(),
+                Value<String?> applicationSubRegionId = const Value.absent(),
+                Value<String?> applicationSubRegionLabel = const Value.absent(),
                 required DateTime scheduledAt,
                 required DateTime registeredAt,
                 required String registrationStatus,
@@ -3386,6 +3726,10 @@ class $$ApplicationRecordEntriesTableTableManager
                 medicationName: medicationName,
                 applicationPointId: applicationPointId,
                 applicationPointLabel: applicationPointLabel,
+                applicationRegionId: applicationRegionId,
+                applicationRegionLabel: applicationRegionLabel,
+                applicationSubRegionId: applicationSubRegionId,
+                applicationSubRegionLabel: applicationSubRegionLabel,
                 scheduledAt: scheduledAt,
                 registeredAt: registeredAt,
                 registrationStatus: registrationStatus,

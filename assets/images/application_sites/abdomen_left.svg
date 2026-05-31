@@ -3,5 +3,5 @@
   <path d="M87 30c37-20 109-20 146 0 28 51 28 142 0 193-37 21-109 21-146 0-28-51-28-142 0-193Z" fill="#F4E8DE" stroke="#806E63" stroke-width="6" stroke-linejoin="round"/>
   <path d="M160 56v140" stroke="#DDCABC" stroke-width="5" stroke-linecap="round"/>
   <circle cx="160" cy="130" r="12" fill="#FFF8F1" stroke="#BFA99A" stroke-width="5"/>
-  <path d="M95 103c18-14 40-19 65-17v107c-21 7-41 5-58-4-8-27-10-57-7-86Z" fill="#DF6725" opacity=".86"/>
+  <path id="abdomen_left" d="M95 103c18-14 40-19 65-17v107c-21 7-41 5-58-4-8-27-10-57-7-86Z" fill="#DF6725" opacity=".86"/>
 </svg>

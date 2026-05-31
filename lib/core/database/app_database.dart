@@ -27,6 +27,10 @@ class ApplicationRecordEntries extends Table {
   TextColumn get medicationName => text()();
   TextColumn get applicationPointId => text().nullable()();
   TextColumn get applicationPointLabel => text().nullable()();
+  TextColumn get applicationRegionId => text().nullable()();
+  TextColumn get applicationRegionLabel => text().nullable()();
+  TextColumn get applicationSubRegionId => text().nullable()();
+  TextColumn get applicationSubRegionLabel => text().nullable()();
   DateTimeColumn get scheduledAt => dateTime()();
   DateTimeColumn get registeredAt => dateTime()();
   TextColumn get registrationStatus => text()();
@@ -96,7 +100,7 @@ class AppDatabase extends _$AppDatabase {
       );
 
   @override
-  int get schemaVersion => 4;
+  int get schemaVersion => 5;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -110,6 +114,24 @@ class AppDatabase extends _$AppDatabase {
       }
       if (from < 4) {
         await migrator.createTable(appPreferenceEntries);
+      }
+      if (from < 5) {
+        await migrator.addColumn(
+          applicationRecordEntries,
+          applicationRecordEntries.applicationRegionId,
+        );
+        await migrator.addColumn(
+          applicationRecordEntries,
+          applicationRecordEntries.applicationRegionLabel,
+        );
+        await migrator.addColumn(
+          applicationRecordEntries,
+          applicationRecordEntries.applicationSubRegionId,
+        );
+        await migrator.addColumn(
+          applicationRecordEntries,
+          applicationRecordEntries.applicationSubRegionLabel,
+        );
       }
     },
   );

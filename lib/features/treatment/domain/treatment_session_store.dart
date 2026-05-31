@@ -246,6 +246,10 @@ class TreatmentSessionStore extends ChangeNotifier {
       medicationName: medication.name,
       applicationPointId: usedPoint?.id,
       applicationPointLabel: usedPoint?.label,
+      applicationRegionId: usedPoint?.regionId,
+      applicationRegionLabel: usedPoint?.parentSiteLabel,
+      applicationSubRegionId: usedPoint?.subRegionId,
+      applicationSubRegionLabel: usedPoint?.side,
       scheduledAt: scheduledAt,
       registeredAt: appliedAt,
       registrationStatus: _eligibilityService.registrationStatusFor(

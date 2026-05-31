@@ -9,12 +9,112 @@ class MedicationCatalogDataSource {
 const _safetyNote =
     'Siga sempre a prescrição e orientação da sua equipe de saúde.';
 
+const _abdomenRightRegion = Region(
+  id: 'abdomen_right',
+  label: 'Abdômen direito',
+  type: AnatomicalRegionType.abdomen,
+  side: BodySide.right,
+  svgAssetPath: 'assets/images/application_sites/abdomen_right.svg',
+  svgElementId: 'abdomen_right',
+);
+
+const _abdomenLeftRegion = Region(
+  id: 'abdomen_left',
+  label: 'Abdômen esquerdo',
+  type: AnatomicalRegionType.abdomen,
+  side: BodySide.left,
+  svgAssetPath: 'assets/images/application_sites/abdomen_left.svg',
+  svgElementId: 'abdomen_left',
+);
+
+const _rightThighRegion = Region(
+  id: 'right_thigh',
+  label: 'Coxa direita',
+  type: AnatomicalRegionType.thigh,
+  side: BodySide.right,
+  svgAssetPath: 'assets/images/application_sites/thigh_right.svg',
+  svgElementId: 'thigh_right',
+);
+
+const _leftThighRegion = Region(
+  id: 'left_thigh',
+  label: 'Coxa esquerda',
+  type: AnatomicalRegionType.thigh,
+  side: BodySide.left,
+  svgAssetPath: 'assets/images/application_sites/thigh_left.svg',
+  svgElementId: 'thigh_left',
+);
+
+const _armRightRegion = Region(
+  id: 'arm_right',
+  label: 'Braço direito',
+  type: AnatomicalRegionType.arm,
+  side: BodySide.right,
+  svgAssetPath: 'assets/images/application_sites/arm_right.svg',
+  svgElementId: 'arm_right',
+);
+
+const _armLeftRegion = Region(
+  id: 'arm_left',
+  label: 'Braço esquerdo',
+  type: AnatomicalRegionType.arm,
+  side: BodySide.left,
+  svgAssetPath: 'assets/images/application_sites/arm_left.svg',
+  svgElementId: 'arm_left',
+);
+
+const _upperArmRegion = Region(
+  id: 'upper_arm',
+  label: 'Braço externo superior',
+  type: AnatomicalRegionType.arm,
+  side: BodySide.bilateral,
+  svgAssetPath: 'assets/images/application_sites/upper_arm.svg',
+  svgElementId: 'upper_arm',
+);
+
+const _hipRightRegion = Region(
+  id: 'hip_right',
+  label: 'Quadril direito',
+  type: AnatomicalRegionType.hip,
+  side: BodySide.right,
+  svgAssetPath: 'assets/images/application_sites/hip_right.svg',
+  svgElementId: 'hip_right',
+);
+
+const _hipLeftRegion = Region(
+  id: 'hip_left',
+  label: 'Quadril esquerdo',
+  type: AnatomicalRegionType.hip,
+  side: BodySide.left,
+  svgAssetPath: 'assets/images/application_sites/hip_left.svg',
+  svgElementId: 'hip_left',
+);
+
+const _gluteHipRightRegion = Region(
+  id: 'glute_hip_right',
+  label: 'Glúteo/quadril direito',
+  type: AnatomicalRegionType.gluteHip,
+  side: BodySide.right,
+  svgAssetPath: 'assets/images/application_sites/hip_right.svg',
+  svgElementId: 'glute_hip_right',
+);
+
+const _gluteHipLeftRegion = Region(
+  id: 'glute_hip_left',
+  label: 'Glúteo/quadril esquerdo',
+  type: AnatomicalRegionType.gluteHip,
+  side: BodySide.left,
+  svgAssetPath: 'assets/images/application_sites/hip_left.svg',
+  svgElementId: 'glute_hip_left',
+);
+
 const _rightThigh = ApplicationSite(
   id: 'right_thigh',
   label: 'Coxa direita',
   bodyRegion: 'Coxa',
   side: 'Direita',
   imageAssetPath: 'assets/images/application_sites/thigh_right.svg',
+  regionId: 'right_thigh',
 );
 
 const _leftThigh = ApplicationSite(
@@ -23,6 +123,7 @@ const _leftThigh = ApplicationSite(
   bodyRegion: 'Coxa',
   side: 'Esquerda',
   imageAssetPath: 'assets/images/application_sites/thigh_left.svg',
+  regionId: 'left_thigh',
 );
 
 const _abdomenRight = ApplicationSite(
@@ -31,6 +132,7 @@ const _abdomenRight = ApplicationSite(
   bodyRegion: 'Abdômen',
   side: 'Direita',
   imageAssetPath: 'assets/images/application_sites/abdomen_right.svg',
+  regionId: 'abdomen_right',
 );
 
 const _abdomenLeft = ApplicationSite(
@@ -39,6 +141,7 @@ const _abdomenLeft = ApplicationSite(
   bodyRegion: 'Abdômen',
   side: 'Esquerda',
   imageAssetPath: 'assets/images/application_sites/abdomen_left.svg',
+  regionId: 'abdomen_left',
 );
 
 const _armRight = ApplicationSite(
@@ -47,6 +150,7 @@ const _armRight = ApplicationSite(
   bodyRegion: 'Braço',
   side: 'Direita',
   imageAssetPath: 'assets/images/application_sites/arm_right.svg',
+  regionId: 'arm_right',
 );
 
 const _armLeft = ApplicationSite(
@@ -55,6 +159,7 @@ const _armLeft = ApplicationSite(
   bodyRegion: 'Braço',
   side: 'Esquerda',
   imageAssetPath: 'assets/images/application_sites/arm_left.svg',
+  regionId: 'arm_left',
 );
 
 const _hipRight = ApplicationSite(
@@ -63,6 +168,7 @@ const _hipRight = ApplicationSite(
   bodyRegion: 'Quadril',
   side: 'Direita',
   imageAssetPath: 'assets/images/application_sites/hip_right.svg',
+  regionId: 'hip_right',
 );
 
 const _hipLeft = ApplicationSite(
@@ -71,14 +177,7 @@ const _hipLeft = ApplicationSite(
   bodyRegion: 'Quadril',
   side: 'Esquerda',
   imageAssetPath: 'assets/images/application_sites/hip_left.svg',
-);
-
-const _abdomen = ApplicationSite(
-  id: 'abdomen',
-  label: 'Abdômen',
-  bodyRegion: 'Abdômen',
-  side: 'Não especificado',
-  imageAssetPath: 'assets/images/application_sites/abdomen.svg',
+  regionId: 'hip_left',
 );
 
 const _upperArm = ApplicationSite(
@@ -87,6 +186,7 @@ const _upperArm = ApplicationSite(
   bodyRegion: 'Braço',
   side: 'Não especificado',
   imageAssetPath: 'assets/images/application_sites/upper_arm.svg',
+  regionId: 'upper_arm',
 );
 
 const _gluteHipRight = ApplicationSite(
@@ -95,6 +195,7 @@ const _gluteHipRight = ApplicationSite(
   bodyRegion: 'Glúteo/quadril',
   side: 'Direita',
   imageAssetPath: 'assets/images/application_sites/hip_right.svg',
+  regionId: 'glute_hip_right',
 );
 
 const _gluteHipLeft = ApplicationSite(
@@ -103,6 +204,7 @@ const _gluteHipLeft = ApplicationSite(
   bodyRegion: 'Glúteo/quadril',
   side: 'Esquerda',
   imageAssetPath: 'assets/images/application_sites/hip_left.svg',
+  regionId: 'glute_hip_left',
 );
 
 const _copaxoneSites = [
@@ -116,14 +218,244 @@ const _copaxoneSites = [
   _hipLeft,
 ];
 
-const _standardSubcutaneousSites = [
-  _abdomenRight,
-  _abdomenLeft,
-  _rightThigh,
-  _leftThigh,
-  _armRight,
-  _armLeft,
-];
+const _rotateEveryInjectionInstruction =
+    'Troque o local de aplicação a cada dose, seguindo a orientação recebida da sua equipe de saúde.';
+
+const _copaxoneProtocol = MedicationApplicationProtocol(
+  id: 'copaxone_subcutaneous_rotation',
+  strategy: ApplicationRotationStrategy.sequential,
+  rotationInstruction:
+      'Use uma área diferente a cada aplicação entre braços, abdômen, quadris e coxas, conforme orientação recebida.',
+  regions: [
+    _abdomenRightRegion,
+    _abdomenLeftRegion,
+    _rightThighRegion,
+    _leftThighRegion,
+    _armRightRegion,
+    _armLeftRegion,
+    _hipRightRegion,
+    _hipLeftRegion,
+  ],
+  subRegions: [
+    SubRegion(
+      id: 'abdomen_right_upper',
+      regionId: 'abdomen_right',
+      label: 'Direita superior',
+      svgElementId: 'abdomen_right_upper',
+      order: 1,
+      helperText: 'Evite a região próxima ao umbigo.',
+    ),
+    SubRegion(
+      id: 'abdomen_right_lower',
+      regionId: 'abdomen_right',
+      label: 'Direita inferior',
+      svgElementId: 'abdomen_right_lower',
+      order: 2,
+      helperText: 'Evite a região próxima ao umbigo.',
+    ),
+    SubRegion(
+      id: 'abdomen_left_upper',
+      regionId: 'abdomen_left',
+      label: 'Esquerda superior',
+      svgElementId: 'abdomen_left_upper',
+      order: 3,
+      helperText: 'Evite a região próxima ao umbigo.',
+    ),
+    SubRegion(
+      id: 'abdomen_left_lower',
+      regionId: 'abdomen_left',
+      label: 'Esquerda inferior',
+      svgElementId: 'abdomen_left_lower',
+      order: 4,
+      helperText: 'Evite a região próxima ao umbigo.',
+    ),
+    SubRegion(
+      id: 'thigh_right_upper',
+      regionId: 'right_thigh',
+      label: 'Superior',
+      svgElementId: 'thigh_right_upper',
+      order: 5,
+    ),
+    SubRegion(
+      id: 'thigh_right_middle',
+      regionId: 'right_thigh',
+      label: 'Média',
+      svgElementId: 'thigh_right_middle',
+      order: 6,
+    ),
+    SubRegion(
+      id: 'thigh_right_lower',
+      regionId: 'right_thigh',
+      label: 'Inferior',
+      svgElementId: 'thigh_right_lower',
+      order: 7,
+    ),
+    SubRegion(
+      id: 'thigh_left_upper',
+      regionId: 'left_thigh',
+      label: 'Superior',
+      svgElementId: 'thigh_left_upper',
+      order: 8,
+    ),
+    SubRegion(
+      id: 'thigh_left_middle',
+      regionId: 'left_thigh',
+      label: 'Média',
+      svgElementId: 'thigh_left_middle',
+      order: 9,
+    ),
+    SubRegion(
+      id: 'thigh_left_lower',
+      regionId: 'left_thigh',
+      label: 'Inferior',
+      svgElementId: 'thigh_left_lower',
+      order: 10,
+    ),
+    SubRegion(
+      id: 'arm_right_posterior_upper',
+      regionId: 'arm_right',
+      label: 'Posterior superior',
+      svgElementId: 'arm_right_posterior_upper',
+      order: 11,
+    ),
+    SubRegion(
+      id: 'arm_right_posterior_lower',
+      regionId: 'arm_right',
+      label: 'Posterior inferior',
+      svgElementId: 'arm_right_posterior_lower',
+      order: 12,
+    ),
+    SubRegion(
+      id: 'arm_left_posterior_upper',
+      regionId: 'arm_left',
+      label: 'Posterior superior',
+      svgElementId: 'arm_left_posterior_upper',
+      order: 13,
+    ),
+    SubRegion(
+      id: 'arm_left_posterior_lower',
+      regionId: 'arm_left',
+      label: 'Posterior inferior',
+      svgElementId: 'arm_left_posterior_lower',
+      order: 14,
+    ),
+    SubRegion(
+      id: 'hip_right_upper',
+      regionId: 'hip_right',
+      label: 'Superior',
+      svgElementId: 'hip_right_upper',
+      order: 15,
+    ),
+    SubRegion(
+      id: 'hip_right_lower',
+      regionId: 'hip_right',
+      label: 'Inferior',
+      svgElementId: 'hip_right_lower',
+      order: 16,
+    ),
+    SubRegion(
+      id: 'hip_left_upper',
+      regionId: 'hip_left',
+      label: 'Superior',
+      svgElementId: 'hip_left_upper',
+      order: 17,
+    ),
+    SubRegion(
+      id: 'hip_left_lower',
+      regionId: 'hip_left',
+      label: 'Inferior',
+      svgElementId: 'hip_left_lower',
+      order: 18,
+    ),
+  ],
+);
+
+const _avonexProtocol = MedicationApplicationProtocol(
+  id: 'avonex_thigh_alternation',
+  strategy: ApplicationRotationStrategy.alternateSides,
+  rotationInstruction:
+      'Alterne entre coxa direita e coxa esquerda conforme orientação recebida.',
+  regions: [_rightThighRegion, _leftThighRegion],
+  subRegions: [
+    SubRegion(
+      id: 'thigh_right_upper_lateral',
+      regionId: 'right_thigh',
+      label: 'Superior/lateral',
+      svgElementId: 'thigh_right_upper_lateral',
+      order: 1,
+    ),
+    SubRegion(
+      id: 'thigh_left_upper_lateral',
+      regionId: 'left_thigh',
+      label: 'Superior/lateral',
+      svgElementId: 'thigh_left_upper_lateral',
+      order: 2,
+    ),
+  ],
+);
+
+const _rebifProtocol = MedicationApplicationProtocol(
+  id: 'rebif_subcutaneous_rotation',
+  strategy: ApplicationRotationStrategy.alternateSides,
+  regions: [
+    _abdomenRightRegion,
+    _abdomenLeftRegion,
+    _rightThighRegion,
+    _leftThighRegion,
+    _armRightRegion,
+    _armLeftRegion,
+    _gluteHipRightRegion,
+    _gluteHipLeftRegion,
+  ],
+  subRegions: [],
+  rotationInstruction: _rotateEveryInjectionInstruction,
+);
+
+const _betaferonProtocol = MedicationApplicationProtocol(
+  id: 'betaferon_subcutaneous_rotation',
+  strategy: ApplicationRotationStrategy.alternateSides,
+  regions: [
+    _abdomenRightRegion,
+    _abdomenLeftRegion,
+    _rightThighRegion,
+    _leftThighRegion,
+    _armRightRegion,
+    _armLeftRegion,
+    _gluteHipRightRegion,
+    _gluteHipLeftRegion,
+  ],
+  subRegions: [],
+  rotationInstruction: _rotateEveryInjectionInstruction,
+);
+
+const _plegridySubcutaneousProtocol = MedicationApplicationProtocol(
+  id: 'plegridy_subcutaneous_rotation',
+  strategy: ApplicationRotationStrategy.alternateSides,
+  regions: [
+    _abdomenRightRegion,
+    _abdomenLeftRegion,
+    _rightThighRegion,
+    _leftThighRegion,
+    _armRightRegion,
+    _armLeftRegion,
+  ],
+  subRegions: [],
+  rotationInstruction: _rotateEveryInjectionInstruction,
+);
+
+const _kesimptaProtocol = MedicationApplicationProtocol(
+  id: 'kesimpta_subcutaneous_rotation',
+  strategy: ApplicationRotationStrategy.alternateSides,
+  regions: [
+    _abdomenRightRegion,
+    _abdomenLeftRegion,
+    _rightThighRegion,
+    _leftThighRegion,
+    _upperArmRegion,
+  ],
+  subRegions: [],
+  rotationInstruction: _rotateEveryInjectionInstruction,
+);
 
 const _copaxoneApplicationPoints = [
   ApplicationPoint(
@@ -137,6 +469,10 @@ const _copaxoneApplicationPoints = [
         'assets/images/application_sites/copaxone_abdomen_points.svg',
     highlightAreaId: 'abdomen_right_upper',
     helperText: 'Evite a região próxima ao umbigo.',
+    regionId: 'abdomen_right',
+    subRegionId: 'abdomen_right_upper',
+    regionType: AnatomicalRegionType.abdomen,
+    bodySide: BodySide.right,
   ),
   ApplicationPoint(
     id: 'copaxone_abdomen_02',
@@ -149,6 +485,10 @@ const _copaxoneApplicationPoints = [
         'assets/images/application_sites/copaxone_abdomen_points.svg',
     highlightAreaId: 'abdomen_right_lower',
     helperText: 'Evite a região próxima ao umbigo.',
+    regionId: 'abdomen_right',
+    subRegionId: 'abdomen_right_lower',
+    regionType: AnatomicalRegionType.abdomen,
+    bodySide: BodySide.right,
   ),
   ApplicationPoint(
     id: 'copaxone_abdomen_03',
@@ -161,6 +501,10 @@ const _copaxoneApplicationPoints = [
         'assets/images/application_sites/copaxone_abdomen_points.svg',
     highlightAreaId: 'abdomen_left_upper',
     helperText: 'Evite a região próxima ao umbigo.',
+    regionId: 'abdomen_left',
+    subRegionId: 'abdomen_left_upper',
+    regionType: AnatomicalRegionType.abdomen,
+    bodySide: BodySide.left,
   ),
   ApplicationPoint(
     id: 'copaxone_abdomen_04',
@@ -173,6 +517,10 @@ const _copaxoneApplicationPoints = [
         'assets/images/application_sites/copaxone_abdomen_points.svg',
     highlightAreaId: 'abdomen_left_lower',
     helperText: 'Evite a região próxima ao umbigo.',
+    regionId: 'abdomen_left',
+    subRegionId: 'abdomen_left_lower',
+    regionType: AnatomicalRegionType.abdomen,
+    bodySide: BodySide.left,
   ),
   ApplicationPoint(
     id: 'copaxone_thigh_right_05',
@@ -185,6 +533,10 @@ const _copaxoneApplicationPoints = [
         'assets/images/application_sites/copaxone_right_thigh_points.svg',
     highlightAreaId: 'thigh_right_upper',
     helperText: 'Use o ponto indicado conforme orientação recebida.',
+    regionId: 'right_thigh',
+    subRegionId: 'thigh_right_upper',
+    regionType: AnatomicalRegionType.thigh,
+    bodySide: BodySide.right,
   ),
   ApplicationPoint(
     id: 'copaxone_thigh_right_06',
@@ -197,6 +549,10 @@ const _copaxoneApplicationPoints = [
         'assets/images/application_sites/copaxone_right_thigh_points.svg',
     highlightAreaId: 'thigh_right_middle',
     helperText: 'Use o ponto indicado conforme orientação recebida.',
+    regionId: 'right_thigh',
+    subRegionId: 'thigh_right_middle',
+    regionType: AnatomicalRegionType.thigh,
+    bodySide: BodySide.right,
   ),
   ApplicationPoint(
     id: 'copaxone_thigh_right_07',
@@ -209,6 +565,10 @@ const _copaxoneApplicationPoints = [
         'assets/images/application_sites/copaxone_right_thigh_points.svg',
     highlightAreaId: 'thigh_right_lower',
     helperText: 'Use o ponto indicado conforme orientação recebida.',
+    regionId: 'right_thigh',
+    subRegionId: 'thigh_right_lower',
+    regionType: AnatomicalRegionType.thigh,
+    bodySide: BodySide.right,
   ),
   ApplicationPoint(
     id: 'copaxone_thigh_left_08',
@@ -221,6 +581,10 @@ const _copaxoneApplicationPoints = [
         'assets/images/application_sites/copaxone_left_thigh_points.svg',
     highlightAreaId: 'thigh_left_upper',
     helperText: 'Use o ponto indicado conforme orientação recebida.',
+    regionId: 'left_thigh',
+    subRegionId: 'thigh_left_upper',
+    regionType: AnatomicalRegionType.thigh,
+    bodySide: BodySide.left,
   ),
   ApplicationPoint(
     id: 'copaxone_thigh_left_09',
@@ -233,6 +597,10 @@ const _copaxoneApplicationPoints = [
         'assets/images/application_sites/copaxone_left_thigh_points.svg',
     highlightAreaId: 'thigh_left_middle',
     helperText: 'Use o ponto indicado conforme orientação recebida.',
+    regionId: 'left_thigh',
+    subRegionId: 'thigh_left_middle',
+    regionType: AnatomicalRegionType.thigh,
+    bodySide: BodySide.left,
   ),
   ApplicationPoint(
     id: 'copaxone_thigh_left_10',
@@ -245,6 +613,10 @@ const _copaxoneApplicationPoints = [
         'assets/images/application_sites/copaxone_left_thigh_points.svg',
     highlightAreaId: 'thigh_left_lower',
     helperText: 'Use o ponto indicado conforme orientação recebida.',
+    regionId: 'left_thigh',
+    subRegionId: 'thigh_left_lower',
+    regionType: AnatomicalRegionType.thigh,
+    bodySide: BodySide.left,
   ),
   ApplicationPoint(
     id: 'copaxone_arm_right_11',
@@ -257,6 +629,10 @@ const _copaxoneApplicationPoints = [
         'assets/images/application_sites/copaxone_right_arm_points.svg',
     highlightAreaId: 'arm_right_posterior_upper',
     helperText: 'Use a região posterior indicada conforme orientação recebida.',
+    regionId: 'arm_right',
+    subRegionId: 'arm_right_posterior_upper',
+    regionType: AnatomicalRegionType.arm,
+    bodySide: BodySide.right,
   ),
   ApplicationPoint(
     id: 'copaxone_arm_right_12',
@@ -269,6 +645,10 @@ const _copaxoneApplicationPoints = [
         'assets/images/application_sites/copaxone_right_arm_points.svg',
     highlightAreaId: 'arm_right_posterior_lower',
     helperText: 'Use a região posterior indicada conforme orientação recebida.',
+    regionId: 'arm_right',
+    subRegionId: 'arm_right_posterior_lower',
+    regionType: AnatomicalRegionType.arm,
+    bodySide: BodySide.right,
   ),
   ApplicationPoint(
     id: 'copaxone_arm_left_13',
@@ -281,6 +661,10 @@ const _copaxoneApplicationPoints = [
         'assets/images/application_sites/copaxone_left_arm_points.svg',
     highlightAreaId: 'arm_left_posterior_upper',
     helperText: 'Use a região posterior indicada conforme orientação recebida.',
+    regionId: 'arm_left',
+    subRegionId: 'arm_left_posterior_upper',
+    regionType: AnatomicalRegionType.arm,
+    bodySide: BodySide.left,
   ),
   ApplicationPoint(
     id: 'copaxone_arm_left_14',
@@ -293,6 +677,10 @@ const _copaxoneApplicationPoints = [
         'assets/images/application_sites/copaxone_left_arm_points.svg',
     highlightAreaId: 'arm_left_posterior_lower',
     helperText: 'Use a região posterior indicada conforme orientação recebida.',
+    regionId: 'arm_left',
+    subRegionId: 'arm_left_posterior_lower',
+    regionType: AnatomicalRegionType.arm,
+    bodySide: BodySide.left,
   ),
   ApplicationPoint(
     id: 'copaxone_hip_right_15',
@@ -305,6 +693,10 @@ const _copaxoneApplicationPoints = [
         'assets/images/application_sites/copaxone_right_hip_points.svg',
     highlightAreaId: 'hip_right_upper',
     helperText: 'Use o ponto indicado conforme orientação recebida.',
+    regionId: 'hip_right',
+    subRegionId: 'hip_right_upper',
+    regionType: AnatomicalRegionType.hip,
+    bodySide: BodySide.right,
   ),
   ApplicationPoint(
     id: 'copaxone_hip_right_16',
@@ -317,6 +709,10 @@ const _copaxoneApplicationPoints = [
         'assets/images/application_sites/copaxone_right_hip_points.svg',
     highlightAreaId: 'hip_right_lower',
     helperText: 'Use o ponto indicado conforme orientação recebida.',
+    regionId: 'hip_right',
+    subRegionId: 'hip_right_lower',
+    regionType: AnatomicalRegionType.hip,
+    bodySide: BodySide.right,
   ),
   ApplicationPoint(
     id: 'copaxone_hip_left_17',
@@ -329,6 +725,10 @@ const _copaxoneApplicationPoints = [
         'assets/images/application_sites/copaxone_left_hip_points.svg',
     highlightAreaId: 'hip_left_upper',
     helperText: 'Use o ponto indicado conforme orientação recebida.',
+    regionId: 'hip_left',
+    subRegionId: 'hip_left_upper',
+    regionType: AnatomicalRegionType.hip,
+    bodySide: BodySide.left,
   ),
   ApplicationPoint(
     id: 'copaxone_hip_left_18',
@@ -341,6 +741,10 @@ const _copaxoneApplicationPoints = [
         'assets/images/application_sites/copaxone_left_hip_points.svg',
     highlightAreaId: 'hip_left_lower',
     helperText: 'Use o ponto indicado conforme orientação recebida.',
+    regionId: 'hip_left',
+    subRegionId: 'hip_left_lower',
+    regionType: AnatomicalRegionType.hip,
+    bodySide: BodySide.left,
   ),
 ];
 
@@ -356,6 +760,10 @@ const _avonexApplicationPoints = [
     highlightAreaId: 'thigh_right_upper_lateral',
     helperText:
         'Aplicação intramuscular na região superior/lateral da coxa, alternando os lados semanalmente.',
+    regionId: 'right_thigh',
+    subRegionId: 'thigh_right_upper_lateral',
+    regionType: AnatomicalRegionType.thigh,
+    bodySide: BodySide.right,
   ),
   ApplicationPoint(
     id: 'avonex_thigh_left_02',
@@ -368,6 +776,10 @@ const _avonexApplicationPoints = [
     highlightAreaId: 'thigh_left_upper_lateral',
     helperText:
         'Aplicação intramuscular na região superior/lateral da coxa, alternando os lados semanalmente.',
+    regionId: 'left_thigh',
+    subRegionId: 'thigh_left_upper_lateral',
+    regionType: AnatomicalRegionType.thigh,
+    bodySide: BodySide.left,
   ),
 ];
 
@@ -389,6 +801,7 @@ const _medications = [
     requiresApplicationRotation: true,
     applicationSites: _copaxoneSites,
     applicationPoints: _copaxoneApplicationPoints,
+    applicationProtocol: _copaxoneProtocol,
     safetyNote: _safetyNote,
   ),
   Medication(
@@ -408,6 +821,7 @@ const _medications = [
     requiresApplicationRotation: true,
     applicationSites: _copaxoneSites,
     applicationPoints: _copaxoneApplicationPoints,
+    applicationProtocol: _copaxoneProtocol,
     safetyNote: _safetyNote,
   ),
   Medication(
@@ -427,6 +841,7 @@ const _medications = [
     requiresApplicationRotation: true,
     applicationSites: [_rightThigh, _leftThigh],
     applicationPoints: _avonexApplicationPoints,
+    applicationProtocol: _avonexProtocol,
     safetyNote: _safetyNote,
     helperText:
         'Aplicação intramuscular na parte superior/lateral da coxa, alternando o lado semanalmente.',
@@ -445,8 +860,18 @@ const _medications = [
         'Aplicação subcutânea três vezes por semana, conforme prescrição.',
     requiresApplicationSite: true,
     requiresApplicationRotation: true,
-    applicationSites: _standardSubcutaneousSites,
+    applicationSites: [
+      _abdomenRight,
+      _abdomenLeft,
+      _rightThigh,
+      _leftThigh,
+      _armRight,
+      _armLeft,
+      _gluteHipRight,
+      _gluteHipLeft,
+    ],
     applicationPoints: [],
+    applicationProtocol: _rebifProtocol,
     safetyNote: _safetyNote,
   ),
   Medication(
@@ -475,6 +900,7 @@ const _medications = [
       _gluteHipLeft,
     ],
     applicationPoints: [],
+    applicationProtocol: _betaferonProtocol,
     safetyNote: _safetyNote,
   ),
   Medication(
@@ -492,8 +918,16 @@ const _medications = [
         'Aplicação subcutânea a cada duas semanas, conforme prescrição.',
     requiresApplicationSite: true,
     requiresApplicationRotation: true,
-    applicationSites: [_abdomen, _rightThigh, _leftThigh, _armRight, _armLeft],
+    applicationSites: [
+      _abdomenRight,
+      _abdomenLeft,
+      _rightThigh,
+      _leftThigh,
+      _armRight,
+      _armLeft,
+    ],
     applicationPoints: [],
+    applicationProtocol: _plegridySubcutaneousProtocol,
     safetyNote: _safetyNote,
   ),
   Medication(
@@ -509,8 +943,15 @@ const _medications = [
         'Aplicações iniciais nas primeiras semanas conforme bula/prescrição; depois aplicação mensal.',
     requiresApplicationSite: true,
     requiresApplicationRotation: true,
-    applicationSites: [_abdomen, _rightThigh, _leftThigh, _upperArm],
+    applicationSites: [
+      _abdomenRight,
+      _abdomenLeft,
+      _rightThigh,
+      _leftThigh,
+      _upperArm,
+    ],
     applicationPoints: [],
+    applicationProtocol: _kesimptaProtocol,
     safetyNote: _safetyNote,
   ),
   Medication(

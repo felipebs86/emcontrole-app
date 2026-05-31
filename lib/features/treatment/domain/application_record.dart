@@ -12,6 +12,10 @@ class ApplicationRecord {
     required this.registrationStatus,
     required this.adjustedSchedule,
     required this.appliedAt,
+    this.applicationRegionId,
+    this.applicationRegionLabel,
+    this.applicationSubRegionId,
+    this.applicationSubRegionLabel,
     this.notes,
   });
 
@@ -20,6 +24,10 @@ class ApplicationRecord {
   final String medicationName;
   final String? applicationPointId;
   final String? applicationPointLabel;
+  final String? applicationRegionId;
+  final String? applicationRegionLabel;
+  final String? applicationSubRegionId;
+  final String? applicationSubRegionLabel;
   final DateTime scheduledAt;
   final DateTime registeredAt;
   final ApplicationRegistrationStatus registrationStatus;

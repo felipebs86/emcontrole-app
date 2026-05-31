@@ -44,6 +44,10 @@ class ApplicationRecordRepository {
             adjustedSchedule: record.adjustedSchedule,
             applicationPointId: Value(record.applicationPointId),
             applicationPointLabel: Value(record.applicationPointLabel),
+            applicationRegionId: Value(record.applicationRegionId),
+            applicationRegionLabel: Value(record.applicationRegionLabel),
+            applicationSubRegionId: Value(record.applicationSubRegionId),
+            applicationSubRegionLabel: Value(record.applicationSubRegionLabel),
             notes: Value(record.notes),
           ),
         );
@@ -62,6 +66,10 @@ class ApplicationRecordRepository {
       medicationName: entry.medicationName,
       applicationPointId: entry.applicationPointId,
       applicationPointLabel: entry.applicationPointLabel,
+      applicationRegionId: entry.applicationRegionId,
+      applicationRegionLabel: entry.applicationRegionLabel,
+      applicationSubRegionId: entry.applicationSubRegionId,
+      applicationSubRegionLabel: entry.applicationSubRegionLabel,
       scheduledAt: entry.scheduledAt,
       registeredAt: entry.registeredAt,
       registrationStatus: ApplicationRegistrationStatus.values.byName(

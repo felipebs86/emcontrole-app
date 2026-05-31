@@ -3,8 +3,8 @@
   <path d="M183 26c-42-20-96-18-133 6 5 88 20 192 54 282 25 11 62 10 89-3-19-86-23-190-10-285Z" fill="#F4E8DE" stroke="#806E63" stroke-width="6" stroke-linejoin="round"/>
   <path d="M161 132c-29-23-69-22-95 0 5 36 13 69 24 99 24 10 54 10 76-2-4-30-6-62-5-97Z" fill="#DF6725" opacity=".22"/>
   <g fill="#DF6725" stroke="#FFFDF9" stroke-width="5">
-    <circle cx="134" cy="146" r="10"/><circle cx="96" cy="146" r="10"/>
-    <circle cx="141" cy="184" r="10"/><circle cx="102" cy="187" r="10"/>
-    <circle cx="148" cy="222" r="10"/><circle cx="111" cy="226" r="10"/>
+    <g id="thigh_left_upper"><circle cx="134" cy="146" r="10"/></g>
+    <g id="thigh_left_middle"><circle cx="141" cy="184" r="10"/></g>
+    <g id="thigh_left_lower"><circle cx="148" cy="222" r="10"/></g>
   </g>
 </svg>
