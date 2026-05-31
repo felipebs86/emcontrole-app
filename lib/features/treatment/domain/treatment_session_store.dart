@@ -7,6 +7,8 @@ import '../../../core/notifications/local_notification_service.dart';
 import '../data/application_record_repository.dart';
 import '../data/medication_catalog_data_source.dart';
 import '../data/treatment_repository.dart';
+import '../../timeline/data/treatment_change_repository.dart';
+import '../../timeline/domain/treatment_change_record.dart';
 import 'application_eligibility_service.dart';
 import 'application_record.dart';
 import 'application_rotation_service.dart';
@@ -24,6 +26,7 @@ class TreatmentSessionStore extends ChangeNotifier {
     this._notificationService = localNotificationService,
     this._treatmentRepository,
     this._applicationRecordRepository,
+    this._treatmentChangeRepository,
   ]);
 
   TreatmentSessionStore.persistent()
@@ -34,6 +37,7 @@ class TreatmentSessionStore extends ChangeNotifier {
         localNotificationService,
         TreatmentRepository(appDatabase),
         ApplicationRecordRepository(appDatabase),
+        TreatmentChangeRepository(appDatabase),
       );
 
   final ApplicationRotationService _rotationService;
@@ -42,6 +46,7 @@ class TreatmentSessionStore extends ChangeNotifier {
   final LocalNotificationService _notificationService;
   final TreatmentRepository? _treatmentRepository;
   final ApplicationRecordRepository? _applicationRecordRepository;
+  final TreatmentChangeDataSource? _treatmentChangeRepository;
   final List<ApplicationRecord> _records = [];
 
   Medication? _medication;
@@ -116,7 +121,11 @@ class TreatmentSessionStore extends ChangeNotifier {
     _configuredScheduledAt = snapshot.scheduledAt;
     _records
       ..clear()
-      ..addAll(await recordRepository.loadRecords(snapshot.id));
+      ..addAll(
+        (await recordRepository.loadRecords(
+          snapshot.id,
+        )).where((record) => record.medicationId == medication.id),
+      );
     _currentScheduledAt = _scheduleService.getCurrentExpectedDateTime(
       medication: medication,
       treatmentStartAt: snapshot.scheduledAt,
@@ -136,6 +145,12 @@ class TreatmentSessionStore extends ChangeNotifier {
     required DateTime scheduledAt,
     required bool remindersEnabled,
   }) async {
+    final previousMedicationId = _medication?.id;
+    final previousMedicationName = _medication?.name;
+    final treatmentRepository = _treatmentRepository;
+    final medicationChanged =
+        previousMedicationId != null && previousMedicationId != medication.id;
+
     _medication = medication;
     _userName = userName;
     _remindersEnabled = remindersEnabled;
@@ -165,12 +180,23 @@ class TreatmentSessionStore extends ChangeNotifier {
       createdAt: now,
       updatedAt: now,
     );
+    final treatmentChangeRecord = medicationChanged
+        ? TreatmentChangeRecord(
+            id: 'treatment_change_${now.microsecondsSinceEpoch}',
+            previousMedicationId: previousMedicationId,
+            previousMedicationName:
+                previousMedicationName ?? 'Tratamento anterior',
+            newMedicationId: medication.id,
+            newMedicationName: medication.name,
+            changedAt: now,
+          )
+        : null;
 
     await Future.wait([
-      if (_applicationRecordRepository != null)
-        _applicationRecordRepository.clearRecords(snapshot.id),
-      if (_treatmentRepository != null)
-        _treatmentRepository.saveActiveTreatment(snapshot),
+      if (treatmentRepository != null)
+        treatmentRepository.saveActiveTreatment(snapshot),
+      if (_treatmentChangeRepository != null && treatmentChangeRecord != null)
+        _treatmentChangeRepository.saveRecord(treatmentChangeRecord),
     ]);
     await _syncMedicationReminder();
   }

@@ -1,7 +1,13 @@
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:emcontrole/core/notifications/local_notification_service.dart';
+import 'package:emcontrole/features/timeline/data/treatment_change_repository.dart';
+import 'package:emcontrole/features/timeline/domain/treatment_change_record.dart';
 import 'package:emcontrole/features/treatment/data/medication_catalog_data_source.dart';
+import 'package:emcontrole/features/treatment/domain/application_eligibility_service.dart';
+import 'package:emcontrole/features/treatment/domain/application_rotation_service.dart';
 import 'package:emcontrole/features/treatment/domain/medication.dart';
+import 'package:emcontrole/features/treatment/domain/medication_schedule_service.dart';
 import 'package:emcontrole/features/treatment/domain/treatment_session_store.dart';
 
 void main() {
@@ -69,6 +75,53 @@ void main() {
         expect(firstRecord.applicationPointId, 'avonex_thigh_right_01');
         expect(secondRecord.applicationPointId, 'avonex_thigh_left_02');
         expect(store.currentApplicationPoint?.id, 'avonex_thigh_right_01');
+      },
+    );
+
+    test(
+      'creates one treatment change record only when medication changes',
+      () async {
+        final treatmentChangeRepository = _InMemoryTreatmentChangeDataSource();
+        final store = TreatmentSessionStore(
+          const ApplicationRotationService(),
+          const ApplicationEligibilityService(),
+          const MedicationScheduleService(),
+          localNotificationService,
+          null,
+          null,
+          treatmentChangeRepository,
+        );
+        final avonex = medicationById('avonex');
+        final tecfidera = medicationById('tecfidera');
+        final scheduledAt = DateTime(2026, 1, 2, 8);
+
+        await store.configureTreatment(
+          userName: 'Maria',
+          medication: avonex,
+          initialApplicationPointId: 'avonex_thigh_right_01',
+          scheduledAt: scheduledAt,
+          remindersEnabled: false,
+        );
+        await store.configureTreatment(
+          userName: 'Maria',
+          medication: tecfidera,
+          initialApplicationPointId: null,
+          scheduledAt: scheduledAt,
+          remindersEnabled: false,
+        );
+        await store.configureTreatment(
+          userName: 'Maria',
+          medication: tecfidera,
+          initialApplicationPointId: null,
+          scheduledAt: scheduledAt,
+          remindersEnabled: false,
+        );
+
+        final records = await treatmentChangeRepository.loadRecords();
+
+        expect(records, hasLength(1));
+        expect(records.single.previousMedicationName, 'Avonex');
+        expect(records.single.newMedicationName, 'Tecfidera');
       },
     );
 
@@ -297,4 +350,18 @@ void main() {
       },
     );
   });
+}
+
+class _InMemoryTreatmentChangeDataSource implements TreatmentChangeDataSource {
+  final List<TreatmentChangeRecord> _records = [];
+
+  @override
+  Future<List<TreatmentChangeRecord>> loadRecords() async {
+    return List.unmodifiable(_records);
+  }
+
+  @override
+  Future<void> saveRecord(TreatmentChangeRecord record) async {
+    _records.add(record);
+  }
 }

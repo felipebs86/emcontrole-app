@@ -5,6 +5,7 @@ import '../features/history/history_screen.dart';
 import '../features/home/home_screen.dart';
 import '../features/settings/settings_screen.dart';
 import '../features/treatment/treatment_screen.dart';
+import '../features/timeline/timeline_screen.dart';
 
 final appRouter = GoRouter(
   initialLocation: '/',
@@ -34,6 +35,10 @@ final appRouter = GoRouter(
       builder: (context, state) => HistoryRecordDetailsScreen(
         recordId: state.pathParameters['recordId'] ?? '',
       ),
+    ),
+    GoRoute(
+      path: '/timeline',
+      builder: (context, state) => const TimelineScreen(),
     ),
     GoRoute(
       path: '/settings',

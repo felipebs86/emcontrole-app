@@ -35,13 +35,16 @@ class HistoryScreen extends StatelessWidget {
           }
 
           final groupedRecords = _groupRecordsByDate(records);
-          return ListView.separated(
-            itemCount: groupedRecords.length,
-            separatorBuilder: (context, index) => const SizedBox(height: 16),
-            itemBuilder: (context, index) {
-              final group = groupedRecords[index];
-              return _HistoryDateGroup(group: group);
-            },
+          return ListView(
+            children: [
+              const _TimelineLinkButton(),
+              const SizedBox(height: 12),
+              for (final (index, group) in groupedRecords.indexed) ...[
+                _HistoryDateGroup(group: group),
+                if (index < groupedRecords.length - 1)
+                  const SizedBox(height: 16),
+              ],
+            ],
           );
         },
       ),
@@ -97,10 +100,10 @@ class _HistoryEmptyState extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Icon(
-                  Icons.history_outlined,
-                  size: 48,
-                  color: Theme.of(context).colorScheme.primary,
+                SvgPicture.asset(
+                  'assets/images/brand/emcontrole_mark.svg',
+                  height: 56,
+                  semanticsLabel: 'Marca EMControle',
                 ),
                 const SizedBox(height: 16),
                 Text(
@@ -115,6 +118,12 @@ class _HistoryEmptyState extends StatelessWidget {
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                     color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
+                ),
+                const SizedBox(height: 20),
+                OutlinedButton.icon(
+                  onPressed: () => context.go(AppRoutes.timeline),
+                  icon: const Icon(Icons.view_timeline_outlined),
+                  label: const Text('Linha do tempo'),
                 ),
               ],
             ),
@@ -221,6 +230,22 @@ class _HistoryRecordTile extends StatelessWidget {
       ),
       trailing: const Icon(Icons.chevron_right),
       onTap: () => context.go('${AppRoutes.history}/${record.id}'),
+    );
+  }
+}
+
+class _TimelineLinkButton extends StatelessWidget {
+  const _TimelineLinkButton();
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: OutlinedButton.icon(
+        onPressed: () => context.go(AppRoutes.timeline),
+        icon: const Icon(Icons.view_timeline_outlined),
+        label: const Text('Linha do tempo'),
+      ),
     );
   }
 }

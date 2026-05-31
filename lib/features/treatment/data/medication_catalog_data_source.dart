@@ -352,7 +352,7 @@ const _avonexApplicationPoints = [
     bodyRegion: 'Coxa direita',
     side: 'Superior/lateral',
     parentSiteLabel: 'Coxa direita',
-    imageAssetPath: 'assets/images/application_sites/avonex_thigh_rotation.svg',
+    imageAssetPath: 'assets/images/application_sites/avonex_thigh_right.svg',
     highlightAreaId: 'thigh_right_upper_lateral',
     helperText:
         'Aplicação intramuscular na região superior/lateral da coxa, alternando os lados semanalmente.',
@@ -364,7 +364,7 @@ const _avonexApplicationPoints = [
     bodyRegion: 'Coxa esquerda',
     side: 'Superior/lateral',
     parentSiteLabel: 'Coxa esquerda',
-    imageAssetPath: 'assets/images/application_sites/avonex_thigh_rotation.svg',
+    imageAssetPath: 'assets/images/application_sites/avonex_thigh_left.svg',
     highlightAreaId: 'thigh_left_upper_lateral',
     helperText:
         'Aplicação intramuscular na região superior/lateral da coxa, alternando os lados semanalmente.',

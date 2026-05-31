@@ -1985,6 +1985,459 @@ class DiaryEntriesCompanion extends UpdateCompanion<DiaryEntry> {
   }
 }
 
+class $TreatmentChangeEntriesTable extends TreatmentChangeEntries
+    with TableInfo<$TreatmentChangeEntriesTable, TreatmentChangeEntry> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $TreatmentChangeEntriesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _previousMedicationIdMeta =
+      const VerificationMeta('previousMedicationId');
+  @override
+  late final GeneratedColumn<String> previousMedicationId =
+      GeneratedColumn<String>(
+        'previous_medication_id',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      );
+  static const VerificationMeta _previousMedicationNameMeta =
+      const VerificationMeta('previousMedicationName');
+  @override
+  late final GeneratedColumn<String> previousMedicationName =
+      GeneratedColumn<String>(
+        'previous_medication_name',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      );
+  static const VerificationMeta _newMedicationIdMeta = const VerificationMeta(
+    'newMedicationId',
+  );
+  @override
+  late final GeneratedColumn<String> newMedicationId = GeneratedColumn<String>(
+    'new_medication_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _newMedicationNameMeta = const VerificationMeta(
+    'newMedicationName',
+  );
+  @override
+  late final GeneratedColumn<String> newMedicationName =
+      GeneratedColumn<String>(
+        'new_medication_name',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      );
+  static const VerificationMeta _changedAtMeta = const VerificationMeta(
+    'changedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> changedAt = GeneratedColumn<DateTime>(
+    'changed_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    previousMedicationId,
+    previousMedicationName,
+    newMedicationId,
+    newMedicationName,
+    changedAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'treatment_change_entries';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<TreatmentChangeEntry> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('previous_medication_id')) {
+      context.handle(
+        _previousMedicationIdMeta,
+        previousMedicationId.isAcceptableOrUnknown(
+          data['previous_medication_id']!,
+          _previousMedicationIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_previousMedicationIdMeta);
+    }
+    if (data.containsKey('previous_medication_name')) {
+      context.handle(
+        _previousMedicationNameMeta,
+        previousMedicationName.isAcceptableOrUnknown(
+          data['previous_medication_name']!,
+          _previousMedicationNameMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_previousMedicationNameMeta);
+    }
+    if (data.containsKey('new_medication_id')) {
+      context.handle(
+        _newMedicationIdMeta,
+        newMedicationId.isAcceptableOrUnknown(
+          data['new_medication_id']!,
+          _newMedicationIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_newMedicationIdMeta);
+    }
+    if (data.containsKey('new_medication_name')) {
+      context.handle(
+        _newMedicationNameMeta,
+        newMedicationName.isAcceptableOrUnknown(
+          data['new_medication_name']!,
+          _newMedicationNameMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_newMedicationNameMeta);
+    }
+    if (data.containsKey('changed_at')) {
+      context.handle(
+        _changedAtMeta,
+        changedAt.isAcceptableOrUnknown(data['changed_at']!, _changedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_changedAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  TreatmentChangeEntry map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return TreatmentChangeEntry(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      previousMedicationId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}previous_medication_id'],
+      )!,
+      previousMedicationName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}previous_medication_name'],
+      )!,
+      newMedicationId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}new_medication_id'],
+      )!,
+      newMedicationName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}new_medication_name'],
+      )!,
+      changedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}changed_at'],
+      )!,
+    );
+  }
+
+  @override
+  $TreatmentChangeEntriesTable createAlias(String alias) {
+    return $TreatmentChangeEntriesTable(attachedDatabase, alias);
+  }
+}
+
+class TreatmentChangeEntry extends DataClass
+    implements Insertable<TreatmentChangeEntry> {
+  final String id;
+  final String previousMedicationId;
+  final String previousMedicationName;
+  final String newMedicationId;
+  final String newMedicationName;
+  final DateTime changedAt;
+  const TreatmentChangeEntry({
+    required this.id,
+    required this.previousMedicationId,
+    required this.previousMedicationName,
+    required this.newMedicationId,
+    required this.newMedicationName,
+    required this.changedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['previous_medication_id'] = Variable<String>(previousMedicationId);
+    map['previous_medication_name'] = Variable<String>(previousMedicationName);
+    map['new_medication_id'] = Variable<String>(newMedicationId);
+    map['new_medication_name'] = Variable<String>(newMedicationName);
+    map['changed_at'] = Variable<DateTime>(changedAt);
+    return map;
+  }
+
+  TreatmentChangeEntriesCompanion toCompanion(bool nullToAbsent) {
+    return TreatmentChangeEntriesCompanion(
+      id: Value(id),
+      previousMedicationId: Value(previousMedicationId),
+      previousMedicationName: Value(previousMedicationName),
+      newMedicationId: Value(newMedicationId),
+      newMedicationName: Value(newMedicationName),
+      changedAt: Value(changedAt),
+    );
+  }
+
+  factory TreatmentChangeEntry.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return TreatmentChangeEntry(
+      id: serializer.fromJson<String>(json['id']),
+      previousMedicationId: serializer.fromJson<String>(
+        json['previousMedicationId'],
+      ),
+      previousMedicationName: serializer.fromJson<String>(
+        json['previousMedicationName'],
+      ),
+      newMedicationId: serializer.fromJson<String>(json['newMedicationId']),
+      newMedicationName: serializer.fromJson<String>(json['newMedicationName']),
+      changedAt: serializer.fromJson<DateTime>(json['changedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'previousMedicationId': serializer.toJson<String>(previousMedicationId),
+      'previousMedicationName': serializer.toJson<String>(
+        previousMedicationName,
+      ),
+      'newMedicationId': serializer.toJson<String>(newMedicationId),
+      'newMedicationName': serializer.toJson<String>(newMedicationName),
+      'changedAt': serializer.toJson<DateTime>(changedAt),
+    };
+  }
+
+  TreatmentChangeEntry copyWith({
+    String? id,
+    String? previousMedicationId,
+    String? previousMedicationName,
+    String? newMedicationId,
+    String? newMedicationName,
+    DateTime? changedAt,
+  }) => TreatmentChangeEntry(
+    id: id ?? this.id,
+    previousMedicationId: previousMedicationId ?? this.previousMedicationId,
+    previousMedicationName:
+        previousMedicationName ?? this.previousMedicationName,
+    newMedicationId: newMedicationId ?? this.newMedicationId,
+    newMedicationName: newMedicationName ?? this.newMedicationName,
+    changedAt: changedAt ?? this.changedAt,
+  );
+  TreatmentChangeEntry copyWithCompanion(TreatmentChangeEntriesCompanion data) {
+    return TreatmentChangeEntry(
+      id: data.id.present ? data.id.value : this.id,
+      previousMedicationId: data.previousMedicationId.present
+          ? data.previousMedicationId.value
+          : this.previousMedicationId,
+      previousMedicationName: data.previousMedicationName.present
+          ? data.previousMedicationName.value
+          : this.previousMedicationName,
+      newMedicationId: data.newMedicationId.present
+          ? data.newMedicationId.value
+          : this.newMedicationId,
+      newMedicationName: data.newMedicationName.present
+          ? data.newMedicationName.value
+          : this.newMedicationName,
+      changedAt: data.changedAt.present ? data.changedAt.value : this.changedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('TreatmentChangeEntry(')
+          ..write('id: $id, ')
+          ..write('previousMedicationId: $previousMedicationId, ')
+          ..write('previousMedicationName: $previousMedicationName, ')
+          ..write('newMedicationId: $newMedicationId, ')
+          ..write('newMedicationName: $newMedicationName, ')
+          ..write('changedAt: $changedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    previousMedicationId,
+    previousMedicationName,
+    newMedicationId,
+    newMedicationName,
+    changedAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is TreatmentChangeEntry &&
+          other.id == this.id &&
+          other.previousMedicationId == this.previousMedicationId &&
+          other.previousMedicationName == this.previousMedicationName &&
+          other.newMedicationId == this.newMedicationId &&
+          other.newMedicationName == this.newMedicationName &&
+          other.changedAt == this.changedAt);
+}
+
+class TreatmentChangeEntriesCompanion
+    extends UpdateCompanion<TreatmentChangeEntry> {
+  final Value<String> id;
+  final Value<String> previousMedicationId;
+  final Value<String> previousMedicationName;
+  final Value<String> newMedicationId;
+  final Value<String> newMedicationName;
+  final Value<DateTime> changedAt;
+  final Value<int> rowid;
+  const TreatmentChangeEntriesCompanion({
+    this.id = const Value.absent(),
+    this.previousMedicationId = const Value.absent(),
+    this.previousMedicationName = const Value.absent(),
+    this.newMedicationId = const Value.absent(),
+    this.newMedicationName = const Value.absent(),
+    this.changedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  TreatmentChangeEntriesCompanion.insert({
+    required String id,
+    required String previousMedicationId,
+    required String previousMedicationName,
+    required String newMedicationId,
+    required String newMedicationName,
+    required DateTime changedAt,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       previousMedicationId = Value(previousMedicationId),
+       previousMedicationName = Value(previousMedicationName),
+       newMedicationId = Value(newMedicationId),
+       newMedicationName = Value(newMedicationName),
+       changedAt = Value(changedAt);
+  static Insertable<TreatmentChangeEntry> custom({
+    Expression<String>? id,
+    Expression<String>? previousMedicationId,
+    Expression<String>? previousMedicationName,
+    Expression<String>? newMedicationId,
+    Expression<String>? newMedicationName,
+    Expression<DateTime>? changedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (previousMedicationId != null)
+        'previous_medication_id': previousMedicationId,
+      if (previousMedicationName != null)
+        'previous_medication_name': previousMedicationName,
+      if (newMedicationId != null) 'new_medication_id': newMedicationId,
+      if (newMedicationName != null) 'new_medication_name': newMedicationName,
+      if (changedAt != null) 'changed_at': changedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  TreatmentChangeEntriesCompanion copyWith({
+    Value<String>? id,
+    Value<String>? previousMedicationId,
+    Value<String>? previousMedicationName,
+    Value<String>? newMedicationId,
+    Value<String>? newMedicationName,
+    Value<DateTime>? changedAt,
+    Value<int>? rowid,
+  }) {
+    return TreatmentChangeEntriesCompanion(
+      id: id ?? this.id,
+      previousMedicationId: previousMedicationId ?? this.previousMedicationId,
+      previousMedicationName:
+          previousMedicationName ?? this.previousMedicationName,
+      newMedicationId: newMedicationId ?? this.newMedicationId,
+      newMedicationName: newMedicationName ?? this.newMedicationName,
+      changedAt: changedAt ?? this.changedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (previousMedicationId.present) {
+      map['previous_medication_id'] = Variable<String>(
+        previousMedicationId.value,
+      );
+    }
+    if (previousMedicationName.present) {
+      map['previous_medication_name'] = Variable<String>(
+        previousMedicationName.value,
+      );
+    }
+    if (newMedicationId.present) {
+      map['new_medication_id'] = Variable<String>(newMedicationId.value);
+    }
+    if (newMedicationName.present) {
+      map['new_medication_name'] = Variable<String>(newMedicationName.value);
+    }
+    if (changedAt.present) {
+      map['changed_at'] = Variable<DateTime>(changedAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('TreatmentChangeEntriesCompanion(')
+          ..write('id: $id, ')
+          ..write('previousMedicationId: $previousMedicationId, ')
+          ..write('previousMedicationName: $previousMedicationName, ')
+          ..write('newMedicationId: $newMedicationId, ')
+          ..write('newMedicationName: $newMedicationName, ')
+          ..write('changedAt: $changedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -1994,6 +2447,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $ApplicationRecordEntriesTable applicationRecordEntries =
       $ApplicationRecordEntriesTable(this);
   late final $DiaryEntriesTable diaryEntries = $DiaryEntriesTable(this);
+  late final $TreatmentChangeEntriesTable treatmentChangeEntries =
+      $TreatmentChangeEntriesTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -2002,6 +2457,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     treatmentEntries,
     applicationRecordEntries,
     diaryEntries,
+    treatmentChangeEntries,
   ];
 }
 
@@ -2957,6 +3413,252 @@ typedef $$DiaryEntriesTableProcessedTableManager =
       DiaryEntry,
       PrefetchHooks Function()
     >;
+typedef $$TreatmentChangeEntriesTableCreateCompanionBuilder =
+    TreatmentChangeEntriesCompanion Function({
+      required String id,
+      required String previousMedicationId,
+      required String previousMedicationName,
+      required String newMedicationId,
+      required String newMedicationName,
+      required DateTime changedAt,
+      Value<int> rowid,
+    });
+typedef $$TreatmentChangeEntriesTableUpdateCompanionBuilder =
+    TreatmentChangeEntriesCompanion Function({
+      Value<String> id,
+      Value<String> previousMedicationId,
+      Value<String> previousMedicationName,
+      Value<String> newMedicationId,
+      Value<String> newMedicationName,
+      Value<DateTime> changedAt,
+      Value<int> rowid,
+    });
+
+class $$TreatmentChangeEntriesTableFilterComposer
+    extends Composer<_$AppDatabase, $TreatmentChangeEntriesTable> {
+  $$TreatmentChangeEntriesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get previousMedicationId => $composableBuilder(
+    column: $table.previousMedicationId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get previousMedicationName => $composableBuilder(
+    column: $table.previousMedicationName,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get newMedicationId => $composableBuilder(
+    column: $table.newMedicationId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get newMedicationName => $composableBuilder(
+    column: $table.newMedicationName,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get changedAt => $composableBuilder(
+    column: $table.changedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$TreatmentChangeEntriesTableOrderingComposer
+    extends Composer<_$AppDatabase, $TreatmentChangeEntriesTable> {
+  $$TreatmentChangeEntriesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get previousMedicationId => $composableBuilder(
+    column: $table.previousMedicationId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get previousMedicationName => $composableBuilder(
+    column: $table.previousMedicationName,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get newMedicationId => $composableBuilder(
+    column: $table.newMedicationId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get newMedicationName => $composableBuilder(
+    column: $table.newMedicationName,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get changedAt => $composableBuilder(
+    column: $table.changedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$TreatmentChangeEntriesTableAnnotationComposer
+    extends Composer<_$AppDatabase, $TreatmentChangeEntriesTable> {
+  $$TreatmentChangeEntriesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get previousMedicationId => $composableBuilder(
+    column: $table.previousMedicationId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get previousMedicationName => $composableBuilder(
+    column: $table.previousMedicationName,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get newMedicationId => $composableBuilder(
+    column: $table.newMedicationId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get newMedicationName => $composableBuilder(
+    column: $table.newMedicationName,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get changedAt =>
+      $composableBuilder(column: $table.changedAt, builder: (column) => column);
+}
+
+class $$TreatmentChangeEntriesTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $TreatmentChangeEntriesTable,
+          TreatmentChangeEntry,
+          $$TreatmentChangeEntriesTableFilterComposer,
+          $$TreatmentChangeEntriesTableOrderingComposer,
+          $$TreatmentChangeEntriesTableAnnotationComposer,
+          $$TreatmentChangeEntriesTableCreateCompanionBuilder,
+          $$TreatmentChangeEntriesTableUpdateCompanionBuilder,
+          (
+            TreatmentChangeEntry,
+            BaseReferences<
+              _$AppDatabase,
+              $TreatmentChangeEntriesTable,
+              TreatmentChangeEntry
+            >,
+          ),
+          TreatmentChangeEntry,
+          PrefetchHooks Function()
+        > {
+  $$TreatmentChangeEntriesTableTableManager(
+    _$AppDatabase db,
+    $TreatmentChangeEntriesTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$TreatmentChangeEntriesTableFilterComposer(
+                $db: db,
+                $table: table,
+              ),
+          createOrderingComposer: () =>
+              $$TreatmentChangeEntriesTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$TreatmentChangeEntriesTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> previousMedicationId = const Value.absent(),
+                Value<String> previousMedicationName = const Value.absent(),
+                Value<String> newMedicationId = const Value.absent(),
+                Value<String> newMedicationName = const Value.absent(),
+                Value<DateTime> changedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => TreatmentChangeEntriesCompanion(
+                id: id,
+                previousMedicationId: previousMedicationId,
+                previousMedicationName: previousMedicationName,
+                newMedicationId: newMedicationId,
+                newMedicationName: newMedicationName,
+                changedAt: changedAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String previousMedicationId,
+                required String previousMedicationName,
+                required String newMedicationId,
+                required String newMedicationName,
+                required DateTime changedAt,
+                Value<int> rowid = const Value.absent(),
+              }) => TreatmentChangeEntriesCompanion.insert(
+                id: id,
+                previousMedicationId: previousMedicationId,
+                previousMedicationName: previousMedicationName,
+                newMedicationId: newMedicationId,
+                newMedicationName: newMedicationName,
+                changedAt: changedAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$TreatmentChangeEntriesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $TreatmentChangeEntriesTable,
+      TreatmentChangeEntry,
+      $$TreatmentChangeEntriesTableFilterComposer,
+      $$TreatmentChangeEntriesTableOrderingComposer,
+      $$TreatmentChangeEntriesTableAnnotationComposer,
+      $$TreatmentChangeEntriesTableCreateCompanionBuilder,
+      $$TreatmentChangeEntriesTableUpdateCompanionBuilder,
+      (
+        TreatmentChangeEntry,
+        BaseReferences<
+          _$AppDatabase,
+          $TreatmentChangeEntriesTable,
+          TreatmentChangeEntry
+        >,
+      ),
+      TreatmentChangeEntry,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -2970,4 +3672,9 @@ class $AppDatabaseManager {
       );
   $$DiaryEntriesTableTableManager get diaryEntries =>
       $$DiaryEntriesTableTableManager(_db, _db.diaryEntries);
+  $$TreatmentChangeEntriesTableTableManager get treatmentChangeEntries =>
+      $$TreatmentChangeEntriesTableTableManager(
+        _db,
+        _db.treatmentChangeEntries,
+      );
 }

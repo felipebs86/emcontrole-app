@@ -35,10 +35,12 @@ void main() {
       isTrue,
     );
     expect(
-      avonex.applicationPoints.every(
-        (point) => point.imageAssetPath.endsWith('avonex_thigh_rotation.svg'),
-      ),
-      isTrue,
+      avonex.applicationPoints[0].imageAssetPath,
+      endsWith('avonex_thigh_right.svg'),
+    );
+    expect(
+      avonex.applicationPoints[1].imageAssetPath,
+      endsWith('avonex_thigh_left.svg'),
     );
   });
 

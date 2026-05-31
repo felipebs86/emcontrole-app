@@ -50,10 +50,10 @@ class _NoTreatmentDashboard extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Icon(
-                  Icons.local_florist_outlined,
-                  size: 48,
-                  color: Theme.of(context).colorScheme.primary,
+                SvgPicture.asset(
+                  'assets/images/brand/emcontrole_mark.svg',
+                  height: 64,
+                  semanticsLabel: 'Marca EMControle',
                 ),
                 const SizedBox(height: 16),
                 Text(
@@ -74,6 +74,12 @@ class _NoTreatmentDashboard extends StatelessWidget {
                   onPressed: () => context.go(AppRoutes.treatment),
                   icon: const Icon(Icons.medication_outlined),
                   label: const Text('Configurar tratamento'),
+                ),
+                const SizedBox(height: 8),
+                OutlinedButton.icon(
+                  onPressed: () => context.go(AppRoutes.timeline),
+                  icon: const Icon(Icons.view_timeline_outlined),
+                  label: const Text('Linha do tempo'),
                 ),
               ],
             ),
@@ -551,6 +557,11 @@ class _SecondaryActions extends StatelessWidget {
           onPressed: () => context.go(AppRoutes.history),
           icon: const Icon(Icons.history_outlined),
           label: const Text('Histórico'),
+        ),
+        OutlinedButton.icon(
+          onPressed: () => context.go(AppRoutes.timeline),
+          icon: const Icon(Icons.view_timeline_outlined),
+          label: const Text('Linha do tempo'),
         ),
         OutlinedButton.icon(
           onPressed: () => context.go(AppRoutes.diary),

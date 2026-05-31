@@ -51,8 +51,25 @@ class DiaryEntries extends Table {
   Set<Column> get primaryKey => {id};
 }
 
+class TreatmentChangeEntries extends Table {
+  TextColumn get id => text()();
+  TextColumn get previousMedicationId => text()();
+  TextColumn get previousMedicationName => text()();
+  TextColumn get newMedicationId => text()();
+  TextColumn get newMedicationName => text()();
+  DateTimeColumn get changedAt => dateTime()();
+
+  @override
+  Set<Column> get primaryKey => {id};
+}
+
 @DriftDatabase(
-  tables: [TreatmentEntries, ApplicationRecordEntries, DiaryEntries],
+  tables: [
+    TreatmentEntries,
+    ApplicationRecordEntries,
+    DiaryEntries,
+    TreatmentChangeEntries,
+  ],
 )
 class AppDatabase extends _$AppDatabase {
   AppDatabase(super.executor);
@@ -69,7 +86,7 @@ class AppDatabase extends _$AppDatabase {
       );
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -77,6 +94,9 @@ class AppDatabase extends _$AppDatabase {
     onUpgrade: (migrator, from, to) async {
       if (from < 2) {
         await migrator.createTable(diaryEntries);
+      }
+      if (from < 3) {
+        await migrator.createTable(treatmentChangeEntries);
       }
     },
   );

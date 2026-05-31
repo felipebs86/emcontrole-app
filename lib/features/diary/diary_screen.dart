@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/app_routes.dart';
@@ -47,12 +48,15 @@ class _DiaryScreenState extends State<DiaryScreen> {
             return const _DiaryEmptyState();
           }
 
-          return ListView.separated(
-            itemCount: entries.length,
-            separatorBuilder: (context, index) => const SizedBox(height: 12),
-            itemBuilder: (context, index) {
-              return _DiaryEntryCard(entry: entries[index]);
-            },
+          return ListView(
+            children: [
+              const _TimelineLinkButton(),
+              const SizedBox(height: 12),
+              for (final (index, entry) in entries.indexed) ...[
+                _DiaryEntryCard(entry: entry),
+                if (index < entries.length - 1) const SizedBox(height: 12),
+              ],
+            ],
           );
         },
       ),
@@ -73,10 +77,10 @@ class _CreateDiaryEntryScreenState extends State<CreateDiaryEntryScreen> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _notesController = TextEditingController();
 
-  int? _fatigueLevel;
-  int? _painLevel;
-  int? _moodLevel;
-  int? _sleepQualityLevel;
+  int _fatigueLevel = 0;
+  int _painLevel = 0;
+  int _moodLevel = 8;
+  int _sleepQualityLevel = 8;
   bool _isSaving = false;
 
   @override
@@ -123,31 +127,47 @@ class _CreateDiaryEntryScreenState extends State<CreateDiaryEntryScreen> {
               ),
             ),
             const SizedBox(height: 24),
-            _LevelField(
+            _SliderLevelField(
               label: 'Fadiga',
               icon: Icons.battery_2_bar_outlined,
               value: _fatigueLevel,
+              minLabel: 'Sem fadiga',
+              maxLabel: 'Fadiga extrema',
               onChanged: (value) => setState(() => _fatigueLevel = value),
             ),
             const SizedBox(height: 12),
-            _LevelField(
+            _SliderLevelField(
               label: 'Dor',
               icon: Icons.healing_outlined,
               value: _painLevel,
+              minLabel: 'Sem dor',
+              maxLabel: 'Dor intensa',
               onChanged: (value) => setState(() => _painLevel = value),
             ),
             const SizedBox(height: 12),
-            _LevelField(
+            _SegmentedLevelField(
               label: 'Humor',
               icon: Icons.mood_outlined,
               value: _moodLevel,
+              options: const [
+                _RatingOption(value: 2, label: 'Ruim', emoji: '😞'),
+                _RatingOption(value: 5, label: 'Médio', emoji: '😐'),
+                _RatingOption(value: 8, label: 'Bom', emoji: '🙂'),
+                _RatingOption(value: 10, label: 'Ótimo', emoji: '😄'),
+              ],
               onChanged: (value) => setState(() => _moodLevel = value),
             ),
             const SizedBox(height: 12),
-            _LevelField(
+            _SegmentedLevelField(
               label: 'Sono',
               icon: Icons.bedtime_outlined,
               value: _sleepQualityLevel,
+              options: const [
+                _RatingOption(value: 2, label: 'Ruim', emoji: '😴'),
+                _RatingOption(value: 5, label: 'Regular', emoji: '😐'),
+                _RatingOption(value: 8, label: 'Bom', emoji: '🙂'),
+                _RatingOption(value: 10, label: 'Ótimo', emoji: '😄'),
+              ],
               onChanged: (value) => setState(() => _sleepQualityLevel = value),
             ),
             const SizedBox(height: 28),
@@ -245,10 +265,10 @@ class _DiaryEmptyState extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Icon(
-                  Icons.edit_note_outlined,
-                  size: 48,
-                  color: Theme.of(context).colorScheme.primary,
+                SvgPicture.asset(
+                  'assets/images/brand/emcontrole_mark.svg',
+                  height: 56,
+                  semanticsLabel: 'Marca EMControle',
                 ),
                 const SizedBox(height: 16),
                 Text(
@@ -269,6 +289,12 @@ class _DiaryEmptyState extends StatelessWidget {
                   onPressed: () => context.go(AppRoutes.diaryNew),
                   icon: const Icon(Icons.add),
                   label: const Text('Nova anotação'),
+                ),
+                const SizedBox(height: 8),
+                OutlinedButton.icon(
+                  onPressed: () => context.go(AppRoutes.timeline),
+                  icon: const Icon(Icons.view_timeline_outlined),
+                  label: const Text('Linha do tempo'),
                 ),
               ],
             ),
@@ -331,6 +357,22 @@ class _DiaryEntryCard extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _TimelineLinkButton extends StatelessWidget {
+  const _TimelineLinkButton();
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: OutlinedButton.icon(
+        onPressed: () => context.go(AppRoutes.timeline),
+        icon: const Icon(Icons.view_timeline_outlined),
+        label: const Text('Linha do tempo'),
       ),
     );
   }
@@ -428,30 +470,150 @@ class _DiaryEntryNotFound extends StatelessWidget {
   }
 }
 
-class _LevelField extends StatelessWidget {
-  const _LevelField({
+class _SliderLevelField extends StatelessWidget {
+  const _SliderLevelField({
     required this.label,
     required this.icon,
     required this.value,
+    required this.minLabel,
+    required this.maxLabel,
     required this.onChanged,
   });
 
   final String label;
   final IconData icon;
-  final int? value;
-  final ValueChanged<int?> onChanged;
+  final int value;
+  final String minLabel;
+  final String maxLabel;
+  final ValueChanged<int> onChanged;
 
   @override
   Widget build(BuildContext context) {
-    return DropdownButtonFormField<int?>(
-      initialValue: value,
-      decoration: InputDecoration(labelText: label, prefixIcon: Icon(icon)),
-      items: [
-        const DropdownMenuItem<int?>(value: null, child: Text('Não informado')),
-        for (var level = 0; level <= 10; level += 1)
-          DropdownMenuItem<int?>(value: level, child: Text(level.toString())),
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        border: Border.all(color: colorScheme.outlineVariant),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 14, 16, 10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            _RatingHeader(icon: icon, label: label, value: '$value/10'),
+            Slider(
+              value: value.toDouble(),
+              min: 0,
+              max: 10,
+              divisions: 10,
+              label: '$value',
+              onChanged: (newValue) => onChanged(newValue.round()),
+            ),
+            Row(
+              children: [
+                Expanded(child: Text(minLabel)),
+                Expanded(child: Text(maxLabel, textAlign: TextAlign.end)),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _SegmentedLevelField extends StatelessWidget {
+  const _SegmentedLevelField({
+    required this.label,
+    required this.icon,
+    required this.value,
+    required this.options,
+    required this.onChanged,
+  });
+
+  final String label;
+  final IconData icon;
+  final int value;
+  final List<_RatingOption> options;
+  final ValueChanged<int> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final selected = options.singleWhere((option) => option.value == value);
+
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        border: Border.all(color: colorScheme.outlineVariant),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            _RatingHeader(
+              icon: icon,
+              label: label,
+              value: '${selected.label} · $value/10',
+            ),
+            const SizedBox(height: 12),
+            SegmentedButton<int>(
+              segments: [
+                for (final option in options)
+                  ButtonSegment(
+                    value: option.value,
+                    label: Text('${option.emoji}\n${option.label}'),
+                  ),
+              ],
+              selected: {value},
+              showSelectedIcon: false,
+              onSelectionChanged: (selectedValues) {
+                onChanged(selectedValues.single);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _RatingOption {
+  const _RatingOption({
+    required this.value,
+    required this.label,
+    required this.emoji,
+  });
+
+  final int value;
+  final String label;
+  final String emoji;
+}
+
+class _RatingHeader extends StatelessWidget {
+  const _RatingHeader({
+    required this.icon,
+    required this.label,
+    required this.value,
+  });
+
+  final IconData icon;
+  final String label;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Icon(icon, color: Theme.of(context).colorScheme.primary),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Text(label, style: Theme.of(context).textTheme.titleMedium),
+        ),
+        Text(value, style: Theme.of(context).textTheme.labelLarge),
       ],
-      onChanged: onChanged,
     );
   }
 }
