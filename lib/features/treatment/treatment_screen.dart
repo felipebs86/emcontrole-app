@@ -624,6 +624,7 @@ class _ApplicationPointCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    final location = _TreatmentScreenState._formatPointDescription(point);
 
     return DecoratedBox(
       decoration: BoxDecoration(
@@ -655,12 +656,15 @@ class _ApplicationPointCard extends StatelessWidget {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        point.label,
-                        style: Theme.of(context).textTheme.titleMedium,
+                        location,
+                        style: Theme.of(context).textTheme.titleMedium
+                            ?.copyWith(fontWeight: FontWeight.w700),
                       ),
                     ],
                   ),
                 ),
+                const SizedBox(width: 12),
+                _PointLabelChip(label: point.label),
               ],
             ),
             const SizedBox(height: 16),
@@ -673,15 +677,73 @@ class _ApplicationPointCard extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 4),
-            Text(
-              _TreatmentScreenState._formatPointDescription(point),
-              style: Theme.of(context).textTheme.titleSmall,
+            _ApplicationPointGuidance(
+              helperText: point.helperText,
+              safetyNote: medication.safetyNote,
             ),
-            const SizedBox(height: 4),
-            Text(point.helperText),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _PointLabelChip extends StatelessWidget {
+  const _PointLabelChip({required this.label});
+
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: colorScheme.primaryContainer,
+        borderRadius: BorderRadius.circular(999),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+        child: Text(
+          label,
+          style: Theme.of(context).textTheme.labelMedium?.copyWith(
+            color: colorScheme.onPrimaryContainer,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _ApplicationPointGuidance extends StatelessWidget {
+  const _ApplicationPointGuidance({
+    required this.helperText,
+    required this.safetyNote,
+  });
+
+  final String helperText;
+  final String safetyNote;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: colorScheme.surfaceContainerLow,
+        border: Border.all(color: colorScheme.outlineVariant),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(helperText),
             const SizedBox(height: 8),
             Text(
-              medication.safetyNote,
+              safetyNote,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: colorScheme.onSurfaceVariant,
                 fontWeight: FontWeight.w600,
@@ -746,45 +808,133 @@ class _ApplicationPointIllustration extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: rootBundle.load(point.imageAssetPath),
-      builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return _MissingApplicationPointIllustration(point: point);
-        }
+    final colorScheme = Theme.of(context).colorScheme;
 
-        if (snapshot.connectionState != ConnectionState.done) {
-          return const SizedBox(
-            height: 180,
-            child: Center(child: CircularProgressIndicator()),
-          );
-        }
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final height = _responsiveIllustrationHeight(constraints.maxWidth);
 
-        return Semantics(
-          label: 'Ilustração do ponto de aplicação: ${point.label}',
-          image: true,
-          child: SvgPicture.asset(
-            point.imageAssetPath,
-            height: 180,
-            fit: BoxFit.contain,
+        return FutureBuilder(
+          future: rootBundle.load(point.imageAssetPath),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return _MissingApplicationPointIllustration(
+                point: point,
+                height: height,
+              );
+            }
+
+            if (snapshot.connectionState != ConnectionState.done) {
+              return SizedBox(
+                height: height,
+                child: const Center(child: CircularProgressIndicator()),
+              );
+            }
+
+            return Material(
+              color: colorScheme.surfaceContainerLow,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+                side: BorderSide(color: colorScheme.outlineVariant),
+              ),
+              clipBehavior: Clip.antiAlias,
+              child: InkWell(
+                onTap: () => _showApplicationPointPreview(context),
+                child: Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: Semantics(
+                    label: 'Ilustração do ponto de aplicação: ${point.label}',
+                    image: true,
+                    button: true,
+                    child: _applicationPointAsset(point, height: height),
+                  ),
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  double _responsiveIllustrationHeight(double maxWidth) {
+    if (maxWidth >= 600) {
+      return (maxWidth * 0.7).clamp(420.0, 480.0);
+    }
+
+    return (maxWidth * 0.9).clamp(280.0, 340.0);
+  }
+
+  void _showApplicationPointPreview(BuildContext context) {
+    showDialog<void>(
+      context: context,
+      builder: (context) {
+        final colorScheme = Theme.of(context).colorScheme;
+
+        return Dialog.fullscreen(
+          child: Scaffold(
+            backgroundColor: colorScheme.surface,
+            appBar: AppBar(
+              title: Text(point.label),
+              leading: IconButton(
+                tooltip: 'Fechar',
+                icon: const Icon(Icons.close),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+            ),
+            body: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Center(
+                  child: InteractiveViewer(
+                    minScale: 1,
+                    maxScale: 4,
+                    child: _applicationPointAsset(point),
+                  ),
+                ),
+              ),
+            ),
           ),
         );
       },
     );
   }
+
+  Widget _applicationPointAsset(ApplicationPoint point, {double? height}) {
+    final path = point.imageAssetPath.toLowerCase();
+
+    if (path.endsWith('.png')) {
+      return Image.asset(
+        point.imageAssetPath,
+        height: height,
+        fit: BoxFit.contain,
+        filterQuality: FilterQuality.high,
+      );
+    }
+
+    return SvgPicture.asset(
+      point.imageAssetPath,
+      height: height,
+      fit: BoxFit.contain,
+    );
+  }
 }
 
 class _MissingApplicationPointIllustration extends StatelessWidget {
-  const _MissingApplicationPointIllustration({required this.point});
+  const _MissingApplicationPointIllustration({
+    required this.point,
+    required this.height,
+  });
 
   final ApplicationPoint point;
+  final double height;
 
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Container(
-      height: 180,
+      height: height,
       decoration: BoxDecoration(
         color: colorScheme.surface,
         border: Border.all(color: colorScheme.outlineVariant),

@@ -346,13 +346,27 @@ class _ApplicationPointIllustration extends StatelessWidget {
         return Semantics(
           label: 'Ilustração do ponto de aplicação: ${point.label}',
           image: true,
-          child: SvgPicture.asset(
-            point.imageAssetPath,
-            height: 180,
-            fit: BoxFit.contain,
-          ),
+          child: _applicationPointAsset(point),
         );
       },
+    );
+  }
+
+  Widget _applicationPointAsset(ApplicationPoint point) {
+    final path = point.imageAssetPath.toLowerCase();
+
+    if (path.endsWith('.png')) {
+      return Image.asset(
+        point.imageAssetPath,
+        height: 180,
+        fit: BoxFit.contain,
+      );
+    }
+
+    return SvgPicture.asset(
+      point.imageAssetPath,
+      height: 180,
+      fit: BoxFit.contain,
     );
   }
 }

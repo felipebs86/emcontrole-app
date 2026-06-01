@@ -466,7 +466,7 @@ const _copaxoneApplicationPoints = [
     side: 'Direita superior',
     parentSiteLabel: 'Abdômen direito',
     imageAssetPath:
-        'assets/images/application_sites/copaxone_abdomen_points.svg',
+        'assets/images/application_sites/copaxone_abdomen_points.png',
     highlightAreaId: 'abdomen_right_upper',
     helperText: 'Evite a região próxima ao umbigo.',
     regionId: 'abdomen_right',
@@ -482,7 +482,7 @@ const _copaxoneApplicationPoints = [
     side: 'Direita inferior',
     parentSiteLabel: 'Abdômen direito',
     imageAssetPath:
-        'assets/images/application_sites/copaxone_abdomen_points.svg',
+        'assets/images/application_sites/copaxone_abdomen_points.png',
     highlightAreaId: 'abdomen_right_lower',
     helperText: 'Evite a região próxima ao umbigo.',
     regionId: 'abdomen_right',
@@ -498,7 +498,7 @@ const _copaxoneApplicationPoints = [
     side: 'Esquerda superior',
     parentSiteLabel: 'Abdômen esquerdo',
     imageAssetPath:
-        'assets/images/application_sites/copaxone_abdomen_points.svg',
+        'assets/images/application_sites/copaxone_abdomen_points.png',
     highlightAreaId: 'abdomen_left_upper',
     helperText: 'Evite a região próxima ao umbigo.',
     regionId: 'abdomen_left',
@@ -514,7 +514,7 @@ const _copaxoneApplicationPoints = [
     side: 'Esquerda inferior',
     parentSiteLabel: 'Abdômen esquerdo',
     imageAssetPath:
-        'assets/images/application_sites/copaxone_abdomen_points.svg',
+        'assets/images/application_sites/copaxone_abdomen_points.png',
     highlightAreaId: 'abdomen_left_lower',
     helperText: 'Evite a região próxima ao umbigo.',
     regionId: 'abdomen_left',
@@ -530,7 +530,7 @@ const _copaxoneApplicationPoints = [
     side: 'Superior',
     parentSiteLabel: 'Coxa direita',
     imageAssetPath:
-        'assets/images/application_sites/copaxone_right_thigh_points.svg',
+        'assets/images/application_sites/copaxone_right_thigh_points.png',
     highlightAreaId: 'thigh_right_upper',
     helperText: 'Use o ponto indicado conforme orientação recebida.',
     regionId: 'right_thigh',
@@ -546,7 +546,7 @@ const _copaxoneApplicationPoints = [
     side: 'Média',
     parentSiteLabel: 'Coxa direita',
     imageAssetPath:
-        'assets/images/application_sites/copaxone_right_thigh_points.svg',
+        'assets/images/application_sites/copaxone_right_thigh_points.png',
     highlightAreaId: 'thigh_right_middle',
     helperText: 'Use o ponto indicado conforme orientação recebida.',
     regionId: 'right_thigh',
@@ -562,7 +562,7 @@ const _copaxoneApplicationPoints = [
     side: 'Inferior',
     parentSiteLabel: 'Coxa direita',
     imageAssetPath:
-        'assets/images/application_sites/copaxone_right_thigh_points.svg',
+        'assets/images/application_sites/copaxone_right_thigh_points.png',
     highlightAreaId: 'thigh_right_lower',
     helperText: 'Use o ponto indicado conforme orientação recebida.',
     regionId: 'right_thigh',
@@ -578,7 +578,7 @@ const _copaxoneApplicationPoints = [
     side: 'Superior',
     parentSiteLabel: 'Coxa esquerda',
     imageAssetPath:
-        'assets/images/application_sites/copaxone_left_thigh_points.svg',
+        'assets/images/application_sites/copaxone_left_thigh_points.png',
     highlightAreaId: 'thigh_left_upper',
     helperText: 'Use o ponto indicado conforme orientação recebida.',
     regionId: 'left_thigh',
@@ -594,7 +594,7 @@ const _copaxoneApplicationPoints = [
     side: 'Média',
     parentSiteLabel: 'Coxa esquerda',
     imageAssetPath:
-        'assets/images/application_sites/copaxone_left_thigh_points.svg',
+        'assets/images/application_sites/copaxone_left_thigh_points.png',
     highlightAreaId: 'thigh_left_middle',
     helperText: 'Use o ponto indicado conforme orientação recebida.',
     regionId: 'left_thigh',
@@ -610,7 +610,7 @@ const _copaxoneApplicationPoints = [
     side: 'Inferior',
     parentSiteLabel: 'Coxa esquerda',
     imageAssetPath:
-        'assets/images/application_sites/copaxone_left_thigh_points.svg',
+        'assets/images/application_sites/copaxone_left_thigh_points.png',
     highlightAreaId: 'thigh_left_lower',
     helperText: 'Use o ponto indicado conforme orientação recebida.',
     regionId: 'left_thigh',
@@ -626,7 +626,7 @@ const _copaxoneApplicationPoints = [
     side: 'Posterior superior',
     parentSiteLabel: 'Braço direito',
     imageAssetPath:
-        'assets/images/application_sites/copaxone_right_arm_points.svg',
+        'assets/images/application_sites/copaxone_right_arm_points.png',
     highlightAreaId: 'arm_right_posterior_upper',
     helperText: 'Use a região posterior indicada conforme orientação recebida.',
     regionId: 'arm_right',
@@ -642,7 +642,7 @@ const _copaxoneApplicationPoints = [
     side: 'Posterior inferior',
     parentSiteLabel: 'Braço direito',
     imageAssetPath:
-        'assets/images/application_sites/copaxone_right_arm_points.svg',
+        'assets/images/application_sites/copaxone_right_arm_points.png',
     highlightAreaId: 'arm_right_posterior_lower',
     helperText: 'Use a região posterior indicada conforme orientação recebida.',
     regionId: 'arm_right',
@@ -658,7 +658,7 @@ const _copaxoneApplicationPoints = [
     side: 'Posterior superior',
     parentSiteLabel: 'Braço esquerdo',
     imageAssetPath:
-        'assets/images/application_sites/copaxone_left_arm_points.svg',
+        'assets/images/application_sites/copaxone_left_arm_points.png',
     highlightAreaId: 'arm_left_posterior_upper',
     helperText: 'Use a região posterior indicada conforme orientação recebida.',
     regionId: 'arm_left',
@@ -674,7 +674,7 @@ const _copaxoneApplicationPoints = [
     side: 'Posterior inferior',
     parentSiteLabel: 'Braço esquerdo',
     imageAssetPath:
-        'assets/images/application_sites/copaxone_left_arm_points.svg',
+        'assets/images/application_sites/copaxone_left_arm_points.png',
     highlightAreaId: 'arm_left_posterior_lower',
     helperText: 'Use a região posterior indicada conforme orientação recebida.',
     regionId: 'arm_left',
@@ -690,7 +690,7 @@ const _copaxoneApplicationPoints = [
     side: 'Superior',
     parentSiteLabel: 'Quadril direito',
     imageAssetPath:
-        'assets/images/application_sites/copaxone_right_hip_points.svg',
+        'assets/images/application_sites/copaxone_right_hip_points.png',
     highlightAreaId: 'hip_right_upper',
     helperText: 'Use o ponto indicado conforme orientação recebida.',
     regionId: 'hip_right',
@@ -706,7 +706,7 @@ const _copaxoneApplicationPoints = [
     side: 'Inferior',
     parentSiteLabel: 'Quadril direito',
     imageAssetPath:
-        'assets/images/application_sites/copaxone_right_hip_points.svg',
+        'assets/images/application_sites/copaxone_right_hip_points.png',
     highlightAreaId: 'hip_right_lower',
     helperText: 'Use o ponto indicado conforme orientação recebida.',
     regionId: 'hip_right',
@@ -722,7 +722,7 @@ const _copaxoneApplicationPoints = [
     side: 'Superior',
     parentSiteLabel: 'Quadril esquerdo',
     imageAssetPath:
-        'assets/images/application_sites/copaxone_left_hip_points.svg',
+        'assets/images/application_sites/copaxone_left_hip_points.png',
     highlightAreaId: 'hip_left_upper',
     helperText: 'Use o ponto indicado conforme orientação recebida.',
     regionId: 'hip_left',
@@ -738,7 +738,7 @@ const _copaxoneApplicationPoints = [
     side: 'Inferior',
     parentSiteLabel: 'Quadril esquerdo',
     imageAssetPath:
-        'assets/images/application_sites/copaxone_left_hip_points.svg',
+        'assets/images/application_sites/copaxone_left_hip_points.png',
     highlightAreaId: 'hip_left_lower',
     helperText: 'Use o ponto indicado conforme orientação recebida.',
     regionId: 'hip_left',

@@ -168,7 +168,7 @@ void main() {
           expect(
             point.imageAssetPath,
             isNotEmpty,
-            reason: '${point.id} must reference an SVG asset.',
+            reason: '${point.id} must reference an image asset.',
           );
           expect(
             point.highlightAreaId,
@@ -204,13 +204,15 @@ void main() {
                 '${point.id} references a missing asset: ${point.imageAssetPath}',
           );
 
-          final svg = asset.readAsStringSync();
-          expect(
-            _containsSvgId(svg, point.highlightAreaId),
-            isTrue,
-            reason:
-                '${point.id} expects ${point.highlightAreaId} inside ${point.imageAssetPath}.',
-          );
+          if (_isSvgAsset(point.imageAssetPath)) {
+            final svg = asset.readAsStringSync();
+            expect(
+              _containsSvgId(svg, point.highlightAreaId),
+              isTrue,
+              reason:
+                  '${point.id} expects ${point.highlightAreaId} inside ${point.imageAssetPath}.',
+            );
+          }
         }
       }
     });
@@ -238,6 +240,10 @@ void main() {
       final copaxone = medicationById('copaxone_20mg');
 
       for (final point in service.getApplicationPoints(copaxone)) {
+        if (!_isSvgAsset(point.imageAssetPath)) {
+          continue;
+        }
+
         final svg = File(point.imageAssetPath).readAsStringSync();
         final element = _svgElementById(svg, point.highlightAreaId);
 
@@ -255,6 +261,8 @@ void main() {
 bool _containsSvgId(String svg, String id) {
   return RegExp('''\\bid=(["'])${RegExp.escape(id)}\\1''').hasMatch(svg);
 }
+
+bool _isSvgAsset(String path) => path.toLowerCase().endsWith('.svg');
 
 Set<String> _svgIds(String svg) {
   return RegExp(
