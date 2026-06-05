@@ -52,6 +52,8 @@ Use the flutter_svg package for rendering.
 
 ## Required Assets
 
+This spec originally introduced the legacy SVG illustration set. Those files remain bundled, but current broad-region generated protocols use PNG region assets where listed in the medication catalog and visual-contract documentation.
+
 Create SVG assets for:
 
 * thigh_right.svg
@@ -120,14 +122,14 @@ Ensure ApplicationSite supports:
 
 Example:
 
-* Coxa direita → assets/images/application_sites/thigh_right.svg
-* Coxa esquerda → assets/images/application_sites/thigh_left.svg
-* Abdômen direito → assets/images/application_sites/abdomen_right.svg
-* Abdômen esquerdo → assets/images/application_sites/abdomen_left.svg
-* Braço direito → assets/images/application_sites/arm_right.svg
-* Braço esquerdo → assets/images/application_sites/arm_left.svg
-* Quadril direito → assets/images/application_sites/hip_right.svg
-* Quadril esquerdo → assets/images/application_sites/hip_left.svg
+* Coxa direita → assets/images/application_sites/right_thigh_region.png
+* Coxa esquerda → assets/images/application_sites/left_thigh_region.png
+* Abdômen direito → assets/images/application_sites/abdomen_right_region.png
+* Abdômen esquerdo → assets/images/application_sites/abdomen_left_region.png
+* Braço direito → assets/images/application_sites/right_arm_region.png
+* Braço esquerdo → assets/images/application_sites/left_arm_region.png
+* Quadril direito → assets/images/application_sites/right_hip_region.png
+* Quadril esquerdo → assets/images/application_sites/left_hip_region.png
 
 ## UI Requirements
 
@@ -176,4 +178,3 @@ If an SVG asset is missing:
 * No remote assets are used.
 * No leaflet images are copied directly.
 * flutter analyze passes.
-

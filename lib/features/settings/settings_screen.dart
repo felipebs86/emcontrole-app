@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/app_routes.dart';
@@ -152,10 +151,11 @@ class _AboutCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            SvgPicture.asset(
-              'assets/images/brand/emcontrole_logo.svg',
+            Image.asset(
+              'assets/branding/logo_full.png',
               height: 86,
-              semanticsLabel: 'EMControle',
+              fit: BoxFit.contain,
+              semanticLabel: 'EMControle',
             ),
             const SizedBox(height: 16),
             Text(

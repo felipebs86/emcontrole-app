@@ -103,6 +103,61 @@ void main() {
       },
     );
 
+    test('generated broad-region protocols use available shared assets', () {
+      final expectedPathsByMedication = {
+        'rebif': [
+          'assets/images/application_sites/abdomen_right_region.png',
+          'assets/images/application_sites/abdomen_left_region.png',
+          'assets/images/application_sites/right_thigh_region.png',
+          'assets/images/application_sites/left_thigh_region.png',
+          'assets/images/application_sites/right_arm_region.png',
+          'assets/images/application_sites/left_arm_region.png',
+          'assets/images/application_sites/right_hip_region.png',
+          'assets/images/application_sites/left_hip_region.png',
+        ],
+        'betaferon': [
+          'assets/images/application_sites/abdomen_right_region.png',
+          'assets/images/application_sites/abdomen_left_region.png',
+          'assets/images/application_sites/right_thigh_region.png',
+          'assets/images/application_sites/left_thigh_region.png',
+          'assets/images/application_sites/right_arm_region.png',
+          'assets/images/application_sites/left_arm_region.png',
+          'assets/images/application_sites/right_hip_region.png',
+          'assets/images/application_sites/left_hip_region.png',
+        ],
+        'plegridy': [
+          'assets/images/application_sites/abdomen_right_region.png',
+          'assets/images/application_sites/abdomen_left_region.png',
+          'assets/images/application_sites/right_thigh_region.png',
+          'assets/images/application_sites/left_thigh_region.png',
+          'assets/images/application_sites/right_arm_region.png',
+          'assets/images/application_sites/left_arm_region.png',
+        ],
+        'kesimpta': [
+          'assets/images/application_sites/abdomen_right_region.png',
+          'assets/images/application_sites/abdomen_left_region.png',
+          'assets/images/application_sites/right_thigh_region.png',
+          'assets/images/application_sites/left_thigh_region.png',
+          'assets/images/application_sites/upper_arm_region.png',
+        ],
+      };
+
+      for (final entry in expectedPathsByMedication.entries) {
+        final medication = medicationById(entry.key);
+
+        expect(
+          service
+              .getApplicationPoints(medication)
+              .map((point) => point.imageAssetPath),
+          entry.value,
+        );
+        expect(
+          medication.applicationSites.map((site) => site.imageAssetPath),
+          entry.value,
+        );
+      }
+    });
+
     test('Copaxone advances from the first point to the second point', () {
       final copaxone = medicationById('copaxone_20mg');
 

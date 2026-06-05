@@ -50,13 +50,13 @@ Copaxone uses shared explicit detailed application points. Both presentations in
 
 | Priority | Asset | Used by | SVG IDs required inside asset | Type | Production note |
 |---|---|---|---|---|---|
-| P0 | `assets/images/application_sites/copaxone_abdomen_points.svg` | Copaxone 20 mg, Copaxone 40 mg | `abdomen_right_upper`, `abdomen_right_lower`, `abdomen_left_upper`, `abdomen_left_lower` | Detailed subregion asset | Highest-priority reference asset. Must visually match the approved abdomen art direction with exactly four contracted points. |
-| P0 | `assets/images/application_sites/copaxone_right_thigh_points.svg` | Copaxone 20 mg, Copaxone 40 mg | `thigh_right_upper`, `thigh_right_middle`, `thigh_right_lower` | Detailed subregion asset | Three visible point markers for right thigh. Marker count and numbering must match `Local 5` through `Local 7` in catalog/UI context. |
-| P0 | `assets/images/application_sites/copaxone_left_thigh_points.svg` | Copaxone 20 mg, Copaxone 40 mg | `thigh_left_upper`, `thigh_left_middle`, `thigh_left_lower` | Detailed subregion asset | Three visible point markers for left thigh. Marker count and numbering must match `Local 8` through `Local 10` in catalog/UI context. |
-| P0 | `assets/images/application_sites/copaxone_right_arm_points.svg` | Copaxone 20 mg, Copaxone 40 mg | `arm_right_posterior_upper`, `arm_right_posterior_lower` | Detailed subregion asset | Two posterior right arm targets. Must make posterior/outer-arm context clear without showing injection action. |
-| P0 | `assets/images/application_sites/copaxone_left_arm_points.svg` | Copaxone 20 mg, Copaxone 40 mg | `arm_left_posterior_upper`, `arm_left_posterior_lower` | Detailed subregion asset | Two posterior left arm targets. Must mirror right arm style and anatomical scale. |
-| P0 | `assets/images/application_sites/copaxone_right_hip_points.svg` | Copaxone 20 mg, Copaxone 40 mg | `hip_right_upper`, `hip_right_lower` | Detailed subregion asset | Two right hip targets. Needs production review for anatomical clarity between hip/glute placement. |
-| P0 | `assets/images/application_sites/copaxone_left_hip_points.svg` | Copaxone 20 mg, Copaxone 40 mg | `hip_left_upper`, `hip_left_lower` | Detailed subregion asset | Two left hip targets. Needs production review for anatomical clarity between hip/glute placement. |
+| P0 | `assets/images/application_sites/copaxone_abdomen_points.png` | Copaxone 20 mg, Copaxone 40 mg | `abdomen_right_upper`, `abdomen_right_lower`, `abdomen_left_upper`, `abdomen_left_lower` | Detailed subregion asset | Highest-priority reference asset. Must visually match the approved abdomen art direction with exactly four contracted points. |
+| P0 | `assets/images/application_sites/copaxone_right_thigh_points.png` | Copaxone 20 mg, Copaxone 40 mg | `thigh_right_upper`, `thigh_right_middle`, `thigh_right_lower` | Detailed subregion asset | Three visible point markers for right thigh. Marker count and numbering must match `Local 5` through `Local 7` in catalog/UI context. |
+| P0 | `assets/images/application_sites/copaxone_left_thigh_points.png` | Copaxone 20 mg, Copaxone 40 mg | `thigh_left_upper`, `thigh_left_middle`, `thigh_left_lower` | Detailed subregion asset | Three visible point markers for left thigh. Marker count and numbering must match `Local 8` through `Local 10` in catalog/UI context. |
+| P0 | `assets/images/application_sites/copaxone_right_arm_points.png` | Copaxone 20 mg, Copaxone 40 mg | `arm_right_posterior_upper`, `arm_right_posterior_lower` | Detailed subregion asset | Two posterior right arm targets. Must make posterior/outer-arm context clear without showing injection action. |
+| P0 | `assets/images/application_sites/copaxone_left_arm_points.png` | Copaxone 20 mg, Copaxone 40 mg | `arm_left_posterior_upper`, `arm_left_posterior_lower` | Detailed subregion asset | Two posterior left arm targets. Must mirror right arm style and anatomical scale. |
+| P0 | `assets/images/application_sites/copaxone_right_hip_points.png` | Copaxone 20 mg, Copaxone 40 mg | `hip_right_upper`, `hip_right_lower` | Detailed subregion asset | Two right hip targets. Needs production review for anatomical clarity between hip/glute placement. |
+| P0 | `assets/images/application_sites/copaxone_left_hip_points.png` | Copaxone 20 mg, Copaxone 40 mg | `hip_left_upper`, `hip_left_lower` | Detailed subregion asset | Two left hip targets. Needs production review for anatomical clarity between hip/glute placement. |
 
 ## Avonex
 
@@ -68,8 +68,8 @@ Avonex must remain limited to simple left/right thigh alternation. Do not add ab
 
 | Priority | Asset | Used by | SVG IDs required inside asset | Type | Production note |
 |---|---|---|---|---|---|
-| P0 | `assets/images/application_sites/avonex_thigh_right.svg` | Avonex | `thigh_right_upper_lateral` | Detailed subregion asset | Single right upper/lateral thigh target. Should read as one clear intramuscular-style thigh location, not a multi-point rotation map. |
-| P0 | `assets/images/application_sites/avonex_thigh_left.svg` | Avonex | `thigh_left_upper_lateral` | Detailed subregion asset | Single left upper/lateral thigh target. Must visually pair with right-side asset for alternation. |
+| P0 | `assets/images/application_sites/avonex_thigh_right.png` | Avonex | `thigh_right_upper_lateral` | Detailed subregion asset | Single right upper/lateral thigh target. Should read as one clear intramuscular-style thigh location, not a multi-point rotation map. |
+| P0 | `assets/images/application_sites/avonex_thigh_left.png` | Avonex | `thigh_left_upper_lateral` | Detailed subregion asset | Single left upper/lateral thigh target. Must visually pair with right-side asset for alternation. |
 
 ## Rebif
 
@@ -79,16 +79,16 @@ Medication:
 
 Rebif currently uses generated broad-region points. It does not have detailed subregion point assets yet.
 
-| Priority | Asset | Used by | SVG IDs required inside asset | Type | Production note |
+| Priority | Asset | Used by | Highlight area ID | Type | Production note |
 |---|---|---|---|---|---|
-| P1 | `assets/images/application_sites/abdomen_right.svg` | Rebif | `abdomen_right` | Broad region asset | Shared broad right abdomen asset. Should show one broad highlightable region, not detailed numbered points. |
-| P1 | `assets/images/application_sites/abdomen_left.svg` | Rebif | `abdomen_left` | Broad region asset | Shared broad left abdomen asset. Must mirror right abdomen style. |
-| P1 | `assets/images/application_sites/thigh_right.svg` | Rebif | `thigh_right` | Broad region asset | Shared broad right thigh asset. |
-| P1 | `assets/images/application_sites/thigh_left.svg` | Rebif | `thigh_left` | Broad region asset | Shared broad left thigh asset. |
-| P1 | `assets/images/application_sites/arm_right.svg` | Rebif | `arm_right` | Broad region asset | Shared broad right arm asset. |
-| P1 | `assets/images/application_sites/arm_left.svg` | Rebif | `arm_left` | Broad region asset | Shared broad left arm asset. |
-| P2 | `assets/images/application_sites/hip_right.svg` | Rebif | `glute_hip_right` | Broad region asset | Current contracted asset for right glute/hip region. This is acceptable for current behavior but should be evaluated against dedicated glute/hip production art. |
-| P2 | `assets/images/application_sites/hip_left.svg` | Rebif | `glute_hip_left` | Broad region asset | Current contracted asset for left glute/hip region. This is acceptable for current behavior but should be evaluated against dedicated glute/hip production art. |
+| P1 | `assets/images/application_sites/abdomen_right_region.png` | Rebif | `abdomen_right` | Broad region asset | Shared broad right abdomen asset. |
+| P1 | `assets/images/application_sites/abdomen_left_region.png` | Rebif | `abdomen_left` | Broad region asset | Shared broad left abdomen asset. |
+| P1 | `assets/images/application_sites/right_thigh_region.png` | Rebif | `thigh_right` | Broad region asset | Shared broad right thigh asset. |
+| P1 | `assets/images/application_sites/left_thigh_region.png` | Rebif | `thigh_left` | Broad region asset | Shared broad left thigh asset. |
+| P1 | `assets/images/application_sites/right_arm_region.png` | Rebif | `arm_right` | Broad region asset | Shared broad right arm asset. |
+| P1 | `assets/images/application_sites/left_arm_region.png` | Rebif | `arm_left` | Broad region asset | Shared broad left arm asset. |
+| P2 | `assets/images/application_sites/right_hip_region.png` | Rebif | `glute_hip_right` | Broad region asset | Shared broad right hip/glute asset. |
+| P2 | `assets/images/application_sites/left_hip_region.png` | Rebif | `glute_hip_left` | Broad region asset | Shared broad left hip/glute asset. |
 | P3 | `assets/images/application_sites/glute_hip_right.svg` | Rebif | `glute_hip_right` | Broad region asset | Recommended future dedicated asset if product wants glute/hip guidance visually distinct from generic hip. Requires code/catalog migration before use. |
 | P3 | `assets/images/application_sites/glute_hip_left.svg` | Rebif | `glute_hip_left` | Broad region asset | Recommended future dedicated asset if product wants glute/hip guidance visually distinct from generic hip. Requires code/catalog migration before use. |
 
@@ -100,16 +100,16 @@ Medication:
 
 Betaferon currently uses the same broad-region structure as Rebif.
 
-| Priority | Asset | Used by | SVG IDs required inside asset | Type | Production note |
+| Priority | Asset | Used by | Highlight area ID | Type | Production note |
 |---|---|---|---|---|---|
-| P1 | `assets/images/application_sites/abdomen_right.svg` | Betaferon | `abdomen_right` | Broad region asset | Shared with Rebif, Plegridy, and Kesimpta. Produce once and reuse. |
-| P1 | `assets/images/application_sites/abdomen_left.svg` | Betaferon | `abdomen_left` | Broad region asset | Shared with Rebif, Plegridy, and Kesimpta. Produce once and reuse. |
-| P1 | `assets/images/application_sites/thigh_right.svg` | Betaferon | `thigh_right` | Broad region asset | Shared with Rebif, Plegridy, and Kesimpta. Produce once and reuse. |
-| P1 | `assets/images/application_sites/thigh_left.svg` | Betaferon | `thigh_left` | Broad region asset | Shared with Rebif, Plegridy, and Kesimpta. Produce once and reuse. |
-| P1 | `assets/images/application_sites/arm_right.svg` | Betaferon | `arm_right` | Broad region asset | Shared with Rebif and Plegridy. Produce once and reuse. |
-| P1 | `assets/images/application_sites/arm_left.svg` | Betaferon | `arm_left` | Broad region asset | Shared with Rebif and Plegridy. Produce once and reuse. |
-| P2 | `assets/images/application_sites/hip_right.svg` | Betaferon | `glute_hip_right` | Broad region asset | Current contracted asset for right glute/hip region. Same caveat as Rebif. |
-| P2 | `assets/images/application_sites/hip_left.svg` | Betaferon | `glute_hip_left` | Broad region asset | Current contracted asset for left glute/hip region. Same caveat as Rebif. |
+| P1 | `assets/images/application_sites/abdomen_right_region.png` | Betaferon | `abdomen_right` | Broad region asset | Shared with Rebif, Plegridy, and Kesimpta. |
+| P1 | `assets/images/application_sites/abdomen_left_region.png` | Betaferon | `abdomen_left` | Broad region asset | Shared with Rebif, Plegridy, and Kesimpta. |
+| P1 | `assets/images/application_sites/right_thigh_region.png` | Betaferon | `thigh_right` | Broad region asset | Shared with Rebif, Plegridy, and Kesimpta. |
+| P1 | `assets/images/application_sites/left_thigh_region.png` | Betaferon | `thigh_left` | Broad region asset | Shared with Rebif, Plegridy, and Kesimpta. |
+| P1 | `assets/images/application_sites/right_arm_region.png` | Betaferon | `arm_right` | Broad region asset | Shared with Rebif and Plegridy. |
+| P1 | `assets/images/application_sites/left_arm_region.png` | Betaferon | `arm_left` | Broad region asset | Shared with Rebif and Plegridy. |
+| P2 | `assets/images/application_sites/right_hip_region.png` | Betaferon | `glute_hip_right` | Broad region asset | Shared broad right hip/glute asset. |
+| P2 | `assets/images/application_sites/left_hip_region.png` | Betaferon | `glute_hip_left` | Broad region asset | Shared broad left hip/glute asset. |
 | P3 | `assets/images/application_sites/glute_hip_right.svg` | Betaferon | `glute_hip_right` | Broad region asset | Recommended future dedicated asset. Requires a separate migration/spec before replacing `hip_right.svg`. |
 | P3 | `assets/images/application_sites/glute_hip_left.svg` | Betaferon | `glute_hip_left` | Broad region asset | Recommended future dedicated asset. Requires a separate migration/spec before replacing `hip_left.svg`. |
 
@@ -121,14 +121,14 @@ Medication:
 
 Plegridy currently uses generated broad-region points for subcutaneous application. If a future intramuscular Plegridy protocol is added, it must be modeled separately and must not reuse this table blindly.
 
-| Priority | Asset | Used by | SVG IDs required inside asset | Type | Production note |
+| Priority | Asset | Used by | Highlight area ID | Type | Production note |
 |---|---|---|---|---|---|
-| P1 | `assets/images/application_sites/abdomen_right.svg` | Plegridy | `abdomen_right` | Broad region asset | Shared broad right abdomen asset. |
-| P1 | `assets/images/application_sites/abdomen_left.svg` | Plegridy | `abdomen_left` | Broad region asset | Shared broad left abdomen asset. |
-| P1 | `assets/images/application_sites/thigh_right.svg` | Plegridy | `thigh_right` | Broad region asset | Shared broad right thigh asset. |
-| P1 | `assets/images/application_sites/thigh_left.svg` | Plegridy | `thigh_left` | Broad region asset | Shared broad left thigh asset. |
-| P1 | `assets/images/application_sites/arm_right.svg` | Plegridy | `arm_right` | Broad region asset | Shared broad right arm asset. |
-| P1 | `assets/images/application_sites/arm_left.svg` | Plegridy | `arm_left` | Broad region asset | Shared broad left arm asset. |
+| P1 | `assets/images/application_sites/abdomen_right_region.png` | Plegridy | `abdomen_right` | Broad region asset | Shared broad right abdomen asset. |
+| P1 | `assets/images/application_sites/abdomen_left_region.png` | Plegridy | `abdomen_left` | Broad region asset | Shared broad left abdomen asset. |
+| P1 | `assets/images/application_sites/right_thigh_region.png` | Plegridy | `thigh_right` | Broad region asset | Shared broad right thigh asset. |
+| P1 | `assets/images/application_sites/left_thigh_region.png` | Plegridy | `thigh_left` | Broad region asset | Shared broad left thigh asset. |
+| P1 | `assets/images/application_sites/right_arm_region.png` | Plegridy | `arm_right` | Broad region asset | Shared broad right arm asset. |
+| P1 | `assets/images/application_sites/left_arm_region.png` | Plegridy | `arm_left` | Broad region asset | Shared broad left arm asset. |
 
 ## Kesimpta
 
@@ -138,13 +138,13 @@ Medication:
 
 Kesimpta currently uses generated broad-region points and includes a bilateral/unspecified upper arm region. The `upper_arm` asset should be visually distinct from generic full-arm assets.
 
-| Priority | Asset | Used by | SVG IDs required inside asset | Type | Production note |
+| Priority | Asset | Used by | Highlight area ID | Type | Production note |
 |---|---|---|---|---|---|
-| P1 | `assets/images/application_sites/abdomen_right.svg` | Kesimpta | `abdomen_right` | Broad region asset | Shared broad right abdomen asset. |
-| P1 | `assets/images/application_sites/abdomen_left.svg` | Kesimpta | `abdomen_left` | Broad region asset | Shared broad left abdomen asset. |
-| P1 | `assets/images/application_sites/thigh_right.svg` | Kesimpta | `thigh_right` | Broad region asset | Shared broad right thigh asset. |
-| P1 | `assets/images/application_sites/thigh_left.svg` | Kesimpta | `thigh_left` | Broad region asset | Shared broad left thigh asset. |
-| P2 | `assets/images/application_sites/upper_arm.svg` | Kesimpta | `upper_arm` | Broad region asset | Must communicate assisted upper outer arm, not generic full arm. This should be produced after shared abdomen/thigh assets but before optional glute/hip refinements. |
+| P1 | `assets/images/application_sites/abdomen_right_region.png` | Kesimpta | `abdomen_right` | Broad region asset | Shared broad right abdomen asset. |
+| P1 | `assets/images/application_sites/abdomen_left_region.png` | Kesimpta | `abdomen_left` | Broad region asset | Shared broad left abdomen asset. |
+| P1 | `assets/images/application_sites/right_thigh_region.png` | Kesimpta | `thigh_right` | Broad region asset | Shared broad right thigh asset. |
+| P1 | `assets/images/application_sites/left_thigh_region.png` | Kesimpta | `thigh_left` | Broad region asset | Shared broad left thigh asset. |
+| P2 | `assets/images/application_sites/upper_arm_region.png` | Kesimpta | `upper_arm` | Broad region asset | Communicates assisted upper outer arm, not generic full arm. |
 
 ## Consolidated Unique Asset List
 
@@ -152,24 +152,24 @@ This section lists each unique production file once, with all current medication
 
 | Priority | Asset | Used by medications | SVG IDs required inside asset | Type |
 |---|---|---|---|---|
-| P0 | `assets/images/application_sites/copaxone_abdomen_points.svg` | Copaxone 20 mg, Copaxone 40 mg | `abdomen_right_upper`, `abdomen_right_lower`, `abdomen_left_upper`, `abdomen_left_lower` | Detailed subregion asset |
-| P0 | `assets/images/application_sites/copaxone_right_thigh_points.svg` | Copaxone 20 mg, Copaxone 40 mg | `thigh_right_upper`, `thigh_right_middle`, `thigh_right_lower` | Detailed subregion asset |
-| P0 | `assets/images/application_sites/copaxone_left_thigh_points.svg` | Copaxone 20 mg, Copaxone 40 mg | `thigh_left_upper`, `thigh_left_middle`, `thigh_left_lower` | Detailed subregion asset |
-| P0 | `assets/images/application_sites/copaxone_right_arm_points.svg` | Copaxone 20 mg, Copaxone 40 mg | `arm_right_posterior_upper`, `arm_right_posterior_lower` | Detailed subregion asset |
-| P0 | `assets/images/application_sites/copaxone_left_arm_points.svg` | Copaxone 20 mg, Copaxone 40 mg | `arm_left_posterior_upper`, `arm_left_posterior_lower` | Detailed subregion asset |
-| P0 | `assets/images/application_sites/copaxone_right_hip_points.svg` | Copaxone 20 mg, Copaxone 40 mg | `hip_right_upper`, `hip_right_lower` | Detailed subregion asset |
-| P0 | `assets/images/application_sites/copaxone_left_hip_points.svg` | Copaxone 20 mg, Copaxone 40 mg | `hip_left_upper`, `hip_left_lower` | Detailed subregion asset |
-| P0 | `assets/images/application_sites/avonex_thigh_right.svg` | Avonex | `thigh_right_upper_lateral` | Detailed subregion asset |
-| P0 | `assets/images/application_sites/avonex_thigh_left.svg` | Avonex | `thigh_left_upper_lateral` | Detailed subregion asset |
-| P1 | `assets/images/application_sites/abdomen_right.svg` | Rebif, Betaferon, Plegridy, Kesimpta | `abdomen_right` | Broad region asset |
-| P1 | `assets/images/application_sites/abdomen_left.svg` | Rebif, Betaferon, Plegridy, Kesimpta | `abdomen_left` | Broad region asset |
-| P1 | `assets/images/application_sites/thigh_right.svg` | Rebif, Betaferon, Plegridy, Kesimpta | `thigh_right` | Broad region asset |
-| P1 | `assets/images/application_sites/thigh_left.svg` | Rebif, Betaferon, Plegridy, Kesimpta | `thigh_left` | Broad region asset |
-| P1 | `assets/images/application_sites/arm_right.svg` | Rebif, Betaferon, Plegridy | `arm_right` | Broad region asset |
-| P1 | `assets/images/application_sites/arm_left.svg` | Rebif, Betaferon, Plegridy | `arm_left` | Broad region asset |
-| P2 | `assets/images/application_sites/upper_arm.svg` | Kesimpta | `upper_arm` | Broad region asset |
-| P2 | `assets/images/application_sites/hip_right.svg` | Rebif, Betaferon | `glute_hip_right` | Broad region asset |
-| P2 | `assets/images/application_sites/hip_left.svg` | Rebif, Betaferon | `glute_hip_left` | Broad region asset |
+| P0 | `assets/images/application_sites/copaxone_abdomen_points.png` | Copaxone 20 mg, Copaxone 40 mg | `abdomen_right_upper`, `abdomen_right_lower`, `abdomen_left_upper`, `abdomen_left_lower` | Detailed subregion asset |
+| P0 | `assets/images/application_sites/copaxone_right_thigh_points.png` | Copaxone 20 mg, Copaxone 40 mg | `thigh_right_upper`, `thigh_right_middle`, `thigh_right_lower` | Detailed subregion asset |
+| P0 | `assets/images/application_sites/copaxone_left_thigh_points.png` | Copaxone 20 mg, Copaxone 40 mg | `thigh_left_upper`, `thigh_left_middle`, `thigh_left_lower` | Detailed subregion asset |
+| P0 | `assets/images/application_sites/copaxone_right_arm_points.png` | Copaxone 20 mg, Copaxone 40 mg | `arm_right_posterior_upper`, `arm_right_posterior_lower` | Detailed subregion asset |
+| P0 | `assets/images/application_sites/copaxone_left_arm_points.png` | Copaxone 20 mg, Copaxone 40 mg | `arm_left_posterior_upper`, `arm_left_posterior_lower` | Detailed subregion asset |
+| P0 | `assets/images/application_sites/copaxone_right_hip_points.png` | Copaxone 20 mg, Copaxone 40 mg | `hip_right_upper`, `hip_right_lower` | Detailed subregion asset |
+| P0 | `assets/images/application_sites/copaxone_left_hip_points.png` | Copaxone 20 mg, Copaxone 40 mg | `hip_left_upper`, `hip_left_lower` | Detailed subregion asset |
+| P0 | `assets/images/application_sites/avonex_thigh_right.png` | Avonex | `thigh_right_upper_lateral` | Detailed subregion asset |
+| P0 | `assets/images/application_sites/avonex_thigh_left.png` | Avonex | `thigh_left_upper_lateral` | Detailed subregion asset |
+| P1 | `assets/images/application_sites/abdomen_right_region.png` | Rebif, Betaferon, Plegridy, Kesimpta | `abdomen_right` | Broad region asset |
+| P1 | `assets/images/application_sites/abdomen_left_region.png` | Rebif, Betaferon, Plegridy, Kesimpta | `abdomen_left` | Broad region asset |
+| P1 | `assets/images/application_sites/right_thigh_region.png` | Rebif, Betaferon, Plegridy, Kesimpta | `thigh_right` | Broad region asset |
+| P1 | `assets/images/application_sites/left_thigh_region.png` | Rebif, Betaferon, Plegridy, Kesimpta | `thigh_left` | Broad region asset |
+| P1 | `assets/images/application_sites/right_arm_region.png` | Rebif, Betaferon, Plegridy | `arm_right` | Broad region asset |
+| P1 | `assets/images/application_sites/left_arm_region.png` | Rebif, Betaferon, Plegridy | `arm_left` | Broad region asset |
+| P2 | `assets/images/application_sites/upper_arm_region.png` | Kesimpta | `upper_arm` | Broad region asset |
+| P2 | `assets/images/application_sites/right_hip_region.png` | Rebif, Betaferon | `glute_hip_right` | Broad region asset |
+| P2 | `assets/images/application_sites/left_hip_region.png` | Rebif, Betaferon | `glute_hip_left` | Broad region asset |
 | P3 | `assets/images/application_sites/glute_hip_right.svg` | Rebif, Betaferon | `glute_hip_right` | Broad region asset |
 | P3 | `assets/images/application_sites/glute_hip_left.svg` | Rebif, Betaferon | `glute_hip_left` | Broad region asset |
 
@@ -179,8 +179,8 @@ This section lists each unique production file once, with all current medication
 2. Produce/approve Avonex thigh alternation assets, keeping exactly one target per side.
 3. Produce/approve shared broad abdomen and thigh assets because they support Rebif, Betaferon, Plegridy, and Kesimpta.
 4. Produce/approve shared broad arm assets for Rebif, Betaferon, and Plegridy.
-5. Produce/approve Kesimpta `upper_arm.svg`, with clear assisted upper outer arm framing.
-6. Review current `hip_right.svg` and `hip_left.svg` use for glute/hip regions.
+5. Produce/approve Kesimpta `upper_arm_region.png`, with clear assisted upper outer arm framing.
+6. Review current `right_hip_region.png` and `left_hip_region.png` use for glute/hip regions.
 7. Create dedicated `glute_hip_right.svg` and `glute_hip_left.svg` only after a separate migration/spec decides to replace the current hip asset references.
 
 ## Acceptance Checklist
@@ -189,10 +189,11 @@ Before an asset is considered production-ready:
 
 - It follows `application-site-art-direction.md`.
 - It preserves the file path required by `application-site-visual-contract.md`.
-- It contains every required internal SVG ID.
+- SVG assets contain every required internal SVG ID.
+- PNG assets exist at the catalog path and retain non-empty highlight area IDs in code.
 - It contains no extra visible application markers outside the official point list.
 - Detailed assets have one precise visible marker or zone per required ID.
 - Broad assets have one precise highlightable region per required ID.
 - Anatomical side orientation is correct from the user's body perspective.
-- The SVG has no external dependencies or embedded raster images.
+- SVG assets have no external dependencies or embedded raster images.
 - The illustration remains readable at mobile sizes.

@@ -1,14 +1,19 @@
 {
-    "name": "emcontrole",
-    "short_name": "emcontrole",
+    "name": "EMControle",
+    "short_name": "EMControle",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#fffaf5",
+    "theme_color": "#df6725",
+    "description": "Organize tratamento, aplicações, lembretes, diário e histórico localmente.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
+        {
+            "src": "icons/apple-touch-icon.png",
+            "sizes": "180x180",
+            "type": "image/png"
+        },
         {
             "src": "icons/Icon-192.png",
             "sizes": "192x192",

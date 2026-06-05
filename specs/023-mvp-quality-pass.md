@@ -124,8 +124,8 @@ Create a simple EMControle visual identity inspired by:
 
 Create local SVG logo assets:
 
-- assets/images/brand/emcontrole_logo.svg
-- assets/images/brand/emcontrole_mark.svg
+- assets/branding/logo_full.png
+- assets/branding/app_icon.png
 
 Logo direction:
 

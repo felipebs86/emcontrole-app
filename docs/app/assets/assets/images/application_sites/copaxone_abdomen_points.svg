@@ -1,11 +1,39 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 260" role="img" aria-label="Pontos de aplicação no abdômen">
-  <rect width="320" height="260" rx="28" fill="#FFF8F1"/>
-  <path d="M87 30c37-20 109-20 146 0 28 51 28 142 0 193-37 21-109 21-146 0-28-51-28-142 0-193Z" fill="#F4E8DE" stroke="#806E63" stroke-width="6" stroke-linejoin="round"/>
-  <path d="M160 56v140" stroke="#DDCABC" stroke-width="5" stroke-linecap="round"/>
-  <circle cx="160" cy="130" r="12" fill="#FFF8F1" stroke="#BFA99A" stroke-width="5"/>
-  <path d="M101 101c36-25 82-25 118 0 5 31 3 63-6 92-32 17-74 17-106 0-9-29-11-61-6-92Z" fill="#DF6725" opacity=".22"/>
-  <g fill="#DF6725" stroke="#FFFDF9" stroke-width="5">
-    <g id="abdomen_left_upper"><circle cx="125" cy="104" r="10"/></g><g id="abdomen_right_upper"><circle cx="195" cy="104" r="10"/></g>
-    <g id="abdomen_left_lower"><circle cx="119" cy="149" r="10"/></g><g id="abdomen_right_lower"><circle cx="201" cy="149" r="10"/></g>
+  <rect width="320" height="260" fill="#FFFFFF"/>
+
+  <g id="anatomy">
+    <path d="M78 20c18 40 23 72 22 106-1 35-11 76-28 115 43 15 133 15 176 0-17-39-27-80-28-115-1-34 4-66 22-106-38-16-126-16-164 0Z" fill="#F4C7A7" stroke="#8A7C75" stroke-width="2.4" stroke-linejoin="round"/>
+    <path d="M88 30c21 15 50 21 72 20 22 1 51-5 72-20" fill="none" stroke="#B99B88" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M75 222c42 14 128 14 170 0 8 7 13 17 16 30-51 11-151 11-202 0 3-13 8-23 16-30Z" fill="#F3F4F6" stroke="#A7A7A7" stroke-width="1.8" stroke-linejoin="round"/>
+    <ellipse cx="160" cy="139" rx="8" ry="11" fill="#E4B18F"/>
+    <ellipse cx="160" cy="139" rx="4" ry="6" fill="#BF8E72"/>
+    <path d="M160 52c-2 35-2 67 0 98" fill="none" stroke="#D9AC8E" stroke-width="1.1" stroke-linecap="round"/>
+  </g>
+
+  <g id="application_zones" fill="#F97316" stroke="#F97316" stroke-width="2" stroke-dasharray="6 5" stroke-linejoin="round">
+    <g id="abdomen_right_upper">
+      <path d="M83 87c4-18 16-26 38-26h22c17 0 27 10 30 27 2 16 0 31-7 43-12 7-55 7-68 0-13-10-18-27-15-44Z" fill="#F97316" fill-opacity=".18"/>
+      <path d="M92 83l54 54M105 68l70 70M122 62l54 54M84 106l34 34" fill="none" stroke="#F97316" stroke-width=".8" stroke-opacity=".28" stroke-dasharray="0"/>
+      <circle cx="128" cy="101" r="10" fill="#F97316" stroke="#FFFDF9" stroke-width="3"/>
+      <text x="128" y="108" fill="#FFFFFF" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="middle">1</text>
+    </g>
+    <g id="abdomen_right_lower">
+      <path d="M83 152c5-18 18-26 40-25h22c17 2 27 12 30 29 2 16-2 33-11 43-15 6-52 5-65-2-13-11-19-28-16-45Z" fill="#F97316" fill-opacity=".18"/>
+      <path d="M91 149l52 52M106 132l67 67M125 128l49 49M84 171l28 28" fill="none" stroke="#F97316" stroke-width=".8" stroke-opacity=".28" stroke-dasharray="0"/>
+      <circle cx="128" cy="166" r="10" fill="#F97316" stroke="#FFFDF9" stroke-width="3"/>
+      <text x="128" y="173" fill="#FFFFFF" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="middle">2</text>
+    </g>
+    <g id="abdomen_left_upper">
+      <path d="M177 88c3-17 13-27 30-27h22c22 0 34 8 38 26 3 17-2 34-15 44-13 7-56 7-68 0-7-12-9-27-7-43Z" fill="#F97316" fill-opacity=".18"/>
+      <path d="M186 84l53 53M200 68l68 68M217 62l49 49M178 107l32 32" fill="none" stroke="#F97316" stroke-width=".8" stroke-opacity=".28" stroke-dasharray="0"/>
+      <circle cx="221" cy="101" r="10" fill="#F97316" stroke="#FFFDF9" stroke-width="3"/>
+      <text x="221" y="108" fill="#FFFFFF" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="middle">3</text>
+    </g>
+    <g id="abdomen_left_lower">
+      <path d="M175 156c3-17 13-27 30-29h22c22-1 35 7 40 25 3 17-3 34-16 45-13 7-50 8-65 2-9-10-13-27-11-43Z" fill="#F97316" fill-opacity=".18"/>
+      <path d="M184 150l51 51M199 132l66 66M218 128l48 48M176 172l29 29" fill="none" stroke="#F97316" stroke-width=".8" stroke-opacity=".28" stroke-dasharray="0"/>
+      <circle cx="221" cy="166" r="10" fill="#F97316" stroke="#FFFDF9" stroke-width="3"/>
+      <text x="221" y="173" fill="#FFFFFF" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="middle">4</text>
+    </g>
   </g>
 </svg>

@@ -45,10 +45,11 @@ class _NoTreatmentDashboard extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                SvgPicture.asset(
-                  'assets/images/brand/emcontrole_mark.svg',
+                Image.asset(
+                  'assets/branding/app_icon.png',
                   height: 64,
-                  semanticsLabel: 'Marca EMControle',
+                  fit: BoxFit.contain,
+                  semanticLabel: 'Marca EMControle',
                 ),
                 const SizedBox(height: 16),
                 Text(

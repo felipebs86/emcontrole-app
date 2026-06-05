@@ -63,21 +63,19 @@ These are current broad `ApplicationSite.id` values in the catalog.
 
 ## Existing Region IDs
 
-These are current anatomical `Region.id` values used by protocols.
+These are current anatomical `Region.id` values used by protocols. Legacy SVG assets remain in the repository, while generated broad-region protocols now use PNG-backed constants for Rebif, Betaferon, Plegridy, and Kesimpta where the PNG assets are present.
 
-| Region ID | User label | Type | Side | Current SVG asset | Required SVG element ID |
-|---|---|---|---|---|---|
-| `abdomen_right` | Abdômen direito | abdomen | right | `assets/images/application_sites/abdomen_right.svg` | `abdomen_right` |
-| `abdomen_left` | Abdômen esquerdo | abdomen | left | `assets/images/application_sites/abdomen_left.svg` | `abdomen_left` |
-| `right_thigh` | Coxa direita | thigh | right | `assets/images/application_sites/thigh_right.svg` | `thigh_right` |
-| `left_thigh` | Coxa esquerda | thigh | left | `assets/images/application_sites/thigh_left.svg` | `thigh_left` |
-| `arm_right` | Braço direito | arm | right | `assets/images/application_sites/arm_right.svg` | `arm_right` |
-| `arm_left` | Braço esquerdo | arm | left | `assets/images/application_sites/arm_left.svg` | `arm_left` |
-| `upper_arm` | Braço externo superior | arm | bilateral | `assets/images/application_sites/upper_arm.svg` | `upper_arm` |
-| `hip_right` | Quadril direito | hip | right | `assets/images/application_sites/hip_right.svg` | `hip_right` |
-| `hip_left` | Quadril esquerdo | hip | left | `assets/images/application_sites/hip_left.svg` | `hip_left` |
-| `glute_hip_right` | Glúteo/quadril direito | gluteHip | right | `assets/images/application_sites/hip_right.svg` | `glute_hip_right` |
-| `glute_hip_left` | Glúteo/quadril esquerdo | gluteHip | left | `assets/images/application_sites/hip_left.svg` | `glute_hip_left` |
+| Region ID | User label | Type | Side | Generated broad-region PNG asset | Retained legacy SVG asset | Highlight area ID |
+|---|---|---|---|---|---|---|
+| `abdomen_right` | Abdômen direito | abdomen | right | `assets/images/application_sites/abdomen_right_region.png` | `assets/images/application_sites/abdomen_right.svg` | `abdomen_right` |
+| `abdomen_left` | Abdômen esquerdo | abdomen | left | `assets/images/application_sites/abdomen_left_region.png` | `assets/images/application_sites/abdomen_left.svg` | `abdomen_left` |
+| `right_thigh` | Coxa direita | thigh | right | `assets/images/application_sites/right_thigh_region.png` | `assets/images/application_sites/thigh_right.svg` | `thigh_right` |
+| `left_thigh` | Coxa esquerda | thigh | left | `assets/images/application_sites/left_thigh_region.png` | `assets/images/application_sites/thigh_left.svg` | `thigh_left` |
+| `arm_right` | Braço direito | arm | right | `assets/images/application_sites/right_arm_region.png` | `assets/images/application_sites/arm_right.svg` | `arm_right` |
+| `arm_left` | Braço esquerdo | arm | left | `assets/images/application_sites/left_arm_region.png` | `assets/images/application_sites/arm_left.svg` | `arm_left` |
+| `upper_arm` | Braço externo superior | arm | bilateral | `assets/images/application_sites/upper_arm_region.png` | `assets/images/application_sites/upper_arm.svg` | `upper_arm` |
+| `glute_hip_right` | Glúteo/quadril direito | gluteHip | right | `assets/images/application_sites/right_hip_region.png` | `assets/images/application_sites/hip_right.svg` | `glute_hip_right` |
+| `glute_hip_left` | Glúteo/quadril esquerdo | gluteHip | left | `assets/images/application_sites/left_hip_region.png` | `assets/images/application_sites/hip_left.svg` | `glute_hip_left` |
 
 ## Current Medications With Application Points
 
@@ -97,26 +95,26 @@ Notes:
 - `regionId`, `subRegionId`, `regionType`, and `bodySide` are populated on current Copaxone `ApplicationPoint` entries.
 - The UI currently displays `label` plus a formatted parent/side description, for example `Local 1 - Abdômen direito superior`.
 
-| Order | Official point ID | User label | Parent region | User region text | Expected SVG asset | Required highlight area ID |
+| Order | Official point ID | User label | Parent region | User region text | Expected image asset | Required highlight area ID |
 |---:|---|---|---|---|---|---|
-| 1 | `copaxone_abdomen_01` | Local 1 | Abdômen direito | Abdômen direito superior | `assets/images/application_sites/copaxone_abdomen_points.svg` | `abdomen_right_upper` |
-| 2 | `copaxone_abdomen_02` | Local 2 | Abdômen direito | Abdômen direito inferior | `assets/images/application_sites/copaxone_abdomen_points.svg` | `abdomen_right_lower` |
-| 3 | `copaxone_abdomen_03` | Local 3 | Abdômen esquerdo | Abdômen esquerdo superior | `assets/images/application_sites/copaxone_abdomen_points.svg` | `abdomen_left_upper` |
-| 4 | `copaxone_abdomen_04` | Local 4 | Abdômen esquerdo | Abdômen esquerdo inferior | `assets/images/application_sites/copaxone_abdomen_points.svg` | `abdomen_left_lower` |
-| 5 | `copaxone_thigh_right_05` | Local 5 | Coxa direita | Coxa direita superior | `assets/images/application_sites/copaxone_right_thigh_points.svg` | `thigh_right_upper` |
-| 6 | `copaxone_thigh_right_06` | Local 6 | Coxa direita | Coxa direita média | `assets/images/application_sites/copaxone_right_thigh_points.svg` | `thigh_right_middle` |
-| 7 | `copaxone_thigh_right_07` | Local 7 | Coxa direita | Coxa direita inferior | `assets/images/application_sites/copaxone_right_thigh_points.svg` | `thigh_right_lower` |
-| 8 | `copaxone_thigh_left_08` | Local 8 | Coxa esquerda | Coxa esquerda superior | `assets/images/application_sites/copaxone_left_thigh_points.svg` | `thigh_left_upper` |
-| 9 | `copaxone_thigh_left_09` | Local 9 | Coxa esquerda | Coxa esquerda média | `assets/images/application_sites/copaxone_left_thigh_points.svg` | `thigh_left_middle` |
-| 10 | `copaxone_thigh_left_10` | Local 10 | Coxa esquerda | Coxa esquerda inferior | `assets/images/application_sites/copaxone_left_thigh_points.svg` | `thigh_left_lower` |
-| 11 | `copaxone_arm_right_11` | Local 11 | Braço direito | Braço direito posterior superior | `assets/images/application_sites/copaxone_right_arm_points.svg` | `arm_right_posterior_upper` |
-| 12 | `copaxone_arm_right_12` | Local 12 | Braço direito | Braço direito posterior inferior | `assets/images/application_sites/copaxone_right_arm_points.svg` | `arm_right_posterior_lower` |
-| 13 | `copaxone_arm_left_13` | Local 13 | Braço esquerdo | Braço esquerdo posterior superior | `assets/images/application_sites/copaxone_left_arm_points.svg` | `arm_left_posterior_upper` |
-| 14 | `copaxone_arm_left_14` | Local 14 | Braço esquerdo | Braço esquerdo posterior inferior | `assets/images/application_sites/copaxone_left_arm_points.svg` | `arm_left_posterior_lower` |
-| 15 | `copaxone_hip_right_15` | Local 15 | Quadril direito | Quadril direito superior | `assets/images/application_sites/copaxone_right_hip_points.svg` | `hip_right_upper` |
-| 16 | `copaxone_hip_right_16` | Local 16 | Quadril direito | Quadril direito inferior | `assets/images/application_sites/copaxone_right_hip_points.svg` | `hip_right_lower` |
-| 17 | `copaxone_hip_left_17` | Local 17 | Quadril esquerdo | Quadril esquerdo superior | `assets/images/application_sites/copaxone_left_hip_points.svg` | `hip_left_upper` |
-| 18 | `copaxone_hip_left_18` | Local 18 | Quadril esquerdo | Quadril esquerdo inferior | `assets/images/application_sites/copaxone_left_hip_points.svg` | `hip_left_lower` |
+| 1 | `copaxone_abdomen_01` | Local 1 | Abdômen direito | Abdômen direito superior | `assets/images/application_sites/copaxone_abdomen_points.png` | `abdomen_right_upper` |
+| 2 | `copaxone_abdomen_02` | Local 2 | Abdômen direito | Abdômen direito inferior | `assets/images/application_sites/copaxone_abdomen_points.png` | `abdomen_right_lower` |
+| 3 | `copaxone_abdomen_03` | Local 3 | Abdômen esquerdo | Abdômen esquerdo superior | `assets/images/application_sites/copaxone_abdomen_points.png` | `abdomen_left_upper` |
+| 4 | `copaxone_abdomen_04` | Local 4 | Abdômen esquerdo | Abdômen esquerdo inferior | `assets/images/application_sites/copaxone_abdomen_points.png` | `abdomen_left_lower` |
+| 5 | `copaxone_thigh_right_05` | Local 5 | Coxa direita | Coxa direita superior | `assets/images/application_sites/copaxone_right_thigh_points.png` | `thigh_right_upper` |
+| 6 | `copaxone_thigh_right_06` | Local 6 | Coxa direita | Coxa direita média | `assets/images/application_sites/copaxone_right_thigh_points.png` | `thigh_right_middle` |
+| 7 | `copaxone_thigh_right_07` | Local 7 | Coxa direita | Coxa direita inferior | `assets/images/application_sites/copaxone_right_thigh_points.png` | `thigh_right_lower` |
+| 8 | `copaxone_thigh_left_08` | Local 8 | Coxa esquerda | Coxa esquerda superior | `assets/images/application_sites/copaxone_left_thigh_points.png` | `thigh_left_upper` |
+| 9 | `copaxone_thigh_left_09` | Local 9 | Coxa esquerda | Coxa esquerda média | `assets/images/application_sites/copaxone_left_thigh_points.png` | `thigh_left_middle` |
+| 10 | `copaxone_thigh_left_10` | Local 10 | Coxa esquerda | Coxa esquerda inferior | `assets/images/application_sites/copaxone_left_thigh_points.png` | `thigh_left_lower` |
+| 11 | `copaxone_arm_right_11` | Local 11 | Braço direito | Braço direito posterior superior | `assets/images/application_sites/copaxone_right_arm_points.png` | `arm_right_posterior_upper` |
+| 12 | `copaxone_arm_right_12` | Local 12 | Braço direito | Braço direito posterior inferior | `assets/images/application_sites/copaxone_right_arm_points.png` | `arm_right_posterior_lower` |
+| 13 | `copaxone_arm_left_13` | Local 13 | Braço esquerdo | Braço esquerdo posterior superior | `assets/images/application_sites/copaxone_left_arm_points.png` | `arm_left_posterior_upper` |
+| 14 | `copaxone_arm_left_14` | Local 14 | Braço esquerdo | Braço esquerdo posterior inferior | `assets/images/application_sites/copaxone_left_arm_points.png` | `arm_left_posterior_lower` |
+| 15 | `copaxone_hip_right_15` | Local 15 | Quadril direito | Quadril direito superior | `assets/images/application_sites/copaxone_right_hip_points.png` | `hip_right_upper` |
+| 16 | `copaxone_hip_right_16` | Local 16 | Quadril direito | Quadril direito inferior | `assets/images/application_sites/copaxone_right_hip_points.png` | `hip_right_lower` |
+| 17 | `copaxone_hip_left_17` | Local 17 | Quadril esquerdo | Quadril esquerdo superior | `assets/images/application_sites/copaxone_left_hip_points.png` | `hip_left_upper` |
+| 18 | `copaxone_hip_left_18` | Local 18 | Quadril esquerdo | Quadril esquerdo inferior | `assets/images/application_sites/copaxone_left_hip_points.png` | `hip_left_lower` |
 
 ### Copaxone 40 mg
 
@@ -148,10 +146,10 @@ Notes:
 - Current points are explicit `ApplicationPoint` entries.
 - Both points have anatomical metadata set (`regionId`, `subRegionId`, `regionType`, and `bodySide`).
 
-| Order | Official point ID | User label | Parent region | User region text | Expected SVG asset | Required highlight area ID |
+| Order | Official point ID | User label | Parent region | User region text | Expected image asset | Required highlight area ID |
 |---:|---|---|---|---|---|---|
-| 1 | `avonex_thigh_right_01` | Local 1 | Coxa direita | Coxa direita superior/lateral | `assets/images/application_sites/avonex_thigh_right.svg` | `thigh_right_upper_lateral` |
-| 2 | `avonex_thigh_left_02` | Local 2 | Coxa esquerda | Coxa esquerda superior/lateral | `assets/images/application_sites/avonex_thigh_left.svg` | `thigh_left_upper_lateral` |
+| 1 | `avonex_thigh_right_01` | Local 1 | Coxa direita | Coxa direita superior/lateral | `assets/images/application_sites/avonex_thigh_right.png` | `thigh_right_upper_lateral` |
+| 2 | `avonex_thigh_left_02` | Local 2 | Coxa esquerda | Coxa esquerda superior/lateral | `assets/images/application_sites/avonex_thigh_left.png` | `thigh_left_upper_lateral` |
 
 ### Rebif
 
@@ -166,18 +164,18 @@ Notes:
 - Current points are generated from protocol regions.
 - There are no detailed `SubRegion` points yet.
 - Generated IDs are official for current behavior because the UI and state can use them.
-- Current protocol includes glute/hip regions, but those use `hip_right.svg` and `hip_left.svg`.
+- Current protocol includes glute/hip regions backed by the shared hip PNG assets.
 
-| Order | Official generated point ID | User label | Parent region | User region text | Expected SVG asset | Required highlight area ID |
+| Order | Official generated point ID | User label | Parent region | User region text | Expected image asset | Required highlight area ID |
 |---:|---|---|---|---|---|---|
-| 1 | `rebif_abdomen_right_point` | Local 1 | Abdômen direito | Abdômen direito | `assets/images/application_sites/abdomen_right.svg` | `abdomen_right` |
-| 2 | `rebif_abdomen_left_point` | Local 2 | Abdômen esquerdo | Abdômen esquerdo | `assets/images/application_sites/abdomen_left.svg` | `abdomen_left` |
-| 3 | `rebif_right_thigh_point` | Local 3 | Coxa direita | Coxa direita | `assets/images/application_sites/thigh_right.svg` | `thigh_right` |
-| 4 | `rebif_left_thigh_point` | Local 4 | Coxa esquerda | Coxa esquerda | `assets/images/application_sites/thigh_left.svg` | `thigh_left` |
-| 5 | `rebif_arm_right_point` | Local 5 | Braço direito | Braço direito | `assets/images/application_sites/arm_right.svg` | `arm_right` |
-| 6 | `rebif_arm_left_point` | Local 6 | Braço esquerdo | Braço esquerdo | `assets/images/application_sites/arm_left.svg` | `arm_left` |
-| 7 | `rebif_glute_hip_right_point` | Local 7 | Glúteo/quadril direito | Glúteo/quadril direito | `assets/images/application_sites/hip_right.svg` | `glute_hip_right` |
-| 8 | `rebif_glute_hip_left_point` | Local 8 | Glúteo/quadril esquerdo | Glúteo/quadril esquerdo | `assets/images/application_sites/hip_left.svg` | `glute_hip_left` |
+| 1 | `rebif_abdomen_right_point` | Local 1 | Abdômen direito | Abdômen direito | `assets/images/application_sites/abdomen_right_region.png` | `abdomen_right` |
+| 2 | `rebif_abdomen_left_point` | Local 2 | Abdômen esquerdo | Abdômen esquerdo | `assets/images/application_sites/abdomen_left_region.png` | `abdomen_left` |
+| 3 | `rebif_right_thigh_point` | Local 3 | Coxa direita | Coxa direita | `assets/images/application_sites/right_thigh_region.png` | `thigh_right` |
+| 4 | `rebif_left_thigh_point` | Local 4 | Coxa esquerda | Coxa esquerda | `assets/images/application_sites/left_thigh_region.png` | `thigh_left` |
+| 5 | `rebif_arm_right_point` | Local 5 | Braço direito | Braço direito | `assets/images/application_sites/right_arm_region.png` | `arm_right` |
+| 6 | `rebif_arm_left_point` | Local 6 | Braço esquerdo | Braço esquerdo | `assets/images/application_sites/left_arm_region.png` | `arm_left` |
+| 7 | `rebif_glute_hip_right_point` | Local 7 | Glúteo/quadril direito | Glúteo/quadril direito | `assets/images/application_sites/right_hip_region.png` | `glute_hip_right` |
+| 8 | `rebif_glute_hip_left_point` | Local 8 | Glúteo/quadril esquerdo | Glúteo/quadril esquerdo | `assets/images/application_sites/left_hip_region.png` | `glute_hip_left` |
 
 ### Betaferon
 
@@ -192,18 +190,18 @@ Notes:
 - Current points are generated from protocol regions.
 - There are no detailed `SubRegion` points yet.
 - Same region structure as Rebif.
-- Current protocol includes glute/hip regions, but those use `hip_right.svg` and `hip_left.svg`.
+- Current protocol includes glute/hip regions backed by the shared hip PNG assets.
 
-| Order | Official generated point ID | User label | Parent region | User region text | Expected SVG asset | Required highlight area ID |
+| Order | Official generated point ID | User label | Parent region | User region text | Expected image asset | Required highlight area ID |
 |---:|---|---|---|---|---|---|
-| 1 | `betaferon_abdomen_right_point` | Local 1 | Abdômen direito | Abdômen direito | `assets/images/application_sites/abdomen_right.svg` | `abdomen_right` |
-| 2 | `betaferon_abdomen_left_point` | Local 2 | Abdômen esquerdo | Abdômen esquerdo | `assets/images/application_sites/abdomen_left.svg` | `abdomen_left` |
-| 3 | `betaferon_right_thigh_point` | Local 3 | Coxa direita | Coxa direita | `assets/images/application_sites/thigh_right.svg` | `thigh_right` |
-| 4 | `betaferon_left_thigh_point` | Local 4 | Coxa esquerda | Coxa esquerda | `assets/images/application_sites/thigh_left.svg` | `thigh_left` |
-| 5 | `betaferon_arm_right_point` | Local 5 | Braço direito | Braço direito | `assets/images/application_sites/arm_right.svg` | `arm_right` |
-| 6 | `betaferon_arm_left_point` | Local 6 | Braço esquerdo | Braço esquerdo | `assets/images/application_sites/arm_left.svg` | `arm_left` |
-| 7 | `betaferon_glute_hip_right_point` | Local 7 | Glúteo/quadril direito | Glúteo/quadril direito | `assets/images/application_sites/hip_right.svg` | `glute_hip_right` |
-| 8 | `betaferon_glute_hip_left_point` | Local 8 | Glúteo/quadril esquerdo | Glúteo/quadril esquerdo | `assets/images/application_sites/hip_left.svg` | `glute_hip_left` |
+| 1 | `betaferon_abdomen_right_point` | Local 1 | Abdômen direito | Abdômen direito | `assets/images/application_sites/abdomen_right_region.png` | `abdomen_right` |
+| 2 | `betaferon_abdomen_left_point` | Local 2 | Abdômen esquerdo | Abdômen esquerdo | `assets/images/application_sites/abdomen_left_region.png` | `abdomen_left` |
+| 3 | `betaferon_right_thigh_point` | Local 3 | Coxa direita | Coxa direita | `assets/images/application_sites/right_thigh_region.png` | `thigh_right` |
+| 4 | `betaferon_left_thigh_point` | Local 4 | Coxa esquerda | Coxa esquerda | `assets/images/application_sites/left_thigh_region.png` | `thigh_left` |
+| 5 | `betaferon_arm_right_point` | Local 5 | Braço direito | Braço direito | `assets/images/application_sites/right_arm_region.png` | `arm_right` |
+| 6 | `betaferon_arm_left_point` | Local 6 | Braço esquerdo | Braço esquerdo | `assets/images/application_sites/left_arm_region.png` | `arm_left` |
+| 7 | `betaferon_glute_hip_right_point` | Local 7 | Glúteo/quadril direito | Glúteo/quadril direito | `assets/images/application_sites/right_hip_region.png` | `glute_hip_right` |
+| 8 | `betaferon_glute_hip_left_point` | Local 8 | Glúteo/quadril esquerdo | Glúteo/quadril esquerdo | `assets/images/application_sites/left_hip_region.png` | `glute_hip_left` |
 
 ### Plegridy
 
@@ -220,14 +218,14 @@ Notes:
 - Current protocol uses abdomen right/left, thigh right/left, arm right/left.
 - Current catalog route is subcutaneous. If IM Plegridy is added later, it must be a separate protocol and must not reuse this table blindly.
 
-| Order | Official generated point ID | User label | Parent region | User region text | Expected SVG asset | Required highlight area ID |
+| Order | Official generated point ID | User label | Parent region | User region text | Expected image asset | Required highlight area ID |
 |---:|---|---|---|---|---|---|
-| 1 | `plegridy_abdomen_right_point` | Local 1 | Abdômen direito | Abdômen direito | `assets/images/application_sites/abdomen_right.svg` | `abdomen_right` |
-| 2 | `plegridy_abdomen_left_point` | Local 2 | Abdômen esquerdo | Abdômen esquerdo | `assets/images/application_sites/abdomen_left.svg` | `abdomen_left` |
-| 3 | `plegridy_right_thigh_point` | Local 3 | Coxa direita | Coxa direita | `assets/images/application_sites/thigh_right.svg` | `thigh_right` |
-| 4 | `plegridy_left_thigh_point` | Local 4 | Coxa esquerda | Coxa esquerda | `assets/images/application_sites/thigh_left.svg` | `thigh_left` |
-| 5 | `plegridy_arm_right_point` | Local 5 | Braço direito | Braço direito | `assets/images/application_sites/arm_right.svg` | `arm_right` |
-| 6 | `plegridy_arm_left_point` | Local 6 | Braço esquerdo | Braço esquerdo | `assets/images/application_sites/arm_left.svg` | `arm_left` |
+| 1 | `plegridy_abdomen_right_point` | Local 1 | Abdômen direito | Abdômen direito | `assets/images/application_sites/abdomen_right_region.png` | `abdomen_right` |
+| 2 | `plegridy_abdomen_left_point` | Local 2 | Abdômen esquerdo | Abdômen esquerdo | `assets/images/application_sites/abdomen_left_region.png` | `abdomen_left` |
+| 3 | `plegridy_right_thigh_point` | Local 3 | Coxa direita | Coxa direita | `assets/images/application_sites/right_thigh_region.png` | `thigh_right` |
+| 4 | `plegridy_left_thigh_point` | Local 4 | Coxa esquerda | Coxa esquerda | `assets/images/application_sites/left_thigh_region.png` | `thigh_left` |
+| 5 | `plegridy_arm_right_point` | Local 5 | Braço direito | Braço direito | `assets/images/application_sites/right_arm_region.png` | `arm_right` |
+| 6 | `plegridy_arm_left_point` | Local 6 | Braço esquerdo | Braço esquerdo | `assets/images/application_sites/left_arm_region.png` | `arm_left` |
 
 ### Kesimpta
 
@@ -244,13 +242,13 @@ Notes:
 - `upper_arm` is modeled as bilateral/unspecified side, so side alternation will prefer different-sided points before returning to it.
 - The label `Braço externo superior` should be visually distinct from generic full arm assets.
 
-| Order | Official generated point ID | User label | Parent region | User region text | Expected SVG asset | Required highlight area ID |
+| Order | Official generated point ID | User label | Parent region | User region text | Expected image asset | Required highlight area ID |
 |---:|---|---|---|---|---|---|
-| 1 | `kesimpta_abdomen_right_point` | Local 1 | Abdômen direito | Abdômen direito | `assets/images/application_sites/abdomen_right.svg` | `abdomen_right` |
-| 2 | `kesimpta_abdomen_left_point` | Local 2 | Abdômen esquerdo | Abdômen esquerdo | `assets/images/application_sites/abdomen_left.svg` | `abdomen_left` |
-| 3 | `kesimpta_right_thigh_point` | Local 3 | Coxa direita | Coxa direita | `assets/images/application_sites/thigh_right.svg` | `thigh_right` |
-| 4 | `kesimpta_left_thigh_point` | Local 4 | Coxa esquerda | Coxa esquerda | `assets/images/application_sites/thigh_left.svg` | `thigh_left` |
-| 5 | `kesimpta_upper_arm_point` | Local 5 | Braço externo superior | Braço externo superior não especificado | `assets/images/application_sites/upper_arm.svg` | `upper_arm` |
+| 1 | `kesimpta_abdomen_right_point` | Local 1 | Abdômen direito | Abdômen direito | `assets/images/application_sites/abdomen_right_region.png` | `abdomen_right` |
+| 2 | `kesimpta_abdomen_left_point` | Local 2 | Abdômen esquerdo | Abdômen esquerdo | `assets/images/application_sites/abdomen_left_region.png` | `abdomen_left` |
+| 3 | `kesimpta_right_thigh_point` | Local 3 | Coxa direita | Coxa direita | `assets/images/application_sites/right_thigh_region.png` | `thigh_right` |
+| 4 | `kesimpta_left_thigh_point` | Local 4 | Coxa esquerda | Coxa esquerda | `assets/images/application_sites/left_thigh_region.png` | `thigh_left` |
+| 5 | `kesimpta_upper_arm_point` | Local 5 | Braço externo superior | Braço externo superior não especificado | `assets/images/application_sites/upper_arm_region.png` | `upper_arm` |
 
 ## Medications Without Application Points
 
@@ -268,7 +266,7 @@ These medications currently do not require application sites or visual point ass
 
 Every SVG used by application points must expose stable internal IDs. These IDs are the contract between the medication catalog and the illustration layer.
 
-Current status: source SVG assets contain the required internal `id="..."` elements. The Flutter UI still renders static SVG assets and does not apply dynamic highlighting by `highlightAreaId` yet.
+Current status: source SVG assets contain the required internal `id="..."` elements. PNG broad-region assets do not contain internal IDs, so their contract is the asset file path plus a non-empty `highlightAreaId` retained from the catalog. The Flutter UI still renders static assets and does not apply dynamic highlighting by `highlightAreaId` yet.
 
 ### Required IDs by Asset
 
@@ -283,15 +281,6 @@ Current status: source SVG assets contain the required internal `id="..."` eleme
 | `assets/images/application_sites/copaxone_left_hip_points.svg` | `hip_left_upper`, `hip_left_lower` |
 | `assets/images/application_sites/avonex_thigh_right.svg` | `thigh_right_upper_lateral` |
 | `assets/images/application_sites/avonex_thigh_left.svg` | `thigh_left_upper_lateral` |
-| `assets/images/application_sites/abdomen_right.svg` | `abdomen_right` |
-| `assets/images/application_sites/abdomen_left.svg` | `abdomen_left` |
-| `assets/images/application_sites/thigh_right.svg` | `thigh_right` |
-| `assets/images/application_sites/thigh_left.svg` | `thigh_left` |
-| `assets/images/application_sites/arm_right.svg` | `arm_right` |
-| `assets/images/application_sites/arm_left.svg` | `arm_left` |
-| `assets/images/application_sites/upper_arm.svg` | `upper_arm` |
-| `assets/images/application_sites/hip_right.svg` | `hip_right`, `glute_hip_right` |
-| `assets/images/application_sites/hip_left.svg` | `hip_left`, `glute_hip_left` |
 
 ## Issues Found
 
@@ -310,28 +299,25 @@ Current region/site IDs mix direction placement:
 
 This is internally workable but inconsistent. Prefer preserving current IDs for compatibility and using `thigh_right_*` only for subregion/highlight IDs.
 
-### Image Assets That Do Not Match Labels Exactly
+### Shared Hip Assets For Glute/Hip Labels
 
-- `glute_hip_right` uses `assets/images/application_sites/hip_right.svg`.
-- `glute_hip_left` uses `assets/images/application_sites/hip_left.svg`.
+- `glute_hip_right` uses `assets/images/application_sites/right_hip_region.png`.
+- `glute_hip_left` uses `assets/images/application_sites/left_hip_region.png`.
 
-If the product wants to distinguish gluteal/upper outer buttock guidance from hip guidance, create dedicated assets:
-
-- `assets/images/application_sites/glute_hip_right.svg`
-- `assets/images/application_sites/glute_hip_left.svg`
+If the product wants to distinguish gluteal/upper outer buttock guidance from hip guidance more precisely, create dedicated assets in a separate migration.
 
 ### UI Label and SVG Numbering Mismatch Risk
 
 - Copaxone detailed SVG assets now expose one internal ID per contracted point marker.
 - The current Copaxone SVG assets show orange markers but do not encode visible point numbers in the SVG source. The UI label remains the source of the `Local N` numbering.
 - If future assets show multiple markers within one illustration, each visible marker must remain uniquely highlightable by ID or be clearly numbered according to the catalog order.
-- Generated region-level points for Rebif, Betaferon, Plegridy, and Kesimpta use `Local N` labels, but their current SVGs are broad region illustrations, not numbered point maps. This is acceptable only for broad-region guidance; it is not yet detailed subregion guidance.
+- Generated region-level points for Rebif, Betaferon, Plegridy, and Kesimpta use `Local N` labels, but their PNGs are broad region illustrations, not numbered point maps. This is acceptable only for broad-region guidance; it is not yet detailed subregion guidance.
 
 ### Dynamic Highlight Rendering Gap
 
 `ApplicationPoint.highlightAreaId` is populated and references existing SVG element IDs, but the UI does not yet parse or style SVG internals. Application-site illustrations are still displayed as static assets.
 
-## Recommended SVG File Names
+## Recommended File Names
 
 Preserve existing files where possible. Add new files only when the current asset cannot accurately represent the label.
 
@@ -346,22 +332,24 @@ Preserve existing files where possible. Add new files only when the current asse
 | Copaxone left arm detailed points | `assets/images/application_sites/copaxone_left_arm_points.svg` |
 | Copaxone right hip detailed points | `assets/images/application_sites/copaxone_right_hip_points.svg` |
 | Copaxone left hip detailed points | `assets/images/application_sites/copaxone_left_hip_points.svg` |
-| Avonex right thigh | `assets/images/application_sites/avonex_thigh_right.svg` |
-| Avonex left thigh | `assets/images/application_sites/avonex_thigh_left.svg` |
-| Broad abdomen right | `assets/images/application_sites/abdomen_right.svg` |
-| Broad abdomen left | `assets/images/application_sites/abdomen_left.svg` |
-| Broad thigh right | `assets/images/application_sites/thigh_right.svg` |
-| Broad thigh left | `assets/images/application_sites/thigh_left.svg` |
-| Broad arm right | `assets/images/application_sites/arm_right.svg` |
-| Broad arm left | `assets/images/application_sites/arm_left.svg` |
-| Upper outer arm | `assets/images/application_sites/upper_arm.svg` |
+| Avonex right thigh | `assets/images/application_sites/avonex_thigh_right.png` |
+| Avonex left thigh | `assets/images/application_sites/avonex_thigh_left.png` |
+| Broad abdomen right | `assets/images/application_sites/abdomen_right_region.png` |
+| Broad abdomen left | `assets/images/application_sites/abdomen_left_region.png` |
+| Broad thigh right | `assets/images/application_sites/right_thigh_region.png` |
+| Broad thigh left | `assets/images/application_sites/left_thigh_region.png` |
+| Broad arm right | `assets/images/application_sites/right_arm_region.png` |
+| Broad arm left | `assets/images/application_sites/left_arm_region.png` |
+| Upper outer arm | `assets/images/application_sites/upper_arm_region.png` |
+| Broad glute/hip right | `assets/images/application_sites/right_hip_region.png` |
+| Broad glute/hip left | `assets/images/application_sites/left_hip_region.png` |
 
 ### Recommended Additions
 
 | Purpose | Recommended file |
 |---|---|
-| Broad glute/hip right | `assets/images/application_sites/glute_hip_right.svg` |
-| Broad glute/hip left | `assets/images/application_sites/glute_hip_left.svg` |
+| Dedicated broad glute/hip right | `assets/images/application_sites/glute_hip_right.svg` |
+| Dedicated broad glute/hip left | `assets/images/application_sites/glute_hip_left.svg` |
 
 ## Recommended Internal SVG Element IDs
 
@@ -430,7 +418,8 @@ Rules:
 - A `Region.id` identifies an anatomical area.
 - A `SubRegion.id` identifies a smaller target within a region.
 - `ApplicationPoint.highlightAreaId` must match either a `Region.svgElementId` or `SubRegion.svgElementId`.
-- Every `highlightAreaId` must exist as an internal SVG element ID in the referenced asset.
+- For SVG assets, every `highlightAreaId` must exist as an internal SVG element ID in the referenced asset.
+- For PNG assets, the asset file must exist and `highlightAreaId` must remain non-empty.
 - Avonex must remain limited to:
   - right thigh
   - left thigh
@@ -451,7 +440,7 @@ Each application-site SVG should:
 
 ## Next Implementation Steps
 
-1. Replace or supplement `hip_right.svg` and `hip_left.svg` for glute/hip regions if product wants that distinction.
+1. Create a dedicated migration/spec if product wants glute/hip assets distinct from `right_hip_region.png` and `left_hip_region.png`.
 2. Create an SVG rendering adapter that can highlight by `highlightAreaId`.
 3. Add visual regression checks for SVG point numbering after asset updates.
 4. Add a dedicated implementation spec before moving broad-region medications to detailed subregion point maps.

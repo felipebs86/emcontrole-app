@@ -36,11 +36,11 @@ void main() {
     );
     expect(
       avonex.applicationPoints[0].imageAssetPath,
-      endsWith('avonex_thigh_right.svg'),
+      endsWith('avonex_thigh_right.png'),
     );
     expect(
       avonex.applicationPoints[1].imageAssetPath,
-      endsWith('avonex_thigh_left.svg'),
+      endsWith('avonex_thigh_left.png'),
     );
   });
 
