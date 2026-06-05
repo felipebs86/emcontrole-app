@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/app_routes.dart';
+import '../../core/branding_assets.dart';
 import '../../core/database/app_database.dart';
 import 'data/diary_repository.dart';
 import 'domain/diary_entry.dart';
@@ -309,7 +310,7 @@ class _DiaryEmptyState extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Image.asset(
-                  'assets/branding/app_icon.png',
+                  BrandingAssets.appIcon(context),
                   height: 56,
                   fit: BoxFit.contain,
                   semanticLabel: 'Marca EMControle',

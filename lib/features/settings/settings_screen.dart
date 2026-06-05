@@ -1,7 +1,12 @@
+import 'dart:async';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/app_routes.dart';
+import '../../core/branding_assets.dart';
+import '../../core/notifications/local_notification_service.dart';
 import '../treatment/domain/treatment_session_store.dart';
 import 'domain/theme_preference_controller.dart';
 
@@ -110,9 +115,7 @@ class _ReminderStatusCard extends StatelessWidget {
                 _SectionHeader(
                   icon: Icons.notifications_outlined,
                   title: 'Lembretes',
-                  description: hasTreatment
-                      ? 'Status dos lembretes locais do tratamento ativo.'
-                      : 'Configure um tratamento para usar lembretes locais.',
+                  description: _descriptionFor(hasTreatment),
                 ),
                 const SizedBox(height: 16),
                 _StatusPill(
@@ -121,6 +124,25 @@ class _ReminderStatusCard extends StatelessWidget {
                       : Icons.notifications_off_outlined,
                   label: remindersEnabled ? 'Ativados' : 'Desativados',
                 ),
+                if (kIsWeb) ...[
+                  const SizedBox(height: 16),
+                  Text(
+                    LocalNotificationService.webPwaWarning,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                ],
+                if (kDebugMode) ...[
+                  const SizedBox(height: 16),
+                  OutlinedButton.icon(
+                    onPressed: () {
+                      unawaited(_scheduleDebugTestReminder(context));
+                    },
+                    icon: const Icon(Icons.timer_outlined),
+                    label: const Text('Testar lembrete em 1 min'),
+                  ),
+                ],
                 const SizedBox(height: 16),
                 OutlinedButton.icon(
                   onPressed: () => context.go(AppRoutes.treatment),
@@ -138,6 +160,35 @@ class _ReminderStatusCard extends StatelessWidget {
       },
     );
   }
+
+  String _descriptionFor(bool hasTreatment) {
+    if (kIsWeb) {
+      return hasTreatment
+          ? 'Status dos lembretes do tratamento ativo. Na Web/PWA, o suporte funciona em melhor esforço.'
+          : 'Configure um tratamento para usar lembretes. Na Web/PWA, o suporte funciona em melhor esforço.';
+    }
+
+    return hasTreatment
+        ? 'Status dos lembretes locais do tratamento ativo.'
+        : 'Configure um tratamento para usar lembretes locais.';
+  }
+
+  Future<void> _scheduleDebugTestReminder(BuildContext context) async {
+    final messenger = ScaffoldMessenger.of(context);
+    final permission = await localNotificationService.requestPermission();
+    final result = await localNotificationService.scheduleDebugTestReminder();
+    if (!context.mounted) {
+      return;
+    }
+
+    final message = result.scheduled
+        ? 'Lembrete de teste agendado para 1 minuto.'
+        : result.message ?? permission.message ?? 'Não foi possível agendar.';
+
+    messenger
+      ..hideCurrentSnackBar()
+      ..showSnackBar(SnackBar(content: Text(message)));
+  }
 }
 
 class _AboutCard extends StatelessWidget {
@@ -152,7 +203,7 @@ class _AboutCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Image.asset(
-              'assets/branding/logo_full.png',
+              BrandingAssets.logoFull(context),
               height: 86,
               fit: BoxFit.contain,
               semanticLabel: 'EMControle',

@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/app_routes.dart';
+import '../../core/branding_assets.dart';
 import '../../core/database/app_database.dart';
 import '../treatment/data/application_record_repository.dart';
 import '../treatment/data/medication_catalog_data_source.dart';
@@ -89,7 +90,7 @@ class _HistoryEmptyState extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Image.asset(
-                  'assets/branding/app_icon.png',
+                  BrandingAssets.appIcon(context),
                   height: 56,
                   fit: BoxFit.contain,
                   semanticLabel: 'Marca EMControle',

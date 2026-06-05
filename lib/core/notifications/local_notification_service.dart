@@ -4,6 +4,8 @@ import 'package:timezone/data/latest.dart' as tz_data;
 import 'package:timezone/timezone.dart' as tz;
 
 import '../../features/treatment/domain/medication.dart';
+import 'browser_notification_service_stub.dart'
+    if (dart.library.js_interop) 'browser_notification_service_web.dart';
 
 const localNotificationService = LocalNotificationService();
 
@@ -11,12 +13,17 @@ class LocalNotificationService {
   const LocalNotificationService();
 
   static const medicationReminderId = 1001;
+  static const testReminderId = 1002;
   static const channelId = 'medication_reminders';
   static const channelName = 'Lembretes de medicamento';
+  static const webPwaWarning =
+      'Lembretes na versão Web/PWA dependem do navegador e podem não funcionar em todas as situações. Para uma experiência mais confiável, utilize a versão móvel do EMControle.';
 
   static final FlutterLocalNotificationsPlugin _plugin =
       FlutterLocalNotificationsPlugin();
   static bool _initialized = false;
+  static final BrowserNotificationService _browserNotifications =
+      BrowserNotificationService();
 
   Future<void> initialize() async {
     if (kIsWeb || _shouldSkipPlugin || _initialized) {
@@ -56,7 +63,15 @@ class LocalNotificationService {
 
   Future<NotificationPermissionResult> requestPermission() async {
     if (kIsWeb) {
-      return const NotificationPermissionResult.unsupported();
+      final permissionRequested = await _browserNotifications
+          .requestPermission();
+      return NotificationPermissionResult(
+        granted: true,
+        isBestEffort: true,
+        message: permissionRequested
+            ? webPwaWarning
+            : 'Suporte Web/PWA em melhor esforço. $webPwaWarning',
+      );
     }
 
     if (_shouldSkipPlugin) {
@@ -108,7 +123,12 @@ class LocalNotificationService {
   }
 
   Future<void> cancelMedicationReminder() async {
-    if (kIsWeb || _shouldSkipPlugin) {
+    if (kIsWeb) {
+      _browserNotifications.cancelMedicationReminder();
+      return;
+    }
+
+    if (_shouldSkipPlugin) {
       return;
     }
 
@@ -130,7 +150,16 @@ class LocalNotificationService {
     required DateTime scheduledAt,
   }) async {
     if (kIsWeb) {
-      return const NotificationScheduleResult.unsupported();
+      final scheduled = _browserNotifications.scheduleMedicationReminder(
+        id: medicationReminderId,
+        title: _titleFor(medication),
+        body: _bodyFor(medication, applicationPoint),
+        scheduledAt: scheduledAt,
+      );
+
+      return scheduled
+          ? const NotificationScheduleResult.scheduled(isBestEffort: true)
+          : const NotificationScheduleResult.bestEffortNotScheduled();
     }
 
     if (_shouldSkipPlugin) {
@@ -177,6 +206,68 @@ class LocalNotificationService {
     }
   }
 
+  Future<NotificationScheduleResult> scheduleDebugTestReminder() async {
+    final scheduledAt = DateTime.now().add(const Duration(minutes: 1));
+
+    if (kIsWeb) {
+      final permissionRequested = await _browserNotifications
+          .requestPermission();
+      final scheduled = _browserNotifications.scheduleMedicationReminder(
+        id: testReminderId,
+        title: 'Lembrete de teste',
+        body: 'Este é um lembrete de teste do EMControle.',
+        scheduledAt: scheduledAt,
+      );
+
+      if (scheduled) {
+        return NotificationScheduleResult.scheduled(
+          isBestEffort: true,
+          message: permissionRequested ? webPwaWarning : null,
+        );
+      }
+
+      return const NotificationScheduleResult.bestEffortNotScheduled();
+    }
+
+    if (_shouldSkipPlugin) {
+      return const NotificationScheduleResult.scheduled();
+    }
+
+    await initialize();
+    if (!_initialized) {
+      return const NotificationScheduleResult.failed();
+    }
+
+    try {
+      await _plugin.cancel(testReminderId);
+      await _plugin.zonedSchedule(
+        testReminderId,
+        'Lembrete de teste',
+        'Este é um lembrete de teste do EMControle.',
+        tz.TZDateTime.from(scheduledAt, tz.local),
+        const NotificationDetails(
+          android: AndroidNotificationDetails(
+            channelId,
+            channelName,
+            channelDescription: 'Lembretes locais da rotina de medicamento',
+            importance: Importance.high,
+            priority: Priority.high,
+          ),
+          iOS: DarwinNotificationDetails(),
+          macOS: DarwinNotificationDetails(),
+          linux: LinuxNotificationDetails(),
+          windows: WindowsNotificationDetails(),
+        ),
+        androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+        payload: 'debug_test_reminder',
+      );
+
+      return const NotificationScheduleResult.scheduled();
+    } catch (_) {
+      return const NotificationScheduleResult.failed();
+    }
+  }
+
   String _titleFor(Medication medication) {
     return switch (medication.administrationType) {
       AdministrationType.injectable => 'Hora da aplicação',
@@ -202,7 +293,11 @@ class LocalNotificationService {
 }
 
 class NotificationPermissionResult {
-  const NotificationPermissionResult({required this.granted, this.message});
+  const NotificationPermissionResult({
+    required this.granted,
+    this.message,
+    this.isBestEffort = false,
+  });
 
   const NotificationPermissionResult.denied()
     : this(
@@ -218,12 +313,20 @@ class NotificationPermissionResult {
 
   final bool granted;
   final String? message;
+  final bool isBestEffort;
 }
 
 class NotificationScheduleResult {
-  const NotificationScheduleResult({required this.scheduled, this.message});
+  const NotificationScheduleResult({
+    required this.scheduled,
+    this.message,
+    this.isBestEffort = false,
+  });
 
-  const NotificationScheduleResult.scheduled() : this(scheduled: true);
+  const NotificationScheduleResult.scheduled({
+    String? message,
+    bool isBestEffort = false,
+  }) : this(scheduled: true, message: message, isBestEffort: isBestEffort);
 
   const NotificationScheduleResult.notScheduled() : this(scheduled: false);
 
@@ -239,6 +342,15 @@ class NotificationScheduleResult {
         message: 'Lembretes locais estão disponíveis no aplicativo instalado.',
       );
 
+  const NotificationScheduleResult.bestEffortNotScheduled()
+    : this(
+        scheduled: false,
+        isBestEffort: true,
+        message:
+            'Não foi possível agendar o lembrete no navegador. Os lembretes Web/PWA continuam em melhor esforço.',
+      );
+
   final bool scheduled;
   final String? message;
+  final bool isBestEffort;
 }

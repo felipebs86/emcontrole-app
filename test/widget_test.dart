@@ -120,9 +120,10 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Diário'), findsWidgets);
 
-    await tester.tap(find.text('Linha do tempo'));
+    await tester.tap(find.text('  Linha\ndo tempo'));
     await tester.pumpAndSettle();
-    expect(find.text('Linha do tempo'), findsWidgets);
+    expect(find.text('  Linha\ndo tempo'), findsOneWidget);
+    expect(find.byTooltip('Linha do tempo'), findsOneWidget);
 
     await tester.tap(find.text('Ajustes'));
     await tester.pumpAndSettle();

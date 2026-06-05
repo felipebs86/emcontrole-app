@@ -22,6 +22,8 @@
       content="Organize tratamento, lembretes, locais de aplicação, diário de sintomas e histórico localmente."
     >
     <meta name="twitter:image" content="assets/branding/app_icon.png">
+    <link rel="icon" href="assets/branding/app_icon.png" type="image/png" media="(prefers-color-scheme: light)">
+    <link rel="icon" href="assets/branding/app_icon_dark.png" type="image/png" media="(prefers-color-scheme: dark)">
     <link rel="icon" href="assets/branding/app_icon.png" type="image/png">
     <link rel="apple-touch-icon" href="assets/branding/app_icon.png">
     <style>
@@ -176,6 +178,12 @@
         width: 30px;
         height: 30px;
         background: url("assets/branding/app_icon.png") center / contain no-repeat;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        .eyebrow::before {
+          background-image: url("assets/branding/app_icon_dark.png");
+        }
       }
 
       h1,
@@ -621,7 +629,10 @@
     <header class="topbar">
       <nav class="nav" aria-label="Navegação principal">
         <a class="brand" href="#top">
-          <img src="assets/branding/logo_full.png" alt="EMControle">
+          <picture>
+            <source srcset="assets/branding/logo_full_dark.png" media="(prefers-color-scheme: dark)">
+            <img src="assets/branding/logo_full.png" alt="EMControle">
+          </picture>
         </a>
         <div class="nav-links">
           <a href="#problema">Rotina</a>
@@ -870,7 +881,10 @@
       <div class="band" id="autor">
         <div class="band-inner author">
           <div class="portrait">
-            <img src="assets/branding/logo_full.png" alt="EMControle">
+            <picture>
+              <source srcset="assets/branding/logo_full_dark.png" media="(prefers-color-scheme: dark)">
+              <img src="assets/branding/logo_full.png" alt="EMControle">
+            </picture>
           </div>
           <div class="card">
             <p class="section-kicker">Autor</p>

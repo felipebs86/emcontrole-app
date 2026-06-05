@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import 'app_routes.dart';
+import 'branding_assets.dart';
 
 class AppShell extends StatelessWidget {
   const AppShell({
@@ -41,6 +42,14 @@ class AppShell extends StatelessWidget {
       bottomNavigationBar: NavigationBar(
         selectedIndex: activeIndex,
         onDestinationSelected: (index) => _goToIndex(context, index, shell),
+        labelTextStyle: WidgetStateProperty.resolveWith<TextStyle?>((states) {
+          final textStyle = Theme.of(context).textTheme.labelMedium;
+          return textStyle?.copyWith(
+            fontSize: 11,
+            height: 1.05,
+            leadingDistribution: TextLeadingDistribution.even,
+          );
+        }),
         destinations: const [
           NavigationDestination(
             icon: Icon(Icons.home_outlined),
@@ -60,7 +69,8 @@ class AppShell extends StatelessWidget {
           NavigationDestination(
             icon: Icon(Icons.view_timeline_outlined),
             selectedIcon: Icon(Icons.view_timeline),
-            label: 'Linha do tempo',
+            label: '  Linha\ndo tempo',
+            tooltip: 'Linha do tempo',
           ),
           NavigationDestination(
             icon: Icon(Icons.settings_outlined),
@@ -104,7 +114,7 @@ class _AppHeader extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Image.asset(
-          'assets/branding/app_icon.png',
+          BrandingAssets.appIcon(context),
           width: 30,
           height: 30,
           fit: BoxFit.contain,

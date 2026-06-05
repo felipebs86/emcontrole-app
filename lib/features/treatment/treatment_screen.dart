@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -214,14 +215,20 @@ class _TreatmentScreenState extends State<TreatmentScreen> {
                             horizontal: 4,
                           ),
                           title: const Text('Ativar lembretes'),
-                          subtitle: const Text(
-                            'Receba uma notificação local no horário previsto.',
+                          subtitle: Text(
+                            kIsWeb
+                                ? 'Suporte Web/PWA em melhor esforço. Receba uma tentativa de notificação no horário previsto.'
+                                : 'Receba uma notificação local no horário previsto.',
                           ),
                           value: _enableReminders,
                           onChanged: (value) {
                             unawaited(_setRemindersEnabled(value));
                           },
                         ),
+                        if (kIsWeb) ...[
+                          const SizedBox(height: 8),
+                          const _ReminderWarningMessage(),
+                        ],
                         const SizedBox(height: 24),
                         FilledButton.icon(
                           key: const Key('treatment-submit-button'),
@@ -455,6 +462,12 @@ class _TreatmentScreenState extends State<TreatmentScreen> {
       _hasUserEdited = true;
       _enableReminders = true;
     });
+
+    if (permission.message != null) {
+      ScaffoldMessenger.of(context)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(SnackBar(content: Text(permission.message!)));
+    }
   }
 
   Future<void> _submit() async {
@@ -1042,6 +1055,20 @@ class _SubmittedSetupCard extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _ReminderWarningMessage extends StatelessWidget {
+  const _ReminderWarningMessage();
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      LocalNotificationService.webPwaWarning,
+      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+        color: Theme.of(context).colorScheme.onSurfaceVariant,
       ),
     );
   }

@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/app_routes.dart';
+import '../../core/branding_assets.dart';
 import '../treatment/domain/application_eligibility_service.dart';
 import '../treatment/domain/application_record.dart';
 import '../treatment/domain/medication.dart';
@@ -46,7 +47,7 @@ class _NoTreatmentDashboard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Image.asset(
-                  'assets/branding/app_icon.png',
+                  BrandingAssets.appIcon(context),
                   height: 64,
                   fit: BoxFit.contain,
                   semanticLabel: 'Marca EMControle',
