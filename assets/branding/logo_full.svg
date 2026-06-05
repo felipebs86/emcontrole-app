@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 856 646" role="img" aria-labelledby="title">
+  <title id="title">EMControle</title>
+  <defs>
+    <linearGradient id="wordOrange" x1="36" y1="548" x2="238" y2="548" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ff6a00"/>
+      <stop offset="1" stop-color="#ff4f00"/>
+    </linearGradient>
+    <linearGradient id="wordDark" x1="262" y1="548" x2="824" y2="548" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0f2222"/>
+      <stop offset="1" stop-color="#142829"/>
+    </linearGradient>
+    <radialGradient id="background" cx="50%" cy="45%" r="78%">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#fefefe"/>
+    </radialGradient>
+    <linearGradient id="ribbon" x1="236" y1="380" x2="596" y2="86" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ff7a00"/>
+      <stop offset="0.48" stop-color="#ff5f00"/>
+      <stop offset="1" stop-color="#ff8f25"/>
+    </linearGradient>
+    <linearGradient id="ribbonLower" x1="324" y1="284" x2="625" y2="424" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f45700"/>
+      <stop offset="0.42" stop-color="#ff7c08"/>
+      <stop offset="1" stop-color="#ff982c"/>
+    </linearGradient>
+    <filter id="softShadow" x="-10%" y="-10%" width="120%" height="125%">
+      <feDropShadow dx="0" dy="7" stdDeviation="10" flood-color="#8f3b10" flood-opacity=".13"/>
+    </filter>
+  </defs>
+  <rect width="856" height="646" fill="url(#background)"/>
+  <g transform="translate(196 17) scale(.74)" filter="url(#softShadow)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path
+      d="M73 464C139 385 237 342 341 287C446 231 464 151 402 103C344 58 246 78 190 147C118 236 145 339 226 425C282 485 361 520 467 520"
+      stroke="url(#ribbonLower)"
+      stroke-width="76"
+    />
+    <path
+      d="M72 463C137 384 238 343 341 287C446 231 465 151 402 103C344 58 246 78 190 147C118 236 145 339 226 425"
+      stroke="url(#ribbon)"
+      stroke-width="76"
+    />
+    <path
+      d="M215 374C262 346 306 323 341 287"
+      stroke="#f45a00"
+      stroke-width="76"
+      opacity=".32"
+    />
+    <circle cx="554" cy="435" r="42" fill="#ff8b27" stroke="none"/>
+  </g>
+  <g font-family="Inter, Segoe UI, Arial, sans-serif" font-size="146" dominant-baseline="alphabetic">
+    <text x="29" y="602" fill="url(#wordOrange)" font-weight="800">EM</text>
+    <text x="253" y="602" fill="url(#wordDark)" font-weight="300">Controle</text>
+  </g>
+</svg>

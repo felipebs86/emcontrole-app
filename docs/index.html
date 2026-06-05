@@ -3,22 +3,23 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>EMControle - organize sua rotina com Esclerose Múltipla</title>
+    <title>EMControle - rotina de tratamento para Esclerose Múltipla</title>
     <meta
       name="description"
-      content="EMControle é um aplicativo criado por Felipe Bahiense Santos para ajudar pessoas com Esclerose Múltipla a organizar tratamento, aplicações, lembretes, diário e histórico sem precisar enviar seus dados para servidores."
+      content="EMControle ajuda pessoas com Esclerose Múltipla a organizar tratamento, lembretes, locais de aplicação, diário de sintomas e histórico com dados salvos localmente no dispositivo."
     >
-    <meta property="og:title" content="EMControle">
+    <meta property="og:title" content="EMControle - rotina de tratamento para Esclerose Múltipla">
     <meta
       property="og:description"
-      content="Organize tratamento, aplicações, lembretes, diário e histórico sem enviar seus dados para servidores."
+      content="Organize tratamento, lembretes, locais de aplicação, diário de sintomas e histórico sem enviar seus dados para servidores."
     >
+    <meta property="og:type" content="website">
     <meta property="og:image" content="assets/branding/app_icon.png">
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="EMControle">
+    <meta name="twitter:title" content="EMControle - rotina de tratamento para Esclerose Múltipla">
     <meta
       name="twitter:description"
-      content="Organize tratamento, aplicações, lembretes, diário e histórico localmente."
+      content="Organize tratamento, lembretes, locais de aplicação, diário de sintomas e histórico localmente."
     >
     <meta name="twitter:image" content="assets/branding/app_icon.png">
     <link rel="icon" href="assets/branding/app_icon.png" type="image/png">
@@ -100,8 +101,10 @@
       }
 
       .brand img {
-        width: 168px;
-        height: auto;
+        width: auto;
+        height: 58px;
+        display: block;
+        object-fit: contain;
       }
 
       .nav-links {
@@ -252,119 +255,16 @@
       }
 
       .phone-screen {
-        min-height: 690px;
         overflow: hidden;
         border-radius: 24px;
         background: #fffdf9;
         color: var(--ink);
       }
 
-      .app-top {
-        padding: 22px 20px 18px;
-        background: linear-gradient(180deg, #fff1e3, #fffdf9);
-      }
-
-      .app-brand {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin-bottom: 24px;
-      }
-
-      .app-brand img {
-        width: 36px;
-        height: 36px;
-      }
-
-      .app-brand strong,
-      .metric strong {
+      .phone-screen img {
         display: block;
-      }
-
-      .app-brand span,
-      .metric span {
-        display: block;
-        color: var(--muted);
-        font-size: 0.82rem;
-      }
-
-      .next-card {
-        padding: 18px;
-        border: 1px solid var(--line);
-        border-radius: 8px;
-        background: var(--surface);
-      }
-
-      .label {
-        color: var(--orange-deep);
-        font-size: 0.8rem;
-        font-weight: 850;
-        text-transform: uppercase;
-      }
-
-      .next-card .title {
-        margin-top: 6px;
-        font-size: 1.45rem;
-        font-weight: 850;
-        line-height: 1.2;
-      }
-
-      .site-preview {
-        height: 176px;
-        margin-top: 16px;
-        display: grid;
-        place-items: center;
-        border-radius: 8px;
-        background: var(--surface-warm);
-      }
-
-      .site-preview svg {
-        width: 170px;
+        width: 100%;
         height: auto;
-      }
-
-      .phone-body {
-        padding: 18px 20px 22px;
-      }
-
-      .metrics {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-        margin-bottom: 14px;
-      }
-
-      .metric {
-        min-height: 92px;
-        padding: 14px;
-        border: 1px solid var(--line);
-        border-radius: 8px;
-        background: var(--surface);
-      }
-
-      .timeline-list {
-        border: 1px solid var(--line);
-        border-radius: 8px;
-        background: var(--surface);
-      }
-
-      .timeline-item {
-        display: grid;
-        grid-template-columns: 12px 1fr;
-        gap: 12px;
-        padding: 14px;
-      }
-
-      .timeline-item + .timeline-item {
-        border-top: 1px solid var(--line);
-      }
-
-      .dot {
-        width: 10px;
-        height: 10px;
-        margin-top: 7px;
-        border-radius: 50%;
-        background: var(--orange);
       }
 
       .section,
@@ -443,6 +343,13 @@
         font-weight: 900;
       }
 
+      .label {
+        color: var(--orange-deep);
+        font-size: 0.8rem;
+        font-weight: 850;
+        text-transform: uppercase;
+      }
+
       .problem-layout {
         display: grid;
         grid-template-columns: minmax(0, 0.92fr) minmax(320px, 1fr);
@@ -510,32 +417,56 @@
       }
 
       .screen {
-        min-height: 430px;
-        padding: 18px;
+        padding: 16px;
         border: 1px solid var(--line);
-        border-radius: 20px;
+        border-radius: 8px;
         background: #fffdf9;
         box-shadow: 0 16px 40px rgba(102, 58, 31, 0.08);
       }
 
-      .screen-bar {
-        width: 72px;
-        height: 6px;
-        margin: 0 auto 18px;
-        border-radius: 999px;
-        background: #d6cbc2;
+      .screen img {
+        display: block;
+        width: 100%;
+        aspect-ratio: 390 / 844;
+        object-fit: cover;
+        object-position: top;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--paper);
       }
 
-      .screen-block {
-        margin-top: 12px;
-        padding: 15px;
+      .screen h3 {
+        margin-top: 16px;
+      }
+
+      .screen p {
+        color: var(--muted);
+      }
+
+      .install-grid,
+      .live-app {
+        display: grid;
+        grid-template-columns: minmax(0, 0.85fr) minmax(320px, 1fr);
+        gap: 28px;
+        align-items: center;
+      }
+
+      .install-list {
+        display: grid;
+        gap: 12px;
+      }
+
+      .install-item {
+        padding: 20px;
         border: 1px solid var(--line);
         border-radius: 8px;
         background: var(--surface);
       }
 
-      .screen-block.accent {
-        background: var(--surface-warm);
+      .preview-pair {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
       }
 
       .timeline {
@@ -630,7 +561,9 @@
         .problem-layout,
         .privacy,
         .author,
-        .opensource {
+        .opensource,
+        .install-grid,
+        .live-app {
           grid-template-columns: 1fr;
         }
 
@@ -669,13 +602,13 @@
           min-height: auto;
         }
 
-        .metrics {
-          grid-template-columns: 1fr;
-        }
-
         .privacy-item {
           align-items: flex-start;
           flex-direction: column;
+        }
+
+        .preview-pair {
+          grid-template-columns: 1fr;
         }
 
         .footer {
@@ -693,9 +626,9 @@
         <div class="nav-links">
           <a href="#problema">Rotina</a>
           <a href="#solucao">Como ajuda</a>
+          <a href="#telas">Telas</a>
+          <a href="#instalar">Instalar</a>
           <a href="#privacidade">Privacidade</a>
-          <a href="#historia">História</a>
-          <a href="#autor">Autor</a>
           <a class="nav-cta" href="app/">Experimentar agora</a>
         </div>
       </nav>
@@ -707,11 +640,11 @@
           <p class="eyebrow">Rotina de cuidado com Esclerose Múltipla</p>
           <h1 id="hero-title">EMControle</h1>
           <p class="lead">
-            Um aplicativo criado por Felipe Bahiense Santos para ajudar pessoas com Esclerose Múltipla a reunir tratamento, aplicações, lembretes, diário e histórico em um lugar simples de consultar.
+            Organize tratamento, lembretes, locais de aplicação, diário de sintomas e histórico em uma experiência simples, local-first e feita em português.
           </p>
           <div class="hero-actions">
             <a class="button primary" href="app/">Experimentar agora</a>
-            <a class="button secondary" href="#historia">Conhecer a história</a>
+            <a class="button secondary" href="#telas">Ver telas atuais</a>
             <a class="button secondary" href="https://github.com/felipebs86/emcontrole-app">Ver código-fonte</a>
           </div>
           <p class="hero-note">
@@ -722,53 +655,7 @@
         <aside class="hero-visual" aria-label="Prévia visual do aplicativo">
           <div class="phone">
             <div class="phone-screen">
-              <div class="app-top">
-                <div class="app-brand">
-                  <img src="assets/branding/app_icon.png" alt="">
-                  <div>
-                    <strong>EMControle</strong>
-                    <span>Rotina de cuidado</span>
-                  </div>
-                </div>
-                <div class="next-card">
-                  <div class="label">Próximo registro</div>
-                  <div class="title">Aplicação hoje, 20:00</div>
-                  <p>Coxa esquerda, conforme a rotina que você cadastrou.</p>
-                  <div class="site-preview">
-                    <svg viewBox="0 0 260 340" aria-hidden="true">
-                      <path d="M88 26c40-18 91-18 128 6-5 85-18 188-50 279-24 12-61 12-88-1 17-86 21-191 10-284Z" fill="#fff7ef" stroke="#8a7466" stroke-width="7" stroke-linejoin="round"/>
-                      <path d="M151 54c-4 88-17 169-38 238" fill="none" stroke="#dfcdbf" stroke-width="5" stroke-linecap="round"/>
-                      <path d="M103 132c28-22 67-21 92 0-5 35-12 67-22 97-24 11-54 10-75-1 4-30 6-62 5-96Z" fill="#df6725" opacity=".86"/>
-                    </svg>
-                  </div>
-                </div>
-              </div>
-              <div class="phone-body">
-                <div class="metrics">
-                  <div class="metric">
-                    <span>Diário</span>
-                    <strong>Fadiga registrada</strong>
-                  </div>
-                  <div class="metric">
-                    <span>Histórico</span>
-                    <strong>Registros por data</strong>
-                  </div>
-                </div>
-                <div class="timeline-list">
-                  <div class="timeline-item">
-                    <span class="dot"></span>
-                    <p>Aplicação registrada</p>
-                  </div>
-                  <div class="timeline-item">
-                    <span class="dot"></span>
-                    <p>Diário atualizado</p>
-                  </div>
-                  <div class="timeline-item">
-                    <span class="dot"></span>
-                    <p>Tratamento alterado</p>
-                  </div>
-                </div>
-              </div>
+              <img src="assets/screenshots/app-home.png" alt="Tela inicial atual do EMControle">
             </div>
           </div>
         </aside>
@@ -824,27 +711,27 @@
           <div class="feature-grid">
             <article class="card">
               <span class="card-icon">01</span>
-              <h3>Tratamento ativo</h3>
-              <p>Cadastre o medicamento, a data inicial, o horário e a rotina conforme a orientação recebida.</p>
+              <h3>Adesão ao tratamento</h3>
+              <p>Cadastre medicamento, data inicial, horário e rotina conforme a orientação recebida.</p>
             </article>
             <article class="card">
               <span class="card-icon">02</span>
-              <h3>Registro de uso</h3>
-              <p>Marque aplicações ou usos realizados para manter um histórico organizado por data.</p>
+              <h3>Lembretes locais</h3>
+              <p>Receba avisos no próprio dispositivo, sem conta obrigatória ou envio de dados para servidores.</p>
             </article>
             <article class="card">
               <span class="card-icon">03</span>
               <h3>Locais de aplicação</h3>
-              <p>Acompanhe a rotação dos locais quando o medicamento exigir esse tipo de cuidado.</p>
+              <p>Veja o próximo local sugerido e ilustrações dedicadas para tratamentos injetáveis suportados.</p>
             </article>
             <article class="card">
               <span class="card-icon">04</span>
-              <h3>Lembretes no aparelho</h3>
-              <p>Receba avisos no próprio dispositivo, sem precisar criar conta ou enviar dados para servidores.</p>
+              <h3>Histórico de uso</h3>
+              <p>Registre aplicações ou usos realizados para revisar datas, horários e status depois.</p>
             </article>
             <article class="card">
               <span class="card-icon">05</span>
-              <h3>Diário pessoal</h3>
+              <h3>Diário de sintomas</h3>
               <p>Anote sintomas, humor, sono, dor, fadiga e observações de forma simples.</p>
             </article>
             <article class="card">
@@ -888,45 +775,68 @@
           </div>
           <div class="screens" aria-label="Representações das principais telas">
             <article class="screen">
-              <div class="screen-bar"></div>
+              <img src="assets/screenshots/app-home.png" alt="Tela inicial do EMControle">
               <h3>Início</h3>
-              <div class="screen-block accent">
-                <div class="label">Tratamento</div>
-                <p>Próxima aplicação e local previsto aparecem em primeiro plano.</p>
-              </div>
-              <div class="screen-block">
-                <p>Registrar aplicação</p>
-              </div>
-              <div class="screen-block">
-                <p>Ver histórico</p>
-              </div>
+              <p>Primeiro acesso com chamada clara para cadastrar o tratamento principal.</p>
             </article>
             <article class="screen">
-              <div class="screen-bar"></div>
+              <img src="assets/screenshots/app-treatment-setup.png" alt="Tela de configuração de tratamento do EMControle">
+              <h3>Tratamento</h3>
+              <p>Configuração do medicamento, data, horário, lembretes e local inicial quando aplicável.</p>
+            </article>
+            <article class="screen">
+              <img src="assets/screenshots/app-history.png" alt="Tela de histórico do EMControle">
+              <h3>Histórico</h3>
+              <p>Registros de aplicações e usos organizados para consulta posterior.</p>
+            </article>
+            <article class="screen">
+              <img src="assets/screenshots/app-diary.png" alt="Tela de diário do EMControle">
               <h3>Diário</h3>
-              <div class="screen-block">
-                <p>Fadiga, dor, humor e sono com seleção por emojis.</p>
-              </div>
-              <div class="screen-block accent">
-                <p>Campo para observações pessoais.</p>
-              </div>
+              <p>Espaço para sintomas, humor, sono, dor, fadiga e observações pessoais.</p>
             </article>
             <article class="screen">
-              <div class="screen-bar"></div>
+              <img src="assets/screenshots/app-timeline.png" alt="Tela de linha do tempo do EMControle">
               <h3>Linha do tempo</h3>
-              <div class="screen-block">
-                <p>Aplicações registradas</p>
-              </div>
-              <div class="screen-block">
-                <p>Entradas do diário</p>
-              </div>
-              <div class="screen-block accent">
-                <p>Mudanças de tratamento</p>
-              </div>
+              <p>Aplicações, diário e mudanças de tratamento em uma sequência única.</p>
+            </article>
+            <article class="screen">
+              <img src="assets/screenshots/app-settings.png" alt="Tela de ajustes do EMControle">
+              <h3>Ajustes</h3>
+              <p>Preferências do app e acesso à edição do tratamento quando já configurado.</p>
             </article>
           </div>
         </div>
       </div>
+
+      <section class="section" id="instalar">
+        <div class="install-grid">
+          <div>
+            <p class="section-kicker">PWA</p>
+            <h2>Use no navegador ou instale como aplicativo.</h2>
+            <p class="section-copy">
+              A versão web publicada tem suporte a Progressive Web App. Em navegadores compatíveis, o EMControle pode ser instalado na tela inicial e aberto como app, mantendo a proposta local-first.
+            </p>
+            <div class="hero-actions">
+              <a class="button primary" href="app/">Abrir Live App</a>
+              <a class="button secondary" href="#privacidade">Ver privacidade</a>
+            </div>
+          </div>
+          <div class="install-list" aria-label="Suporte de instalação">
+            <article class="install-item">
+              <h3>Ícone atualizado</h3>
+              <p>A experiência web, o manifesto PWA e os atalhos instalados usam a nova identidade visual do EMControle.</p>
+            </article>
+            <article class="install-item">
+              <h3>Sem login</h3>
+              <p>A instalação não exige conta, autenticação, backend ou sincronização em nuvem.</p>
+            </article>
+            <article class="install-item">
+              <h3>Dados locais</h3>
+              <p>As informações cadastradas ficam no dispositivo usado para acessar o app.</p>
+            </article>
+          </div>
+        </div>
+      </section>
 
       <section class="section" id="historia">
         <div class="section-head">
@@ -1023,28 +933,38 @@
         </div>
       </div>
 
-      <section class="section">
-        <div class="section-head">
+      <section class="section" id="live-app">
+        <div class="live-app">
           <div>
-            <p class="section-kicker">Experimente</p>
+            <p class="section-kicker">Live App</p>
             <h2>Veja o EMControle funcionando no navegador.</h2>
-          </div>
-          <div>
             <p class="section-copy">
-              A experiência publicada permite conhecer o app pelo navegador. Ela não exige login, não envia seus dados para servidores e não acompanha seu uso.
+              O link publicado aponta para a versão web gerada a partir do estado atual do projeto. A experiência não exige login, não envia seus dados para servidores e não acompanha seu uso.
             </p>
             <div class="hero-actions">
               <a class="button primary" href="app/">Experimentar agora</a>
               <a class="button secondary" href="#privacidade">Rever privacidade</a>
             </div>
           </div>
+          <div class="preview-pair" aria-label="Prévia do app publicado">
+            <article class="screen">
+              <img src="assets/screenshots/app-home.png" alt="Prévia do início no app publicado">
+              <h3>Primeiro acesso</h3>
+              <p>Identidade nova e CTA para acompanhamento.</p>
+            </article>
+            <article class="screen">
+              <img src="assets/screenshots/app-treatment-setup.png" alt="Prévia da configuração de tratamento no app publicado">
+              <h3>Configuração</h3>
+              <p>Formulário atual de tratamento.</p>
+            </article>
+          </div>
         </div>
       </section>
     </main>
 
     <footer class="footer">
-      <span>EMControle - organize sua rotina com Esclerose Múltipla.</span>
-      <span>MIT License</span>
+      <span>EMControle - rotina de tratamento para Esclerose Múltipla.</span>
+      <span>Dados locais. Código aberto sob MIT.</span>
     </footer>
   </body>
 </html>

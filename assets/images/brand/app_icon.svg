@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 616 616" role="img" aria-labelledby="title">
+  <title id="title">Marca EMControle</title>
+  <defs>
+    <radialGradient id="background" cx="50%" cy="46%" r="74%">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#fff7ed"/>
+    </radialGradient>
+    <linearGradient id="ribbon" x1="64" y1="463" x2="476" y2="122" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ff7a00"/>
+      <stop offset="0.48" stop-color="#ff5f00"/>
+      <stop offset="1" stop-color="#ff8f25"/>
+    </linearGradient>
+    <linearGradient id="ribbonLower" x1="164" y1="343" x2="502" y2="516" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f45700"/>
+      <stop offset="0.42" stop-color="#ff7c08"/>
+      <stop offset="1" stop-color="#ff982c"/>
+    </linearGradient>
+    <filter id="softShadow" x="-10%" y="-10%" width="120%" height="125%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#8f3b10" flood-opacity=".14"/>
+    </filter>
+  </defs>
+  <rect width="616" height="616" fill="url(#background)"/>
+  <g filter="url(#softShadow)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path
+      d="M73 464C139 385 237 342 341 287C446 231 464 151 402 103C344 58 246 78 190 147C118 236 145 339 226 425C282 485 361 520 467 520"
+      stroke="url(#ribbonLower)"
+      stroke-width="76"
+    />
+    <path
+      d="M72 463C137 384 238 343 341 287C446 231 465 151 402 103C344 58 246 78 190 147C118 236 145 339 226 425"
+      stroke="url(#ribbon)"
+      stroke-width="76"
+    />
+    <path
+      d="M215 374C262 346 306 323 341 287"
+      stroke="#f45a00"
+      stroke-width="76"
+      opacity=".32"
+    />
+  </g>
+  <circle cx="554" cy="435" r="42" fill="#ff8b27"/>
+</svg>
