@@ -3,23 +3,23 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>EMControle - rotina de tratamento para Esclerose Múltipla</title>
+    <title>EMControle - organize sua rotina de tratamento</title>
     <meta
       name="description"
       content="EMControle ajuda pessoas com Esclerose Múltipla a organizar tratamento, lembretes, locais de aplicação, diário de sintomas e histórico com dados salvos localmente no dispositivo."
     >
-    <meta property="og:title" content="EMControle - rotina de tratamento para Esclerose Múltipla">
+    <meta property="og:title" content="EMControle - organize sua rotina de tratamento">
     <meta
       property="og:description"
-      content="Organize tratamento, lembretes, locais de aplicação, diário de sintomas e histórico sem enviar seus dados para servidores."
+      content="Tratamento, lembretes, locais de aplicação, diário, histórico e linha do tempo em um app local-first para pessoas com Esclerose Múltipla."
     >
     <meta property="og:type" content="website">
     <meta property="og:image" content="assets/branding/app_icon.png">
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="EMControle - rotina de tratamento para Esclerose Múltipla">
+    <meta name="twitter:title" content="EMControle - organize sua rotina de tratamento">
     <meta
       name="twitter:description"
-      content="Organize tratamento, lembretes, locais de aplicação, diário de sintomas e histórico localmente."
+      content="Um app local-first para organizar rotina de tratamento, aplicações, sintomas e histórico."
     >
     <meta name="twitter:image" content="assets/branding/app_icon.png">
     <link rel="icon" href="assets/branding/app_icon.png" type="image/png" media="(prefers-color-scheme: light)">
@@ -28,22 +28,50 @@
     <link rel="apple-touch-icon" href="assets/branding/app_icon.png">
     <style>
       :root {
-        --ink: #29231f;
-        --ink-soft: #514740;
-        --muted: #70665f;
-        --paper: #fffaf5;
-        --paper-deep: #f7ecdf;
+        --bg: #fffaf5;
+        --bg-soft: #f8efe6;
         --surface: #ffffff;
-        --surface-warm: #fff3e8;
-        --line: #ead8ca;
+        --surface-raised: #fffdf9;
+        --ink: #251f1b;
+        --ink-soft: #4f453f;
+        --muted: #756a63;
+        --line: #ead9cc;
+        --line-strong: #ddc4b2;
         --orange: #df6725;
-        --orange-deep: #9e441d;
-        --orange-soft: #f6a25c;
+        --orange-deep: #974118;
+        --orange-soft: #fff0e4;
         --sage: #6f806c;
-        --sage-soft: #eef3ec;
+        --sage-soft: #edf3eb;
         --blue: #4d6b78;
         --blue-soft: #edf4f6;
-        --shadow: 0 24px 70px rgba(102, 58, 31, 0.14);
+        --shadow-sm: 0 12px 32px rgba(90, 54, 33, 0.08);
+        --shadow-md: 0 24px 70px rgba(90, 54, 33, 0.14);
+        --radius: 18px;
+        --radius-sm: 12px;
+        --container: min(1160px, calc(100% - 40px));
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #15120f;
+          --bg-soft: #211b17;
+          --surface: #1e1915;
+          --surface-raised: #27211c;
+          --ink: #fff7f0;
+          --ink-soft: #ead9cc;
+          --muted: #c5b3a6;
+          --line: #3c3028;
+          --line-strong: #594538;
+          --orange: #f0843d;
+          --orange-deep: #ffb07b;
+          --orange-soft: #352216;
+          --sage: #a9b8a5;
+          --sage-soft: #20291f;
+          --blue: #a8c6d2;
+          --blue-soft: #1d2930;
+          --shadow-sm: 0 12px 32px rgba(0, 0, 0, 0.22);
+          --shadow-md: 0 24px 70px rgba(0, 0, 0, 0.32);
+        }
       }
 
       * {
@@ -56,69 +84,122 @@
 
       body {
         margin: 0;
-        background: var(--paper);
+        background:
+          radial-gradient(circle at top left, rgba(223, 103, 37, 0.12), transparent 34rem),
+          linear-gradient(180deg, var(--bg), var(--bg-soft) 48rem, var(--bg));
         color: var(--ink);
         font-family:
           Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
           "Segoe UI", sans-serif;
         line-height: 1.6;
+        text-rendering: optimizeLegibility;
       }
 
       a {
         color: var(--orange-deep);
       }
 
-      img,
-      svg {
+      a:focus-visible,
+      button:focus-visible {
+        outline: 3px solid rgba(223, 103, 37, 0.42);
+        outline-offset: 4px;
+      }
+
+      img {
+        display: block;
         max-width: 100%;
+      }
+
+      p,
+      h1,
+      h2,
+      h3 {
+        margin: 0;
+      }
+
+      h1,
+      h2,
+      h3 {
+        letter-spacing: 0;
+        line-height: 1.08;
+      }
+
+      h1 {
+        max-width: 840px;
+        font-size: clamp(3.35rem, 8vw, 7.25rem);
+        font-weight: 860;
+      }
+
+      h2 {
+        max-width: 820px;
+        font-size: clamp(2.1rem, 4.5vw, 4.3rem);
+        font-weight: 820;
+      }
+
+      h3 {
+        font-size: 1.18rem;
+        font-weight: 780;
+      }
+
+      .skip-link {
+        position: absolute;
+        left: 16px;
+        top: 12px;
+        z-index: 100;
+        transform: translateY(-140%);
+        border-radius: 8px;
+        padding: 10px 14px;
+        background: var(--surface);
+        color: var(--ink);
+        box-shadow: var(--shadow-sm);
+      }
+
+      .skip-link:focus {
+        transform: translateY(0);
       }
 
       .topbar {
         position: sticky;
         top: 0;
-        z-index: 20;
-        border-bottom: 1px solid rgba(234, 216, 202, 0.86);
-        background: rgba(255, 250, 245, 0.92);
+        z-index: 30;
+        border-bottom: 1px solid color-mix(in srgb, var(--line), transparent 14%);
+        background: color-mix(in srgb, var(--bg), transparent 7%);
         backdrop-filter: blur(18px);
       }
 
       .nav {
-        width: min(1180px, calc(100% - 32px));
+        width: var(--container);
         min-height: 76px;
         margin: 0 auto;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 22px;
+        gap: 24px;
       }
 
       .brand {
         display: inline-flex;
         align-items: center;
-        gap: 12px;
-        color: var(--ink);
-        font-weight: 800;
+        min-width: max-content;
         text-decoration: none;
-        white-space: nowrap;
       }
 
       .brand img {
         width: auto;
-        height: 58px;
-        display: block;
+        height: 56px;
         object-fit: contain;
       }
 
       .nav-links {
         display: flex;
         align-items: center;
-        gap: 20px;
+        gap: 18px;
         font-size: 0.94rem;
+        font-weight: 720;
       }
 
       .nav-links a {
         color: var(--ink-soft);
-        font-weight: 700;
         text-decoration: none;
       }
 
@@ -126,51 +207,73 @@
         color: var(--orange-deep);
       }
 
-      .nav-cta,
-      .button {
+      .button,
+      .nav-cta {
         display: inline-flex;
         align-items: center;
         justify-content: center;
         min-height: 48px;
-        border-radius: 8px;
-        padding: 0 18px;
         border: 1px solid transparent;
-        font-weight: 800;
+        border-radius: 999px;
+        padding: 0 20px;
+        font-weight: 790;
         text-decoration: none;
+        transition:
+          transform 160ms ease,
+          box-shadow 160ms ease,
+          background 160ms ease;
       }
 
-      .nav-cta,
-      .button.primary {
+      .button:hover,
+      .nav-cta:hover {
+        transform: translateY(-1px);
+      }
+
+      .button.primary,
+      .nav-cta {
         background: var(--orange);
-        color: #fff !important;
-        box-shadow: 0 12px 26px rgba(158, 68, 29, 0.18);
+        color: #fff;
+        box-shadow: 0 14px 30px rgba(158, 68, 29, 0.2);
       }
 
       .button.secondary {
-        background: var(--surface);
-        border-color: var(--line);
+        border-color: var(--line-strong);
+        background: color-mix(in srgb, var(--surface), transparent 4%);
         color: var(--orange-deep);
       }
 
+      .button.ghost {
+        color: var(--ink-soft);
+      }
+
       .hero {
-        width: min(1180px, calc(100% - 32px));
+        width: var(--container);
         min-height: calc(100vh - 76px);
         margin: 0 auto;
-        padding: 72px 0 56px;
+        padding: 74px 0 80px;
         display: grid;
-        grid-template-columns: minmax(0, 1.04fr) minmax(360px, 0.96fr);
-        gap: 58px;
+        grid-template-columns: minmax(0, 1.05fr) minmax(340px, 0.82fr);
+        gap: 54px;
         align-items: center;
+      }
+
+      .eyebrow,
+      .section-kicker,
+      .mini-label {
+        color: var(--orange-deep);
+        font-size: 0.82rem;
+        font-weight: 840;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
       }
 
       .eyebrow {
         display: inline-flex;
         align-items: center;
         gap: 10px;
-        margin: 0 0 20px;
-        color: var(--orange-deep);
-        font-size: 0.95rem;
-        font-weight: 850;
+        margin-bottom: 18px;
+        letter-spacing: 0;
+        text-transform: none;
       }
 
       .eyebrow::before {
@@ -186,126 +289,130 @@
         }
       }
 
-      h1,
-      h2,
-      h3 {
-        line-height: 1.1;
-        letter-spacing: 0;
-      }
-
-      h1 {
-        max-width: 860px;
-        margin: 0;
-        font-size: clamp(3rem, 7vw, 6.6rem);
-      }
-
-      h2 {
-        margin: 0;
-        font-size: clamp(2rem, 4.6vw, 4.1rem);
-      }
-
-      h3 {
-        margin: 0 0 10px;
-        font-size: 1.18rem;
-      }
-
-      p {
-        margin: 0;
-      }
-
       .lead {
-        max-width: 730px;
+        max-width: 720px;
         margin-top: 24px;
         color: var(--ink-soft);
-        font-size: clamp(1.16rem, 2vw, 1.42rem);
+        font-size: clamp(1.18rem, 2vw, 1.46rem);
       }
 
-      .hero-actions {
+      .hero-actions,
+      .actions {
         display: flex;
         flex-wrap: wrap;
         gap: 12px;
-        margin-top: 34px;
+        margin-top: 32px;
       }
 
       .hero-note {
-        max-width: 640px;
+        max-width: 680px;
         margin-top: 18px;
         color: var(--muted);
         font-size: 0.98rem;
       }
 
       .hero-visual {
-        min-height: 620px;
         position: relative;
         display: grid;
         place-items: center;
+        min-height: 650px;
       }
 
       .hero-visual::before {
         content: "";
         position: absolute;
-        inset: 8% 2% 8% 8%;
-        border-radius: 28px;
-        background:
-          linear-gradient(135deg, rgba(223, 103, 37, 0.18), transparent 42%),
-          linear-gradient(315deg, rgba(111, 128, 108, 0.18), transparent 38%),
-          #fff5ec;
+        inset: 7% 0 8% 8%;
         border: 1px solid var(--line);
+        border-radius: 34px;
+        background:
+          linear-gradient(145deg, rgba(223, 103, 37, 0.18), transparent 46%),
+          linear-gradient(320deg, rgba(111, 128, 108, 0.16), transparent 40%),
+          var(--surface);
+        box-shadow: var(--shadow-sm);
       }
 
-      .phone {
+      .phone-frame {
         position: relative;
-        width: min(390px, 92vw);
-        padding: 14px;
-        border-radius: 34px;
-        background: #2f2b28;
-        box-shadow: var(--shadow);
+        width: min(390px, 90vw);
+        padding: 13px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 36px;
+        background: #25211e;
+        box-shadow: var(--shadow-md);
+      }
+
+      .phone-frame::before {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: 9px;
+        width: 86px;
+        height: 5px;
+        transform: translateX(-50%);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.2);
+        z-index: 2;
       }
 
       .phone-screen {
         overflow: hidden;
-        border-radius: 24px;
-        background: #fffdf9;
-        color: var(--ink);
+        border-radius: 26px;
+        background: var(--surface-raised);
       }
 
       .phone-screen img {
-        display: block;
         width: 100%;
         height: auto;
       }
 
+      .hero-card {
+        position: absolute;
+        right: -8px;
+        bottom: 54px;
+        width: min(270px, 66vw);
+        padding: 18px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-sm);
+        background: color-mix(in srgb, var(--surface), transparent 5%);
+        box-shadow: var(--shadow-sm);
+      }
+
+      .hero-card strong {
+        display: block;
+        margin-bottom: 5px;
+      }
+
+      .hero-card span {
+        color: var(--muted);
+        font-size: 0.92rem;
+      }
+
       .section,
       .band-inner {
-        width: min(1180px, calc(100% - 32px));
+        width: var(--container);
         margin: 0 auto;
       }
 
       .section {
-        padding: 82px 0;
+        padding: 96px 0;
       }
 
       .band {
-        margin: 0;
-        padding: 82px 0;
+        padding: 96px 0;
         border-block: 1px solid var(--line);
-        background: var(--surface);
+        background: color-mix(in srgb, var(--surface), var(--bg) 22%);
       }
 
       .section-head {
         display: grid;
-        grid-template-columns: minmax(0, 0.85fr) minmax(280px, 0.75fr);
+        grid-template-columns: minmax(0, 0.96fr) minmax(280px, 0.72fr);
         gap: 42px;
         align-items: end;
-        margin-bottom: 34px;
+        margin-bottom: 38px;
       }
 
       .section-kicker {
-        margin-bottom: 12px;
-        color: var(--orange-deep);
-        font-size: 0.88rem;
-        font-weight: 850;
-        text-transform: uppercase;
+        margin-bottom: 14px;
       }
 
       .section-copy {
@@ -313,236 +420,265 @@
         font-size: 1.12rem;
       }
 
+      .value-strip {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 36px;
+      }
+
+      .value-item {
+        min-height: 110px;
+        padding: 18px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-sm);
+        background: color-mix(in srgb, var(--surface), transparent 3%);
+      }
+
+      .value-item span {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--orange-deep);
+        font-size: 1.35rem;
+        font-weight: 880;
+      }
+
       .feature-grid {
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 16px;
+        gap: 18px;
       }
 
-      .two-grid {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 16px;
+      .card,
+      .soft-panel,
+      .screen-card,
+      .store-panel {
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: color-mix(in srgb, var(--surface), transparent 3%);
+        box-shadow: var(--shadow-sm);
       }
 
       .card {
         min-height: 100%;
-        padding: 24px;
-        border: 1px solid var(--line);
-        border-radius: 8px;
-        background: var(--surface);
+        padding: 26px;
       }
 
       .card p,
-      .timeline-card p,
-      .faq p {
+      .screen-card p,
+      .story-card p,
+      .store-panel p,
+      .faq-card p {
         color: var(--muted);
       }
 
-      .card-icon {
+      .feature-icon {
         display: inline-grid;
         place-items: center;
         width: 44px;
         height: 44px;
         margin-bottom: 18px;
-        border-radius: 8px;
-        background: var(--surface-warm);
+        border-radius: 14px;
+        background: var(--orange-soft);
         color: var(--orange-deep);
-        font-weight: 900;
+        font-weight: 880;
       }
 
-      .label {
-        color: var(--orange-deep);
-        font-size: 0.8rem;
-        font-weight: 850;
-        text-transform: uppercase;
-      }
-
-      .problem-layout {
+      .showcase {
         display: grid;
-        grid-template-columns: minmax(0, 0.92fr) minmax(320px, 1fr);
-        gap: 36px;
+        grid-template-columns: minmax(280px, 0.72fr) minmax(0, 1fr);
+        gap: 26px;
         align-items: start;
       }
 
-      .problem-list {
-        display: grid;
-        gap: 12px;
-      }
-
-      .problem-item {
-        padding: 20px;
-        border-left: 4px solid var(--orange);
-        background: rgba(255, 255, 255, 0.66);
-      }
-
-      .solution-panel {
-        padding: 34px;
-        border: 1px solid var(--line);
-        border-radius: 8px;
-        background: var(--surface-warm);
-      }
-
-      .solution-panel p + p {
-        margin-top: 18px;
-      }
-
-      .privacy {
-        display: grid;
-        grid-template-columns: minmax(0, 0.85fr) minmax(320px, 1fr);
-        gap: 34px;
-        align-items: start;
-      }
-
-      .privacy-list {
-        display: grid;
-        gap: 10px;
-      }
-
-      .privacy-item {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 16px;
-        min-height: 58px;
-        padding: 12px 16px;
-        border: 1px solid var(--line);
-        border-radius: 8px;
-        background: var(--surface);
-        font-weight: 780;
-      }
-
-      .privacy-item span:last-child {
-        color: var(--orange-deep);
-        white-space: nowrap;
+      .showcase-copy {
+        position: sticky;
+        top: 108px;
       }
 
       .screens {
         display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 18px;
-        align-items: stretch;
       }
 
-      .screen {
+      .screen-card {
         padding: 16px;
-        border: 1px solid var(--line);
-        border-radius: 8px;
-        background: #fffdf9;
-        box-shadow: 0 16px 40px rgba(102, 58, 31, 0.08);
       }
 
-      .screen img {
-        display: block;
+      .screen-card.featured {
+        grid-column: span 2;
+        display: grid;
+        grid-template-columns: minmax(220px, 0.62fr) minmax(0, 1fr);
+        gap: 22px;
+        align-items: center;
+      }
+
+      .screenshot-shell {
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: var(--surface-raised);
+      }
+
+      .screen-card img {
         width: 100%;
         aspect-ratio: 390 / 844;
         object-fit: cover;
         object-position: top;
-        border: 1px solid var(--line);
-        border-radius: 8px;
-        background: var(--paper);
       }
 
-      .screen h3 {
-        margin-top: 16px;
+      .screen-card h3 {
+        margin: 16px 0 8px;
       }
 
-      .screen p {
-        color: var(--muted);
+      .screen-card.featured h3 {
+        margin-top: 0;
       }
 
-      .install-grid,
-      .live-app {
+      .story-grid,
+      .privacy-grid,
+      .pwa-grid,
+      .safety-grid {
         display: grid;
-        grid-template-columns: minmax(0, 0.85fr) minmax(320px, 1fr);
+        grid-template-columns: minmax(0, 0.9fr) minmax(300px, 1fr);
         gap: 28px;
-        align-items: center;
+        align-items: start;
       }
 
-      .install-list {
-        display: grid;
-        gap: 12px;
-      }
-
-      .install-item {
-        padding: 20px;
-        border: 1px solid var(--line);
-        border-radius: 8px;
-        background: var(--surface);
-      }
-
-      .preview-pair {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 12px;
-      }
-
-      .timeline {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 16px;
-      }
-
-      .timeline-card {
-        position: relative;
+      .story-card {
         padding: 26px;
-        border: 1px solid var(--line);
-        border-radius: 8px;
-        background: var(--surface);
+        border-left: 4px solid var(--orange);
+        border-radius: 0 var(--radius) var(--radius) 0;
+        background: color-mix(in srgb, var(--surface), transparent 3%);
+      }
+
+      .story-card + .story-card {
+        margin-top: 14px;
       }
 
       .year {
-        margin-bottom: 14px;
+        margin-bottom: 8px;
         color: var(--orange-deep);
-        font-size: 1.9rem;
-        font-weight: 900;
+        font-size: 1.7rem;
+        font-weight: 880;
       }
 
-      .author {
-        display: grid;
-        grid-template-columns: minmax(0, 0.68fr) minmax(320px, 1fr);
-        gap: 28px;
-        align-items: stretch;
+      .soft-panel {
+        padding: 30px;
       }
 
-      .portrait {
+      .checks {
         display: grid;
-        place-items: center;
-        min-height: 360px;
-        border-radius: 8px;
-        background:
-          linear-gradient(160deg, rgba(223, 103, 37, 0.16), transparent 56%),
-          var(--sage-soft);
+        gap: 12px;
+      }
+
+      .check-row {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+        padding: 15px;
         border: 1px solid var(--line);
+        border-radius: var(--radius-sm);
+        background: var(--surface);
       }
 
-      .portrait img {
-        width: min(250px, 72%);
+      .check-row::before {
+        content: "";
+        flex: 0 0 auto;
+        width: 10px;
+        height: 10px;
+        margin-top: 8px;
+        border-radius: 999px;
+        background: var(--orange);
       }
 
-      .opensource {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) minmax(280px, 0.55fr);
-        gap: 18px;
+      .check-row strong {
+        display: block;
+        margin-bottom: 2px;
       }
 
-      .repo-card {
-        padding: 24px;
-        border-radius: 8px;
-        background: var(--blue-soft);
-        border: 1px solid #d3e1e6;
+      .check-row span {
+        color: var(--muted);
       }
 
-      .faq {
+      .store-panel {
+        padding: 28px;
+      }
+
+      .store-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 22px;
+      }
+
+      .store-badge {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 178px;
+        min-height: 58px;
+        padding: 10px 16px;
+        border: 1px solid #34302c;
+        border-radius: 12px;
+        background: #111;
+        color: #fff;
+        text-decoration: none;
+        opacity: 0.58;
+        cursor: not-allowed;
+      }
+
+      .store-badge svg {
+        width: 28px;
+        height: 28px;
+        flex: 0 0 auto;
+      }
+
+      .store-badge small,
+      .store-badge strong {
+        display: block;
+        line-height: 1.1;
+      }
+
+      .store-badge small {
+        font-size: 0.72rem;
+        color: rgba(255, 255, 255, 0.75);
+      }
+
+      .store-badge strong {
+        font-size: 1.08rem;
+      }
+
+      .soon-pill {
+        display: inline-flex;
+        margin-top: 14px;
+        border-radius: 999px;
+        padding: 6px 10px;
+        background: var(--orange-soft);
+        color: var(--orange-deep);
+        font-size: 0.78rem;
+        font-weight: 820;
+      }
+
+      .faq-grid {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 14px;
+        gap: 16px;
+      }
+
+      .faq-card {
+        padding: 24px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-sm);
+        background: color-mix(in srgb, var(--surface), transparent 3%);
       }
 
       .footer {
-        width: min(1180px, calc(100% - 32px));
+        width: var(--container);
         margin: 0 auto;
-        padding: 34px 0 46px;
+        padding: 36px 0 48px;
         display: flex;
         justify-content: space-between;
         gap: 18px;
@@ -566,12 +702,11 @@
 
         .hero,
         .section-head,
-        .problem-layout,
-        .privacy,
-        .author,
-        .opensource,
-        .install-grid,
-        .live-app {
+        .showcase,
+        .story-grid,
+        .privacy-grid,
+        .pwa-grid,
+        .safety-grid {
           grid-template-columns: 1fr;
         }
 
@@ -584,401 +719,372 @@
           min-height: auto;
         }
 
-        .feature-grid,
-        .screens,
-        .timeline,
-        .faq {
-          grid-template-columns: 1fr;
+        .hero-card,
+        .showcase-copy {
+          position: static;
         }
 
-        .two-grid {
+        .feature-grid,
+        .value-strip,
+        .faq-grid {
           grid-template-columns: 1fr;
         }
       }
 
-      @media (max-width: 620px) {
+      @media (max-width: 700px) {
+        :root {
+          --container: min(100% - 28px, 1160px);
+        }
+
         .nav-links a:not(.nav-cta) {
           display: none;
         }
 
         .section,
         .band {
-          padding: 62px 0;
+          padding: 68px 0;
         }
 
-        .phone-screen {
-          min-height: auto;
-        }
-
-        .privacy-item {
-          align-items: flex-start;
-          flex-direction: column;
-        }
-
-        .preview-pair {
+        .screens,
+        .screen-card.featured {
           grid-template-columns: 1fr;
         }
 
-        .footer {
+        .screen-card.featured {
+          grid-column: span 1;
+        }
+
+        .footer,
+        .store-buttons {
           flex-direction: column;
         }
       }
     </style>
   </head>
   <body>
+    <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
     <header class="topbar">
       <nav class="nav" aria-label="Navegação principal">
-        <a class="brand" href="#top">
+        <a class="brand" href="#top" aria-label="EMControle">
           <picture>
             <source srcset="assets/branding/logo_full_dark.png" media="(prefers-color-scheme: dark)">
             <img src="assets/branding/logo_full.png" alt="EMControle">
           </picture>
         </a>
         <div class="nav-links">
-          <a href="#problema">Rotina</a>
-          <a href="#solucao">Como ajuda</a>
+          <a href="#produto">Produto</a>
           <a href="#telas">Telas</a>
-          <a href="#instalar">Instalar</a>
+          <a href="#historia">História</a>
           <a href="#privacidade">Privacidade</a>
+          <a href="#apps">Apps nativos</a>
           <a class="nav-cta" href="app/">Experimentar agora</a>
         </div>
       </nav>
     </header>
 
-    <main id="top">
-      <section class="hero" aria-labelledby="hero-title">
+    <main id="conteudo">
+      <section class="hero" id="top" aria-labelledby="hero-title">
         <div>
-          <p class="eyebrow">Rotina de cuidado com Esclerose Múltipla</p>
-          <h1 id="hero-title">EMControle</h1>
+          <p class="eyebrow">Cuidado organizado para pessoas com Esclerose Múltipla</p>
+          <h1 id="hero-title">Sua rotina de tratamento mais clara, dia após dia.</h1>
           <p class="lead">
-            Organize tratamento, lembretes, locais de aplicação, diário de sintomas e histórico em uma experiência simples, local-first e feita em português.
+            EMControle ajuda a reunir medicamento, horários, locais de aplicação, diário de sintomas,
+            histórico e linha do tempo em uma experiência calma, local-first e feita em português.
           </p>
           <div class="hero-actions">
             <a class="button primary" href="app/">Experimentar agora</a>
-            <a class="button secondary" href="#telas">Ver telas atuais</a>
-            <a class="button secondary" href="https://github.com/felipebs86/emcontrole-app">Ver código-fonte</a>
+            <a class="button secondary" href="#telas">Ver o produto</a>
+            <a class="button ghost" href="https://github.com/felipebs86/emcontrole-app">Código-fonte</a>
           </div>
           <p class="hero-note">
-            O EMControle não substitui a equipe de saúde. Ele ajuda a guardar e acompanhar informações que já foram combinadas com profissionais.
+            O app não diagnostica, não prescreve e não recomenda dose. Ele ajuda a organizar informações
+            já orientadas pela equipe de saúde.
           </p>
+
+          <div class="value-strip" aria-label="Principais capacidades">
+            <div class="value-item"><span>01</span>Tratamento e horários em um lugar</div>
+            <div class="value-item"><span>02</span>Orientação visual de locais de aplicação</div>
+            <div class="value-item"><span>03</span>Diário, histórico e linha do tempo</div>
+            <div class="value-item"><span>04</span>Dados locais, sem conta e sem backend</div>
+          </div>
         </div>
 
-        <aside class="hero-visual" aria-label="Prévia visual do aplicativo">
-          <div class="phone">
+        <aside class="hero-visual" aria-label="Prévia do aplicativo EMControle">
+          <div class="phone-frame">
             <div class="phone-screen">
-              <img src="assets/screenshots/app-home.png" alt="Tela inicial atual do EMControle">
+              <img src="assets/screenshots/app-home.png" alt="Tela inicial do EMControle com acompanhamento de tratamento">
             </div>
+          </div>
+          <div class="hero-card">
+            <strong>Funcional e instalável</strong>
+            <span>Use pelo navegador ou instale como PWA em navegadores compatíveis.</span>
           </div>
         </aside>
       </section>
 
-      <section class="section" id="problema">
+      <section class="section" id="produto" aria-labelledby="produto-title">
         <div class="section-head">
           <div>
-            <p class="section-kicker">O problema</p>
-            <h2>A rotina de tratamento pode exigir memória, atenção e constância.</h2>
+            <p class="section-kicker">Produto</p>
+            <h2 id="produto-title">Organização prática para uma rotina que pode ser exigente.</h2>
           </div>
           <p class="section-copy">
-            A Esclerose Múltipla pode envolver medicamentos com horários, frequências e formas de uso diferentes. Em alguns casos, também é preciso acompanhar locais de aplicação, sintomas e observações do dia a dia.
+            A proposta do EMControle é reduzir a carga de lembrar, conferir e registrar informações do tratamento,
+            sem substituir a decisão clínica ou a orientação profissional.
           </p>
         </div>
-        <div class="problem-layout">
-          <div class="solution-panel">
-            <p>
-              Na prática, essas informações podem acabar espalhadas entre papéis, alarmes, conversas de consulta e a própria memória.
-            </p>
-            <p>
-              O EMControle nasceu para diminuir esse esforço de organização, sem tentar decidir nada no lugar da pessoa ou da equipe de saúde.
-            </p>
-          </div>
-          <div class="problem-list">
-            <article class="problem-item">
-              <h3>Tratamento e horários</h3>
-              <p>Deixar a rotina visível ajuda a consultar datas e horários sem depender apenas da memória.</p>
-            </article>
-            <article class="problem-item">
-              <h3>Rotação de aplicações</h3>
-              <p>Quando o tratamento é injetável, ver os locais usados e os próximos locais ajuda a reduzir confusão.</p>
-            </article>
-            <article class="problem-item">
-              <h3>Sintomas e observações</h3>
-              <p>Anotações simples ajudam a preservar detalhes para conversas futuras com profissionais de saúde.</p>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <div class="band" id="solucao">
-        <div class="band-inner">
-          <div class="section-head">
-            <div>
-              <p class="section-kicker">A solução</p>
-              <h2>Um lugar para guardar o que importa na rotina.</h2>
-            </div>
-            <p class="section-copy">
-              O app ajuda a registrar, lembrar e revisar informações do tratamento. Ele não decide medicamentos, não interpreta sintomas e não recomenda condutas.
-            </p>
-          </div>
-          <div class="feature-grid">
-            <article class="card">
-              <span class="card-icon">01</span>
-              <h3>Adesão ao tratamento</h3>
-              <p>Cadastre medicamento, data inicial, horário e rotina conforme a orientação recebida.</p>
-            </article>
-            <article class="card">
-              <span class="card-icon">02</span>
-              <h3>Lembretes locais</h3>
-              <p>Receba avisos no próprio dispositivo, sem conta obrigatória ou envio de dados para servidores.</p>
-            </article>
-            <article class="card">
-              <span class="card-icon">03</span>
-              <h3>Locais de aplicação</h3>
-              <p>Veja o próximo local sugerido e ilustrações dedicadas para tratamentos injetáveis suportados.</p>
-            </article>
-            <article class="card">
-              <span class="card-icon">04</span>
-              <h3>Histórico de uso</h3>
-              <p>Registre aplicações ou usos realizados para revisar datas, horários e status depois.</p>
-            </article>
-            <article class="card">
-              <span class="card-icon">05</span>
-              <h3>Diário de sintomas</h3>
-              <p>Anote sintomas, humor, sono, dor, fadiga e observações de forma simples.</p>
-            </article>
-            <article class="card">
-              <span class="card-icon">06</span>
-              <h3>Linha do tempo</h3>
-              <p>Veja aplicações, anotações e mudanças de tratamento em uma sequência fácil de revisar.</p>
-            </article>
-          </div>
-        </div>
-      </div>
-
-      <section class="section" id="privacidade">
-        <div class="privacy">
-          <div>
-            <p class="section-kicker">Privacidade</p>
-            <h2>Suas informações ficam com você.</h2>
-            <p class="section-copy">
-              O EMControle funciona sem depender de conexão constante com a internet. Você não precisa criar conta, e suas informações ficam no seu dispositivo. A versão atual não envia dados para servidores nem registra como você usa o app.
-            </p>
-          </div>
-          <div class="privacy-list" aria-label="Princípios de privacidade">
-            <div class="privacy-item"><span>Cadastro obrigatório</span><span>Não precisa</span></div>
-            <div class="privacy-item"><span>Envio para servidores</span><span>Não acontece</span></div>
-            <div class="privacy-item"><span>Dependência de internet</span><span>Não é constante</span></div>
-            <div class="privacy-item"><span>Acompanhamento de uso</span><span>Não existe</span></div>
-            <div class="privacy-item"><span>Informações de saúde</span><span>Ficam no dispositivo</span></div>
-          </div>
+        <div class="feature-grid">
+          <article class="card">
+            <span class="feature-icon">Rx</span>
+            <h3>Rotina de medicamento</h3>
+            <p>Cadastro de tratamento, data inicial, horário e frequência conforme a orientação recebida.</p>
+          </article>
+          <article class="card">
+            <span class="feature-icon">Mapa</span>
+            <h3>Locais de aplicação</h3>
+            <p>Suporte a rotação e mapas visuais para tratamentos injetáveis, incluindo Copaxone e Avonex.</p>
+          </article>
+          <article class="card">
+            <span class="feature-icon">Alerta</span>
+            <h3>Lembretes locais</h3>
+            <p>Avisos no dispositivo. Na Web/PWA, lembretes dependem do suporte do navegador.</p>
+          </article>
+          <article class="card">
+            <span class="feature-icon">Diário</span>
+            <h3>Diário de sintomas</h3>
+            <p>Registro simples de sintomas, humor, sono, dor, fadiga e observações para consulta futura.</p>
+          </article>
+          <article class="card">
+            <span class="feature-icon">Hist.</span>
+            <h3>Histórico</h3>
+            <p>Aplicações e usos registrados ficam organizados para revisão posterior.</p>
+          </article>
+          <article class="card">
+            <span class="feature-icon">Linha</span>
+            <h3>Linha do tempo</h3>
+            <p>Eventos de tratamento e diário aparecem em uma sequência única, fácil de revisar.</p>
+          </article>
         </div>
       </section>
 
       <div class="band" id="telas">
-        <div class="band-inner">
-          <div class="section-head">
-            <div>
-              <p class="section-kicker">Experiência</p>
-              <h2>Interface calma para uma rotina que já exige atenção.</h2>
-            </div>
+        <div class="band-inner showcase">
+          <div class="showcase-copy">
+            <p class="section-kicker">Produto em uso</p>
+            <h2>Uma interface calma, direta e feita para consulta rápida.</h2>
             <p class="section-copy">
-              A interface prioriza leitura clara, botões fáceis de tocar, tema claro e escuro, e português como primeira língua.
+              As telas priorizam leitura clara, botões fáceis de tocar, baixo esforço cognitivo e consistência
+              entre tema claro e escuro.
             </p>
+            <div class="actions">
+              <a class="button primary" href="app/">Abrir Live App</a>
+              <a class="button secondary" href="#pwa">Instalar como PWA</a>
+            </div>
           </div>
-          <div class="screens" aria-label="Representações das principais telas">
-            <article class="screen">
-              <img src="assets/screenshots/app-home.png" alt="Tela inicial do EMControle">
+
+          <div class="screens" aria-label="Capturas de tela do EMControle">
+            <article class="screen-card featured">
+              <div class="screenshot-shell">
+                <img src="assets/screenshots/app-treatment-setup.png" alt="Tela de configuração de tratamento do EMControle">
+              </div>
+              <div>
+                <p class="mini-label">Tratamento</p>
+                <h3>Configure a rotina principal</h3>
+                <p>Medicamento, data, horário, lembretes e ponto inicial de aplicação quando o tratamento exigir rotação.</p>
+              </div>
+            </article>
+            <article class="screen-card">
+              <div class="screenshot-shell">
+                <img src="assets/screenshots/app-home.png" alt="Tela inicial do EMControle">
+              </div>
               <h3>Início</h3>
-              <p>Primeiro acesso com chamada clara para cadastrar o tratamento principal.</p>
+              <p>Resumo do acompanhamento e próxima ação esperada.</p>
             </article>
-            <article class="screen">
-              <img src="assets/screenshots/app-treatment-setup.png" alt="Tela de configuração de tratamento do EMControle">
-              <h3>Tratamento</h3>
-              <p>Configuração do medicamento, data, horário, lembretes e local inicial quando aplicável.</p>
+            <article class="screen-card">
+              <div class="screenshot-shell">
+                <img src="assets/screenshots/app-history.png" alt="Tela de histórico do EMControle">
+              </div>
+              <h3>Aplicações</h3>
+              <p>Registros organizados para acompanhar o que já foi feito.</p>
             </article>
-            <article class="screen">
-              <img src="assets/screenshots/app-history.png" alt="Tela de histórico do EMControle">
-              <h3>Histórico</h3>
-              <p>Registros de aplicações e usos organizados para consulta posterior.</p>
-            </article>
-            <article class="screen">
-              <img src="assets/screenshots/app-diary.png" alt="Tela de diário do EMControle">
+            <article class="screen-card">
+              <div class="screenshot-shell">
+                <img src="assets/screenshots/app-diary.png" alt="Tela de diário do EMControle">
+              </div>
               <h3>Diário</h3>
-              <p>Espaço para sintomas, humor, sono, dor, fadiga e observações pessoais.</p>
+              <p>Espaço para sintomas e observações pessoais.</p>
             </article>
-            <article class="screen">
-              <img src="assets/screenshots/app-timeline.png" alt="Tela de linha do tempo do EMControle">
+            <article class="screen-card">
+              <div class="screenshot-shell">
+                <img src="assets/screenshots/app-timeline.png" alt="Tela de linha do tempo do EMControle">
+              </div>
               <h3>Linha do tempo</h3>
-              <p>Aplicações, diário e mudanças de tratamento em uma sequência única.</p>
-            </article>
-            <article class="screen">
-              <img src="assets/screenshots/app-settings.png" alt="Tela de ajustes do EMControle">
-              <h3>Ajustes</h3>
-              <p>Preferências do app e acesso à edição do tratamento quando já configurado.</p>
+              <p>Tratamento e diário reunidos em ordem cronológica.</p>
             </article>
           </div>
         </div>
       </div>
 
-      <section class="section" id="instalar">
-        <div class="install-grid">
-          <div>
-            <p class="section-kicker">PWA</p>
-            <h2>Use no navegador ou instale como aplicativo.</h2>
-            <p class="section-copy">
-              A versão web publicada tem suporte a Progressive Web App. Em navegadores compatíveis, o EMControle pode ser instalado na tela inicial e aberto como app, mantendo a proposta local-first.
-            </p>
-            <div class="hero-actions">
-              <a class="button primary" href="app/">Abrir Live App</a>
-              <a class="button secondary" href="#privacidade">Ver privacidade</a>
-            </div>
-          </div>
-          <div class="install-list" aria-label="Suporte de instalação">
-            <article class="install-item">
-              <h3>Ícone atualizado</h3>
-              <p>A experiência web, o manifesto PWA e os atalhos instalados usam a nova identidade visual do EMControle.</p>
-            </article>
-            <article class="install-item">
-              <h3>Sem login</h3>
-              <p>A instalação não exige conta, autenticação, backend ou sincronização em nuvem.</p>
-            </article>
-            <article class="install-item">
-              <h3>Dados locais</h3>
-              <p>As informações cadastradas ficam no dispositivo usado para acessar o app.</p>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section class="section" id="historia">
-        <div class="section-head">
+      <section class="section" id="historia" aria-labelledby="historia-title">
+        <div class="story-grid">
           <div>
             <p class="section-kicker">História</p>
-            <h2>Uma ideia de 2017 que voltou mais madura.</h2>
+            <h2 id="historia-title">De um TCC de 2017 para um app moderno e funcional.</h2>
+            <p class="section-copy">
+              O EMControle nasceu com um objetivo simples: apoiar pessoas com Esclerose Múltipla na organização
+              de uma rotina de tratamento que pode envolver horários, aplicações, lembretes e registros pessoais.
+            </p>
           </div>
-          <p class="section-copy">
-            O EMControle nasceu como Trabalho de Conclusão de Curso de Felipe Bahiense Santos, com o objetivo de apoiar pessoas com Esclerose Múltipla no controle de medicamentos, horários, locais de aplicação, lembretes e registros do dia a dia.
-          </p>
-        </div>
-        <div class="timeline">
-          <article class="timeline-card">
-            <div class="year">2017</div>
-            <h3>Projeto original</h3>
-            <p>O projeto original propunha um aplicativo Android para reunir medicamento, próximo local de aplicação, alertas, confirmação de aplicação e diário.</p>
-          </article>
-          <article class="timeline-card">
-            <div class="year">Depois</div>
-            <h3>Anos de experiência</h3>
-            <p>Depois do TCC, Felipe seguiu carreira como Engenheiro de Software e levou para a reconstrução do EMControle aprendizados de produto e experiência de uso.</p>
-          </article>
-          <article class="timeline-card">
-            <div class="year">Agora</div>
-            <h3>Reconstrução moderna</h3>
-            <p>A nova versão mantém a essência do projeto original e evolui a experiência com mais clareza, catálogo de medicamentos, rotação de locais, histórico, diário, linha do tempo e privacidade por padrão.</p>
-          </article>
+          <div>
+            <article class="story-card">
+              <div class="year">2017</div>
+              <h3>Projeto original</h3>
+              <p>O TCC propunha um app Android para controle de medicamentos, aplicações, alertas e diário.</p>
+            </article>
+            <article class="story-card">
+              <div class="year">Agora</div>
+              <h3>Reconstrução moderna</h3>
+              <p>A nova versão evolui a experiência com Flutter, PWA, banco local, catálogo de medicamentos, mapas visuais e histórico.</p>
+            </article>
+            <article class="story-card">
+              <div class="year">Princípio</div>
+              <h3>Apoiar sem decidir pelo usuário</h3>
+              <p>O app organiza informações. Decisões de tratamento continuam com a pessoa e sua equipe de saúde.</p>
+            </article>
+          </div>
         </div>
       </section>
 
-      <div class="band" id="autor">
-        <div class="band-inner author">
-          <div class="portrait">
-            <picture>
-              <source srcset="assets/branding/logo_full_dark.png" media="(prefers-color-scheme: dark)">
-              <img src="assets/branding/logo_full.png" alt="EMControle">
-            </picture>
+      <div class="band" id="privacidade">
+        <div class="band-inner privacy-grid">
+          <div>
+            <p class="section-kicker">Privacidade e segurança</p>
+            <h2>Local-first por escolha de produto, não por detalhe técnico.</h2>
+            <p class="section-copy">
+              A versão atual não exige conta, não usa backend e não envia dados para servidores.
+              As informações cadastradas ficam no dispositivo usado para acessar o app.
+            </p>
           </div>
-          <div class="card">
-            <p class="section-kicker">Autor</p>
-            <h2>Felipe Bahiense Santos</h2>
-            <p class="section-copy">
-              Engenheiro de Software e criador do EMControle original de 2017 e da reconstrução atual.
-            </p>
-            <p class="section-copy">
-              O projeto mantém a mesma intenção do TCC: apoiar a organização da rotina de tratamento de pessoas com Esclerose Múltipla, respeitando a privacidade e evitando complexidade desnecessária.
-            </p>
+          <div class="checks">
+            <div class="check-row"><div><strong>Sem login obrigatório</strong><span>Não há criação de conta, usuário ou senha.</span></div></div>
+            <div class="check-row"><div><strong>Sem nuvem na V1</strong><span>Não há sincronização, backup em nuvem ou serviços externos.</span></div></div>
+            <div class="check-row"><div><strong>Dados no dispositivo</strong><span>O armazenamento é local, seguindo a proposta offline-first.</span></div></div>
+            <div class="check-row"><div><strong>Sem rastreamento de uso</strong><span>A landing e o app não dependem de analytics para funcionar.</span></div></div>
           </div>
         </div>
       </div>
 
-      <section class="section" id="codigo">
-        <div class="opensource">
+      <section class="section" id="pwa">
+        <div class="pwa-grid">
+          <div class="soft-panel">
+            <p class="section-kicker">Live App / PWA</p>
+            <h2>Experimente no navegador e instale quando o navegador permitir.</h2>
+            <p class="section-copy">
+              A versão Web/PWA pode ser aberta agora e, em navegadores compatíveis, instalada na tela inicial.
+              Ela mantém a proposta local-first. Lembretes na Web/PWA dependem do navegador e podem não funcionar
+              em todas as situações.
+            </p>
+            <div class="actions">
+              <a class="button primary" href="app/">Experimentar agora</a>
+              <a class="button secondary" href="#seguranca">Ver cuidados de uso</a>
+            </div>
+          </div>
+          <div class="checks">
+            <div class="check-row"><div><strong>Funciona no navegador</strong><span>Use sem instalar nada para conhecer a experiência atual.</span></div></div>
+            <div class="check-row"><div><strong>Instalável como PWA</strong><span>Disponível em navegadores que oferecem instalação de apps web.</span></div></div>
+            <div class="check-row"><div><strong>Lembretes em melhor esforço</strong><span>No navegador, notificações dependem de permissão e suporte da plataforma.</span></div></div>
+          </div>
+        </div>
+      </section>
+
+      <div class="band" id="apps">
+        <div class="band-inner pwa-grid">
+          <div>
+            <p class="section-kicker">Apps nativos</p>
+            <h2>Em breve nas lojas</h2>
+            <p class="section-copy">
+              Estamos preparando versões nativas do EMControle para Android e iOS,
+              com uma experiência ainda mais integrada ao dispositivo.
+            </p>
+          </div>
+          <div class="store-panel" aria-label="Apps nativos em breve">
+            <h3>Android e iOS estão planejados</h3>
+            <p>Os botões abaixo são apenas indicativos de disponibilidade futura. As versões nativas ainda não foram publicadas.</p>
+            <div class="store-buttons">
+              <a class="store-badge" href="#" aria-disabled="true" tabindex="-1">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path fill="currentColor" d="M3.6 2.4 14.8 12 3.6 21.6c-.4-.3-.6-.8-.6-1.4V3.8c0-.6.2-1.1.6-1.4Zm12.4 8.7 2.6-2.2L6.1 1.8c-.3-.2-.7-.2-1-.1L16 11.1Zm2.6 4 2.3-1.3c1.4-.8 1.4-2.8 0-3.6l-2.3-1.3-2.8 3.1 2.8 3.1ZM16 12.9 5.1 22.3c.3.1.7.1 1-.1l12.5-7.1-2.6-2.2Z"/>
+                </svg>
+                <span><small>Em breve na</small><strong>Google Play</strong></span>
+              </a>
+              <a class="store-badge" href="#" aria-disabled="true" tabindex="-1">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path fill="currentColor" d="M17.2 13.1c0-2 1.6-3 1.7-3.1-1-1.4-2.4-1.6-2.9-1.6-1.2-.1-2.3.7-2.9.7-.6 0-1.5-.7-2.5-.7-1.3 0-2.6.8-3.3 2-1.4 2.4-.4 6 1 8 .7 1 1.5 2.2 2.6 2.1 1 0 1.4-.7 2.7-.7 1.2 0 1.6.7 2.7.7s1.8-1 2.5-2c.8-1.1 1.1-2.2 1.1-2.3 0 0-2.7-1-2.7-3.1ZM15.2 7.1c.6-.7 1-1.7.9-2.7-.9 0-1.9.6-2.5 1.3-.6.7-1 1.7-.9 2.6.9.1 1.9-.5 2.5-1.2Z"/>
+                </svg>
+                <span><small>Em breve na</small><strong>App Store</strong></span>
+              </a>
+            </div>
+            <span class="soon-pill">Em breve</span>
+          </div>
+        </div>
+      </div>
+
+      <section class="section" id="seguranca">
+        <div class="safety-grid">
+          <div>
+            <p class="section-kicker">Uso responsável</p>
+            <h2>Clareza sobre o que o EMControle faz e o que ele não faz.</h2>
+            <p class="section-copy">
+              Em saúde, confiança também vem de limites bem comunicados. O EMControle foi desenhado para organização pessoal,
+              não para orientar condutas clínicas.
+            </p>
+          </div>
+          <div class="faq-grid">
+            <article class="faq-card">
+              <h3>Não substitui profissionais</h3>
+              <p>O app não substitui consulta, acompanhamento médico ou orientação de enfermagem.</p>
+            </article>
+            <article class="faq-card">
+              <h3>Não recomenda tratamento</h3>
+              <p>Não diagnostica, não prescreve, não calcula dose e não sugere mudança de medicamento.</p>
+            </article>
+            <article class="faq-card">
+              <h3>Segue sua orientação</h3>
+              <p>Use para organizar informações já combinadas com sua equipe de saúde.</p>
+            </article>
+            <article class="faq-card">
+              <h3>Privacidade por padrão</h3>
+              <p>Na versão atual, os dados pertencem ao dispositivo local.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <div class="band">
+        <div class="band-inner pwa-grid">
           <div>
             <p class="section-kicker">Código aberto</p>
-            <h2>Aberto para leitura, estudo e evolução.</h2>
+            <h2>Um projeto transparente, em evolução.</h2>
             <p class="section-copy">
-              O EMControle é um projeto de código aberto licenciado sob MIT. Isso permite que outras pessoas leiam, estudem e acompanhem a evolução do aplicativo.
+              O repositório reúne o app, a landing page e a evolução do projeto. A abertura do código facilita leitura,
+              estudo e melhorias futuras.
             </p>
           </div>
-          <div class="repo-card">
-            <h3>Repositório</h3>
-            <p>O repositório reúne o código da landing page, do aplicativo e dos materiais visuais do projeto.</p>
-            <div class="hero-actions">
-              <a class="button primary" href="https://github.com/felipebs86/emcontrole-app">Abrir no GitHub</a>
+          <div class="soft-panel">
+            <h3>Revisar no GitHub</h3>
+            <p class="section-copy">Acompanhe o código-fonte, documentação e próximos passos do EMControle.</p>
+            <div class="actions">
+              <a class="button primary" href="https://github.com/felipebs86/emcontrole-app">Abrir repositório</a>
             </div>
-          </div>
-        </div>
-      </section>
-
-      <div class="band" id="faq">
-        <div class="band-inner">
-          <div class="section-head">
-            <div>
-              <p class="section-kicker">FAQ</p>
-              <h2>Perguntas importantes antes de usar.</h2>
-            </div>
-          </div>
-          <div class="faq">
-            <article class="card">
-              <h3>O EMControle substitui orientação médica?</h3>
-              <p>Não. O app não diagnostica, prescreve, recomenda dose nem sugere tratamento.</p>
-            </article>
-            <article class="card">
-              <h3>Meus dados saem do dispositivo?</h3>
-              <p>Não nesta versão. Suas informações ficam no seu dispositivo, sem conta obrigatória, envio para servidores ou acompanhamento de uso.</p>
-            </article>
-            <article class="card">
-              <h3>Preciso criar conta?</h3>
-              <p>Não. Você pode usar o EMControle sem criar usuário ou senha.</p>
-            </article>
-            <article class="card">
-              <h3>Posso experimentar no navegador?</h3>
-              <p>Sim. A versão publicada para navegador está disponível pelo botão Experimentar agora.</p>
-            </article>
           </div>
         </div>
       </div>
-
-      <section class="section" id="live-app">
-        <div class="live-app">
-          <div>
-            <p class="section-kicker">Live App</p>
-            <h2>Veja o EMControle funcionando no navegador.</h2>
-            <p class="section-copy">
-              O link publicado aponta para a versão web gerada a partir do estado atual do projeto. A experiência não exige login, não envia seus dados para servidores e não acompanha seu uso.
-            </p>
-            <div class="hero-actions">
-              <a class="button primary" href="app/">Experimentar agora</a>
-              <a class="button secondary" href="#privacidade">Rever privacidade</a>
-            </div>
-          </div>
-          <div class="preview-pair" aria-label="Prévia do app publicado">
-            <article class="screen">
-              <img src="assets/screenshots/app-home.png" alt="Prévia do início no app publicado">
-              <h3>Primeiro acesso</h3>
-              <p>Identidade nova e CTA para acompanhamento.</p>
-            </article>
-            <article class="screen">
-              <img src="assets/screenshots/app-treatment-setup.png" alt="Prévia da configuração de tratamento no app publicado">
-              <h3>Configuração</h3>
-              <p>Formulário atual de tratamento.</p>
-            </article>
-          </div>
-        </div>
-      </section>
     </main>
 
     <footer class="footer">
       <span>EMControle - rotina de tratamento para Esclerose Múltipla.</span>
-      <span>Dados locais. Código aberto sob MIT.</span>
+      <span>Dados locais nesta versão. Android e iOS em breve.</span>
     </footer>
   </body>
 </html>
