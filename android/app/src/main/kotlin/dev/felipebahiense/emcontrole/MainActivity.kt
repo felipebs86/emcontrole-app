@@ -1,4 +1,4 @@
-package com.example.emcontrole
+package dev.felipebahiense.emcontrole
 
 import io.flutter.embedding.android.FlutterActivity
 

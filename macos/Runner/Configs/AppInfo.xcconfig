@@ -8,7 +8,7 @@
 PRODUCT_NAME = emcontrole
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.example.emcontrole
+PRODUCT_BUNDLE_IDENTIFIER = dev.felipebahiense.emcontrole
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2026 com.example. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2026 Felipe Bahiense Santos. All rights reserved.
