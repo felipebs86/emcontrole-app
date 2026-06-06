@@ -125,8 +125,8 @@
       }
 
       h1 {
-        max-width: 840px;
-        font-size: clamp(3.35rem, 8vw, 7.25rem);
+        max-width: 920px;
+        font-size: clamp(3rem, 7vw, 6.45rem);
         font-weight: 860;
       }
 
@@ -250,10 +250,10 @@
         width: var(--container);
         min-height: calc(100vh - 76px);
         margin: 0 auto;
-        padding: 74px 0 80px;
+        padding: 82px 0 90px;
         display: grid;
-        grid-template-columns: minmax(0, 1.05fr) minmax(340px, 0.82fr);
-        gap: 54px;
+        grid-template-columns: minmax(0, 1.08fr) minmax(340px, 0.82fr);
+        gap: 64px;
         align-items: center;
       }
 
@@ -293,7 +293,7 @@
         max-width: 720px;
         margin-top: 24px;
         color: var(--ink-soft);
-        font-size: clamp(1.18rem, 2vw, 1.46rem);
+        font-size: clamp(1.18rem, 2vw, 1.42rem);
       }
 
       .hero-actions,
@@ -333,6 +333,7 @@
 
       .phone-frame {
         position: relative;
+        z-index: 1;
         width: min(390px, 90vw);
         padding: 13px;
         border: 1px solid rgba(255, 255, 255, 0.1);
@@ -366,10 +367,10 @@
       }
 
       .hero-card {
-        position: absolute;
-        right: -8px;
-        bottom: 54px;
-        width: min(270px, 66vw);
+        position: relative;
+        z-index: 1;
+        width: min(390px, 90vw);
+        margin-top: 18px;
         padding: 18px;
         border: 1px solid var(--line);
         border-radius: var(--radius-sm);
@@ -424,7 +425,7 @@
         display: grid;
         grid-template-columns: repeat(4, minmax(0, 1fr));
         gap: 12px;
-        margin-top: 36px;
+        margin-top: 40px;
       }
 
       .value-item {
@@ -462,6 +463,17 @@
       .card {
         min-height: 100%;
         padding: 26px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .card h3 {
+        margin-bottom: 10px;
+      }
+
+      .card p {
+        margin-top: 0;
       }
 
       .card p,
@@ -473,21 +485,22 @@
       }
 
       .feature-icon {
-        display: inline-grid;
-        place-items: center;
-        width: 44px;
-        height: 44px;
+        display: inline-flex;
+        align-items: center;
+        min-height: 38px;
         margin-bottom: 18px;
+        padding: 0 12px;
         border-radius: 14px;
         background: var(--orange-soft);
         color: var(--orange-deep);
+        font-size: 0.82rem;
         font-weight: 880;
       }
 
       .showcase {
         display: grid;
         grid-template-columns: minmax(280px, 0.72fr) minmax(0, 1fr);
-        gap: 26px;
+        gap: 34px;
         align-items: start;
       }
 
@@ -503,14 +516,14 @@
       }
 
       .screen-card {
-        padding: 16px;
+        padding: 18px;
       }
 
       .screen-card.featured {
         grid-column: span 2;
         display: grid;
         grid-template-columns: minmax(220px, 0.62fr) minmax(0, 1fr);
-        gap: 22px;
+        gap: 28px;
         align-items: center;
       }
 
@@ -566,6 +579,10 @@
 
       .soft-panel {
         padding: 30px;
+      }
+
+      .soft-panel .section-copy + .section-copy {
+        margin-top: 16px;
       }
 
       .checks {
@@ -719,7 +736,6 @@
           min-height: auto;
         }
 
-        .hero-card,
         .showcase-copy {
           position: static;
         }
@@ -742,7 +758,11 @@
 
         .section,
         .band {
-          padding: 68px 0;
+          padding: 64px 0;
+        }
+
+        .hero {
+          padding-bottom: 64px;
         }
 
         .screens,
@@ -787,15 +807,15 @@
     <main id="conteudo">
       <section class="hero" id="top" aria-labelledby="hero-title">
         <div>
-          <p class="eyebrow">Cuidado organizado para pessoas com Esclerose Múltipla</p>
-          <h1 id="hero-title">Sua rotina de tratamento mais clara, dia após dia.</h1>
+          <p class="eyebrow">Apoio diário para pessoas com Esclerose Múltipla</p>
+          <h1 id="hero-title">O tratamento acontece no dia a dia. A organização também.</h1>
           <p class="lead">
-            EMControle ajuda a reunir medicamento, horários, locais de aplicação, diário de sintomas,
-            histórico e linha do tempo em uma experiência calma e feita em português.
+            O EMControle ajuda a acompanhar medicamento, horários, lembretes, locais de aplicação,
+            sintomas e histórico em um só lugar, com uma interface simples e acolhedora.
           </p>
           <div class="hero-actions">
-            <a class="button primary" href="app/">Experimentar agora</a>
-            <a class="button secondary" href="#telas">Ver o app</a>
+            <a class="button primary" href="app/">Experimentar o EMControle</a>
+            <a class="button secondary" href="#telas">Conhecer as telas</a>
             <a class="button ghost" href="https://github.com/felipebs86/emcontrole-app">Código-fonte</a>
           </div>
           <p class="hero-note">
@@ -804,10 +824,10 @@
           </p>
 
           <div class="value-strip" aria-label="Principais capacidades">
-            <div class="value-item"><span>01</span>Tratamento e horários em um lugar</div>
-            <div class="value-item"><span>02</span>Orientação visual de locais de aplicação</div>
-            <div class="value-item"><span>03</span>Diário, histórico e linha do tempo</div>
-            <div class="value-item"><span>04</span>Dados no dispositivo, sem conta obrigatória</div>
+            <div class="value-item"><span>01</span>Rotina de tratamento mais visível</div>
+            <div class="value-item"><span>02</span>Locais de aplicação com apoio visual</div>
+            <div class="value-item"><span>03</span>Sintomas e registros preservados</div>
+            <div class="value-item"><span>04</span>Dados no seu dispositivo</div>
           </div>
         </div>
 
@@ -818,8 +838,8 @@
             </div>
           </div>
           <div class="hero-card">
-            <strong>Funcional e instalável</strong>
-            <span>Use pelo navegador ou instale na tela inicial quando o navegador permitir.</span>
+            <strong>Use hoje pela web</strong>
+            <span>A versão web pode ser testada agora. Em alguns navegadores, também pode ser instalada na tela inicial.</span>
           </div>
         </aside>
       </section>
@@ -828,26 +848,26 @@
         <div class="section-head">
           <div>
             <p class="section-kicker">Como ajuda</p>
-            <h2 id="produto-title">Organização prática para uma rotina que pode ser exigente.</h2>
+            <h2 id="produto-title">Menos informação solta. Mais clareza para acompanhar a rotina.</h2>
           </div>
           <p class="section-copy">
-            A proposta do EMControle é reduzir a carga de lembrar, conferir e registrar informações do tratamento,
-            sem substituir a decisão clínica ou a orientação profissional.
+            Medicamentos, horários, aplicações e sintomas podem acabar espalhados entre papéis, alarmes e memória.
+            O EMControle reúne esses pontos para facilitar a consulta no dia a dia.
           </p>
         </div>
         <div class="feature-grid">
           <article class="card">
-            <span class="feature-icon">Rx</span>
+            <span class="feature-icon">Medicamento</span>
             <h3>Rotina de medicamento</h3>
-            <p>Cadastro de tratamento, data inicial, horário e frequência conforme a orientação recebida.</p>
+            <p>Registre o tratamento, horário e frequência conforme a orientação recebida da equipe de saúde.</p>
           </article>
           <article class="card">
-            <span class="feature-icon">Mapa</span>
+            <span class="feature-icon">Aplicação</span>
             <h3>Locais de aplicação</h3>
-            <p>Suporte a rotação e mapas visuais para tratamentos injetáveis, incluindo Copaxone e Avonex.</p>
+            <p>Veja o local previsto e conte com mapas visuais para tratamentos injetáveis suportados, como Copaxone e Avonex.</p>
           </article>
           <article class="card">
-            <span class="feature-icon">Alerta</span>
+            <span class="feature-icon">Lembretes</span>
             <h3>Lembretes locais</h3>
             <p>Avisos para ajudar a lembrar da rotina. Na versão web, eles dependem do navegador.</p>
           </article>
@@ -857,12 +877,12 @@
             <p>Registro simples de sintomas, humor, sono, dor, fadiga e observações para consulta futura.</p>
           </article>
           <article class="card">
-            <span class="feature-icon">Hist.</span>
+            <span class="feature-icon">Histórico</span>
             <h3>Histórico</h3>
             <p>Aplicações e usos registrados ficam organizados para revisão posterior.</p>
           </article>
           <article class="card">
-            <span class="feature-icon">Linha</span>
+            <span class="feature-icon">Linha do tempo</span>
             <h3>Linha do tempo</h3>
             <p>Eventos de tratamento e diário aparecem em uma sequência única, fácil de revisar.</p>
           </article>
@@ -873,10 +893,10 @@
         <div class="band-inner showcase">
           <div class="showcase-copy">
             <p class="section-kicker">O app por dentro</p>
-            <h2>Uma interface calma, direta e feita para consulta rápida.</h2>
+            <h2>Veja como o cuidado aparece na prática.</h2>
             <p class="section-copy">
-              As telas priorizam leitura clara, botões fáceis de tocar, baixo esforço cognitivo e consistência
-              entre tema claro e escuro.
+              A interface foi pensada para leitura rápida, toque confortável e pouca distração.
+              Cada tela tenta responder uma pergunta simples da rotina.
             </p>
             <div class="actions">
               <a class="button primary" href="app/">Abrir versão web</a>
@@ -891,23 +911,23 @@
               </div>
               <div>
                 <p class="mini-label">Tratamento</p>
-                <h3>Configure a rotina principal</h3>
-                <p>Medicamento, data, horário, lembretes e ponto inicial de aplicação quando o tratamento exigir rotação.</p>
+                <h3>Tratamento e locais de aplicação</h3>
+                <p>Defina medicamento, data, horário, lembretes e local inicial de aplicação quando isso fizer parte do tratamento.</p>
               </div>
             </article>
             <article class="screen-card">
               <div class="screenshot-shell">
                 <img src="assets/screenshots/app-home.png" alt="Tela inicial do EMControle">
               </div>
-              <h3>Início</h3>
-              <p>Resumo do acompanhamento e próxima ação esperada.</p>
+              <h3>Tela inicial</h3>
+              <p>Um resumo simples para saber o que merece atenção.</p>
             </article>
             <article class="screen-card">
               <div class="screenshot-shell">
                 <img src="assets/screenshots/app-history.png" alt="Tela de histórico do EMControle">
               </div>
-              <h3>Aplicações</h3>
-              <p>Registros organizados para acompanhar o que já foi feito.</p>
+              <h3>Histórico</h3>
+              <p>Registros organizados para lembrar o que já foi feito.</p>
             </article>
             <article class="screen-card">
               <div class="screenshot-shell">
@@ -931,7 +951,7 @@
         <div class="band-inner story-grid">
           <div>
             <p class="section-kicker">Sobre o projeto</p>
-            <h2>Uma ideia criada para ajudar na organização do cuidado diário.</h2>
+            <h2>Uma ideia antiga, reconstruída para uma necessidade real.</h2>
             <p class="section-copy">
               O EMControle começou como um projeto universitário em 2017, criado com o objetivo de ajudar
               pessoas vivendo com Esclerose Múltipla a organizar melhor sua rotina de tratamento.
@@ -939,9 +959,9 @@
           </div>
           <div class="soft-panel">
             <p class="section-copy">
-              Anos depois, o projeto foi completamente redesenhado com tecnologias modernas, novos conceitos
-              de design e práticas de desenvolvimento assistidas por IA. A ideia evoluiu para uma aplicação
-              real, voltada a apoiar pacientes em sua jornada diária com mais clareza e tranquilidade.
+              Anos depois, o projeto foi completamente redesenhado com novas ferramentas, novos cuidados de design
+              e práticas de desenvolvimento assistidas por IA. A ideia evoluiu para uma aplicação real, voltada a
+              apoiar pacientes em sua jornada diária com mais clareza e tranquilidade.
             </p>
           </div>
         </div>
@@ -951,27 +971,27 @@
         <div class="story-grid">
           <div>
             <p class="section-kicker">História</p>
-            <h2 id="historia-title">De um TCC de 2017 para um app moderno e funcional.</h2>
+            <h2 id="historia-title">O mesmo propósito, com uma execução mais madura.</h2>
             <p class="section-copy">
-              O EMControle nasceu com um objetivo simples: apoiar pessoas com Esclerose Múltipla na organização
-              de uma rotina de tratamento que pode envolver horários, aplicações, lembretes e registros pessoais.
+              A motivação inicial continua a mesma: ajudar a transformar detalhes soltos da rotina em informações
+              mais fáceis de encontrar, registrar e revisar.
             </p>
           </div>
           <div>
             <article class="story-card">
               <div class="year">2017</div>
               <h3>Projeto original</h3>
-              <p>O TCC propunha um app Android para controle de medicamentos, aplicações, alertas e diário.</p>
+              <p>O TCC propunha um app Android para organizar medicamentos, aplicações, alertas e diário.</p>
             </article>
             <article class="story-card">
               <div class="year">Agora</div>
               <h3>Reconstrução moderna</h3>
-              <p>A nova versão foi redesenhada com tecnologias atuais, novos conceitos de design e apoio de práticas de desenvolvimento assistidas por IA.</p>
+              <p>A nova versão foi redesenhada com mais atenção à usabilidade, acessibilidade, privacidade e clareza visual.</p>
             </article>
             <article class="story-card">
               <div class="year">Princípio</div>
               <h3>Apoiar sem decidir pelo usuário</h3>
-              <p>O app organiza informações. Decisões de tratamento continuam com a pessoa e sua equipe de saúde.</p>
+              <p>O app ajuda a organizar. As decisões de tratamento continuam com a pessoa e sua equipe de saúde.</p>
             </article>
           </div>
         </div>
@@ -981,10 +1001,10 @@
         <div class="band-inner privacy-grid">
           <div>
             <p class="section-kicker">Privacidade e segurança</p>
-            <h2>Suas informações ficam com você.</h2>
+            <h2>Informações de saúde pedem cuidado e privacidade.</h2>
             <p class="section-copy">
-              A versão atual não exige conta e não envia dados para servidores.
-              As informações cadastradas ficam no dispositivo usado para acessar o app.
+              A versão atual não exige conta e não envia dados para servidores. As informações cadastradas ficam
+              no dispositivo usado para acessar o app.
             </p>
           </div>
           <div class="checks">
@@ -1000,11 +1020,11 @@
         <div class="pwa-grid">
           <div class="soft-panel">
             <p class="section-kicker">Versão web</p>
-            <h2>Experimente agora pelo navegador.</h2>
+            <h2>Teste a versão web sem cadastro.</h2>
             <p class="section-copy">
               A versão web pode ser aberta agora e, em navegadores compatíveis, instalada na tela inicial.
-              Seus dados ficam no dispositivo usado para acessar o app. Lembretes no navegador dependem do suporte disponível e podem não funcionar
-              em todas as situações.
+              Seus dados ficam no dispositivo usado para acessar o app. Lembretes no navegador dependem do suporte
+              disponível e podem não funcionar em todas as situações.
             </p>
             <div class="actions">
               <a class="button primary" href="app/">Experimentar agora</a>
@@ -1025,13 +1045,13 @@
             <p class="section-kicker">Android e iOS</p>
             <h2>Em breve nas lojas</h2>
             <p class="section-copy">
-              Estamos preparando versões nativas do EMControle para Android e iOS,
-              com uma experiência ainda mais próxima dos recursos do dispositivo.
+              Estamos preparando versões nativas do EMControle para Android e iOS, pensadas para funcionar de forma
+              ainda mais natural no celular.
             </p>
           </div>
           <div class="store-panel" aria-label="Apps nativos em breve">
-            <h3>Android e iOS estão planejados</h3>
-            <p>Os botões abaixo são apenas indicativos de disponibilidade futura. As versões nativas ainda não foram publicadas.</p>
+            <h3>Android e iOS estão em preparação</h3>
+            <p>Os botões abaixo indicam disponibilidade futura. As versões nativas ainda não foram publicadas.</p>
             <div class="store-buttons">
               <a class="store-badge" href="#" aria-disabled="true" tabindex="-1">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -1055,10 +1075,10 @@
         <div class="safety-grid">
           <div>
             <p class="section-kicker">Uso responsável</p>
-            <h2>Clareza sobre o que o EMControle faz e o que ele não faz.</h2>
+            <h2>Organização não é orientação médica.</h2>
             <p class="section-copy">
-              Em saúde, confiança também vem de limites bem comunicados. O EMControle foi desenhado para organização pessoal,
-              não para orientar condutas clínicas.
+              Em saúde, confiança também vem de limites bem comunicados. O EMControle foi desenhado para apoio pessoal
+              na organização da rotina, não para orientar condutas clínicas.
             </p>
           </div>
           <div class="faq-grid">
@@ -1094,8 +1114,8 @@
           </div>
           <div class="soft-panel">
             <p class="section-copy">
-              O projeto não nasceu como uma vitrine de tecnologia, mas como uma tentativa de tornar uma parte da rotina
-              de tratamento mais organizada, acessível e tranquila para quem precisa lidar com muitos detalhes no dia a dia.
+              O projeto não nasceu como uma demonstração de tecnologia, mas como uma tentativa de tornar uma parte da rotina
+              de tratamento mais organizada, acessível e tranquila.
             </p>
           </div>
         </div>
